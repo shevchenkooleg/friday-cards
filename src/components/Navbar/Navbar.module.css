@@ -1,0 +1,8 @@
+.content {
+    display: flex;
+    justify-content: center;
+}
+
+.lnk {
+    padding-left: 20px;
+}
