@@ -2,7 +2,7 @@
   "name": "friday-cards",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://shevchenkooleg.github.io/friday_cards",
+  "homepage": "https://shevchenkooleg.github.io/friday-cards",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -17,6 +17,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
     "axios": "^0.27.2",
+    "gh-pages": "^4.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.2",
