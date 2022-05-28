@@ -7,12 +7,15 @@ import SuperRadio from "../common/c6-SuperRadio/SuperRadio";
 import {PATH} from "../../App";
 import {Navigate} from "react-router-dom";
 import s from './TestPage.module.css'
+import {pingServerTC} from "../../bll/authReducer";
+import {useAppDispatch} from "../../bll/store";
 
 export const TestPage = () => {
 
     const [inputValue, setInputValue] = useState('')
     const [error, setError] = useState(false)
     const [option, setOption] = useState(PATH.TESTING_PAGE)
+    const dispatch = useAppDispatch()
 
     const pages = [
         PATH.PROFILE,
@@ -52,6 +55,9 @@ export const TestPage = () => {
     const onRadioChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setOption(e.currentTarget.value)
     }
+    const pingHandler = () => {
+        dispatch(pingServerTC())
+    }
 
 
     if (option === PATH.TESTING_PAGE) {
@@ -76,6 +82,7 @@ export const TestPage = () => {
                         <SuperRadio options={pages} value={option} onChange={onRadioChangeHandler}/>
                     </div>
                 </div>
+                <SuperButton children={'Ping'} onClick={pingHandler}/>
                 <hr/>
             </div>
         );
