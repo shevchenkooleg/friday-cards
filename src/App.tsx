@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
-import {Profile} from "./components/Profile/Profile";
 import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import {Navbar} from './components/Navbar/Navbar';
 import Error404 from "./components/Error404/Error404";
@@ -9,6 +8,11 @@ import {SignUp} from "./components/Login/SignUp";
 import {SignIn} from "./components/Login/SignIn";
 import {RestorePass} from "./components/Login/RestorePass";
 import {UpdatePass} from "./components/Login/UpdatePass";
+import {AppStateType, useAppDispatch} from "./bll/store";
+import {initializeAppTC} from "./bll/appReducers";
+import {useSelector} from "react-redux";
+import { Loader } from './components/common/Loader/Loader';
+import Profile from './components/Profile/Profile';
 
 export const PATH = {
     PROFILE: '/profile',
@@ -22,6 +26,18 @@ export const PATH = {
 }
 
 function App() {
+
+    const dispatch = useAppDispatch()
+    const isInitialized = useSelector((state: AppStateType)=>state.appReducer.initialized)
+
+    useEffect(()=>{
+        dispatch(initializeAppTC())
+    },[dispatch])
+
+    if (!isInitialized) {
+        return <Loader/>
+    }
+
     return (
         <HashRouter>
             <div className="App">
@@ -30,7 +46,7 @@ function App() {
                 </nav>
                 <div>
                     <Routes>
-                        <Route path={'/'} element={<Navigate to={PATH.TESTING_PAGE}/>}/>
+                        <Route path={'/'} element={<Navigate to={PATH.PROFILE}/>}/>
                         <Route path={PATH.PROFILE} element={<Profile/>}/>
                         <Route path={PATH.TESTING_PAGE} element={<TestPage/>}/>
                         <Route path={PATH.LOGIN.SIGN_UP} element={<SignUp/>}/>

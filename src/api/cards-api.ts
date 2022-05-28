@@ -13,6 +13,9 @@ export const AppAPI = {
     ping() {
         return instance.get('ping')
     },
+    me() {
+        return instance.post('auth/me')
+    },
     register(data: RegistrationDataType) {
         return instance.post<RegistrationDataType, AxiosResponse>('auth/register', data)
     }

@@ -11,4 +11,5 @@ export const RegisterValidationSchema = Yup.object().shape({
     confirmPassword: Yup.string()
         .min(8, 'More than 8 char')
         .required('Must be filled')
+        .oneOf([Yup.ref("password"), null], "Pass must match"),
 });

@@ -4,6 +4,7 @@ import {profileReducer} from "./profileReducer";
 import thunk, {ThunkAction, ThunkDispatch } from 'redux-thunk'
 import {authReducer} from "./authReducer";
 import { useDispatch } from "react-redux";
+import {appReducer} from "./appReducers";
 
 
 export type AppStateType = ReturnType<typeof rootReducer>
@@ -13,6 +14,7 @@ export type RootReducerType = any
 const rootReducer = combineReducers({
     profileReducer: profileReducer,
     authReducer: authReducer,
+    appReducer: appReducer,
 })
 
 export const useAppDispatch = () => useDispatch<ThunkDispatch<AppStateType, unknown, RootReducerType>>()

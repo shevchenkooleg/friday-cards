@@ -43,7 +43,7 @@ export const SignUp = () => {
                         value={formik.values.email}
                         onBlur={formik.handleBlur}
                         error={!!formik.errors.email && formik.touched.email}
-                        helperText={formik.errors.email}/>
+                        helperText={formik.touched.email ? formik.errors.email : null}/>
                     <TextField
                         size='small'
                         type="password"
@@ -54,7 +54,7 @@ export const SignUp = () => {
                         value={formik.values.password}
                         onBlur={formik.handleBlur}
                         error={!!formik.errors.password && formik.touched.password}
-                        helperText={formik.errors.password}
+                        helperText={formik.touched.password ? formik.errors.password : null}
 
                     />
                     <TextField
@@ -67,7 +67,7 @@ export const SignUp = () => {
                         value={formik.values.confirmPassword}
                         onBlur={formik.handleBlur}
                         error={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
-                        helperText={formik.errors.confirmPassword}/>
+                        helperText={formik.touched.confirmPassword ? formik.errors.confirmPassword : null}/>
                     {/*{(formik.status) ? <div className={s.error}>{formik.status.error.length > 0 ? formik.status.error[0] : 'Some error' }</div> : null}*/}
                     <div className={s.buttons}>
                         <Button variant='contained' type="submit" sx={{marginRight: '30px'}}>
