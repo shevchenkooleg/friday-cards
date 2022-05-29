@@ -1,5 +1,6 @@
 import {AppThunk} from "./store";
 import {AppAPI} from "../api/cards-api";
+import {authMeTC, LoginDataType, setAuthStatus } from "./authReducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type AppDataType = {
@@ -51,9 +52,7 @@ export const setAppError = (error: string | null) => {
 export const initializeAppTC = (): AppThunk => {
     return async (dispatch) => {
         try {
-            const response = await AppAPI.me()
-            console.log(response)
-
+            dispatch(authMeTC())
         }
         catch (error: any) {
             console.log(error)
@@ -64,4 +63,6 @@ export const initializeAppTC = (): AppThunk => {
         }
     }
 }
+
+
 

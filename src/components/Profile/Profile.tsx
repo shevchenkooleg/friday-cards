@@ -5,8 +5,9 @@ import {useFormik} from 'formik';
 import React, {ChangeEvent, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {compose} from 'redux';
+import { logOutTC } from '../../bll/authReducer';
 import {UserDataType} from '../../bll/profileReducer';
-import {useAppSelector} from '../../bll/store';
+import {useAppDispatch, useAppSelector} from '../../bll/store';
 import {withAuthRedirect} from '../../hoc/withAuthRedirect';
 import { ProfileValidationSchema } from '../../utils/validators/validators';
 import {Return} from "../Error404/Return";
@@ -15,6 +16,7 @@ import s from './Profile.module.css'
 const Profile = () => {
 
     const userData = useAppSelector<UserDataType>((state) => state.profileReducer.userData)
+    const dispatch = useAppDispatch()
 
     const formik = useFormik({
         initialValues: {
@@ -66,10 +68,13 @@ const Profile = () => {
                     </Button>
 
                 </div>
+                <Button variant='contained' type="button" sx={{margin: '30px 10px 10px 20px'}} onClick={()=>{
+                    dispatch(logOutTC())
+                }}>LogOut</Button>
 
             </div>
         </form>
     );
 };
-export default Profile
-// export default compose<React.ComponentType>(withAuthRedirect)(Profile);
+// export default Profile
+export default compose<React.ComponentType>(withAuthRedirect)(Profile);
