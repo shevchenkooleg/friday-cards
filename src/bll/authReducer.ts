@@ -1,4 +1,5 @@
 import {AppAPI} from "../api/cards-api";
+import { setAppError } from "./appReducers";
 import {AppThunk} from "./store";
 
 type AuthReducerStateType = {
@@ -29,8 +30,9 @@ export const pingServerTC = ():AppThunk => {
             let response = await AppAPI.ping()
             console.log(response)
         }
-        catch (error) {
+        catch (error: any) {
             console.log(error)
+            dispatch(setAppError(error.response.data.error))
         }
     }
 }
@@ -40,9 +42,13 @@ export const registerUserTC = (data: RegistrationDataType): AppThunk => {
         try {
             let response = await AppAPI.register(data)
             console.log(response)
+            if (response.status === 201) {
+
+            }
         }
-        catch (error) {
+        catch (error: any) {
             console.log(error)
+            dispatch(setAppError(error.response.data.error))
         }
     }
 }

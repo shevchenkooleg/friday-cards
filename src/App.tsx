@@ -13,6 +13,7 @@ import {initializeAppTC} from "./bll/appReducers";
 import {useSelector} from "react-redux";
 import { Loader } from './components/common/Loader/Loader';
 import Profile from './components/Profile/Profile';
+import { ErrorSnackbar } from './components/ErrorSnackbar/ErrorSnackbar';
 
 export const PATH = {
     PROFILE: '/profile',
@@ -40,6 +41,7 @@ function App() {
 
     return (
         <HashRouter>
+            <ErrorSnackbar/>
             <div className="App">
                 <nav className='Nav'>
                     <Navbar/>
