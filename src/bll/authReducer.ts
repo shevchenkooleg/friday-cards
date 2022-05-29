@@ -9,7 +9,7 @@ const initState = {
     isAuth: false
 }
 export type AuthReducerType = SetAuthDataACType
-export const authReducer = (state: AuthReducerStateType = initState, action: AuthReducerType): any => {
+export const authReducer = (state: AuthReducerStateType = initState, action: AuthReducerType): AuthReducerStateType => {
     switch (action.type) {
         default: {
             return state

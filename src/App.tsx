@@ -35,31 +35,30 @@ function App() {
         dispatch(initializeAppTC())
     },[dispatch])
 
-    if (!isInitialized) {
-        return <Loader/>
-    }
-
     return (
         <HashRouter>
-            <ErrorSnackbar/>
-            <div className="App">
-                <nav className='Nav'>
-                    <Navbar/>
-                </nav>
-                <div>
-                    <Routes>
-                        <Route path={'/'} element={<Navigate to={PATH.PROFILE}/>}/>
-                        <Route path={PATH.PROFILE} element={<Profile/>}/>
-                        <Route path={PATH.TESTING_PAGE} element={<TestPage/>}/>
-                        <Route path={PATH.LOGIN.SIGN_UP} element={<SignUp/>}/>
-                        <Route path={PATH.LOGIN.SIGN_IN} element={<SignIn/>}/>
-                        <Route path={PATH.LOGIN.RESTORE_PASS} element={<RestorePass/>}/>
-                        <Route path={PATH.LOGIN.UPDATE_PASS} element={<UpdatePass/>}/>
-                        <Route path='/*' element={<Error404/>}/>
-                    </Routes>
-                </div>
 
-            </div>
+            {isInitialized ?<>
+                    <ErrorSnackbar/>
+                    <div className="App">
+                        <nav className='Nav'>
+                            <Navbar/>
+                        </nav>
+                        <div>
+                            <Routes>
+                                <Route path={'/'} element={<Navigate to={PATH.PROFILE}/>}/>
+                                <Route path={PATH.PROFILE} element={<Profile/>}/>
+                                <Route path={PATH.TESTING_PAGE} element={<TestPage/>}/>
+                                <Route path={PATH.LOGIN.SIGN_UP} element={<SignUp/>}/>
+                                <Route path={PATH.LOGIN.SIGN_IN} element={<SignIn/>}/>
+                                <Route path={PATH.LOGIN.RESTORE_PASS} element={<RestorePass/>}/>
+                                <Route path={PATH.LOGIN.UPDATE_PASS} element={<UpdatePass/>}/>
+                                <Route path='/*' element={<Error404/>}/>
+                            </Routes>
+                        </div>
+                    </div>
+                </>
+            : <Loader/> }
         </HashRouter>
 
     );

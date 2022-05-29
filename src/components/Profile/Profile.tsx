@@ -56,7 +56,6 @@ const Profile = () => {
                     value={formik.values.email}
                     sx={{margin: '0px 10px 0px 10px'}}
                 />
-
                 <div className={s.buttons}>
                     <Button variant='contained' type="reset" onClick={formik.handleReset} sx={{marginRight: '30px'}}>
                         Cancel
@@ -64,9 +63,7 @@ const Profile = () => {
                     <Button variant='contained' type="submit">
                         Save
                     </Button>
-
                 </div>
-
             </div>
         </form>
     );
