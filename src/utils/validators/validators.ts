@@ -19,3 +19,12 @@ export const ProfileValidationSchema = Yup.object().shape({
         .required('Must be filled')
         .min(2, 'At least 2 char'),
 });
+
+export const LoginValidationSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Incorrect email')
+        .required('Must be filled'),
+    password: Yup.string()
+        .min(8, 'At least 8 char')
+        .required('Must be filled'),
+})

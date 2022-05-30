@@ -21,3 +21,7 @@ export const profileReducer = (state: InitStateType = initState, action:any):Ini
         }
     }
 }
+
+const setProfile = () => {
+  
+}
