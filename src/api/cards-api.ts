@@ -4,7 +4,7 @@ import {UserdataForChangeType} from "../bll/profileReducer";
 
 
 const instance = axios.create({
-    baseURL:'http://localhost:7542/2.0/',
+    baseURL:'https://neko-back.herokuapp.com/2.0',
     // baseURL:'https://github.com/IgnatZakalinsky/cards-nya-back-2-0',
     withCredentials: true
 })
