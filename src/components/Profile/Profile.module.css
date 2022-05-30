@@ -1,0 +1,23 @@
+.container {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 50px 10px 80px 10px;
+    border: black 1px solid;
+    border-radius: 10px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.content img {
+    width: 200px;
+}
+.buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}

@@ -70,12 +70,13 @@ export const SignUp = () => {
                         helperText={formik.touched.confirmPassword ? formik.errors.confirmPassword : null}/>
                     {/*{(formik.status) ? <div className={s.error}>{formik.status.error.length > 0 ? formik.status.error[0] : 'Some error' }</div> : null}*/}
                     <div className={s.buttons}>
-                        <Button variant='contained' type="submit" sx={{marginRight: '30px'}}>
-                            Register
-                        </Button>
-                        <Button variant='contained' type="reset" onClick={formik.handleReset}>
+                        <Button variant='contained' type="reset" onClick={formik.handleReset} sx={{marginRight: '30px'}}>
                             Cancel
                         </Button>
+                        <Button variant='contained' type="submit">
+                            Register
+                        </Button>
+
                     </div>
 
                 </div>

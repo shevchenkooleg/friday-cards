@@ -1,19 +1,27 @@
-import {applyMiddleware, combineReducers, legacy_createStore } from "redux";
+import {applyMiddleware, combineReducers} from "redux";
+import { legacy_createStore as createStore} from "redux";
 import {profileReducer} from "./profileReducer";
-import thunk from 'redux-thunk'
+import thunk, {ThunkAction, ThunkDispatch } from 'redux-thunk'
 import {authReducer} from "./authReducer";
-import {TypedUseSelectorHook, useSelector} from "react-redux";
+import { useDispatch } from "react-redux";
+import {appReducer} from "./appReducers";
 
 
 export type AppStateType = ReturnType<typeof rootReducer>
 export type StoreType = typeof store
+export type RootReducerType = any
 
 const rootReducer = combineReducers({
     profileReducer: profileReducer,
     authReducer: authReducer,
+    appReducer: appReducer,
 })
-export let store = legacy_createStore(rootReducer, applyMiddleware(thunk))
-export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector
+
+export const useAppDispatch = () => useDispatch<ThunkDispatch<AppStateType, unknown, RootReducerType>>()
+export type AppThunk<T = void> = ThunkAction<T, AppStateType, unknown, RootReducerType>
+
+export let store = createStore(rootReducer, applyMiddleware(thunk))
+
 
 //@ts-ignore
 window.store = store;
