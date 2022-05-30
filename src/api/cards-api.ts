@@ -23,13 +23,8 @@ export const AppAPI = {
         return instance.post<LogInDataType, AxiosResponse>('/auth/login', data)
     },
     logOut(){
-        return instance.delete<LogOutType, AxiosResponseLogOutType>('/auth/me')
+        return instance.delete<LogOutType, AxiosResponse>('/auth/me')
     }
 }
 
 
-
-export type AxiosResponseLogOutType = {
-    info: string
-    error: string;
-}

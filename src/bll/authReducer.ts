@@ -1,5 +1,6 @@
 import {AppAPI} from "../api/cards-api";
 import {AppThunk} from "./store";
+import {setAppStatus} from "./appReducers";
 
 type AuthReducerStateType = {
     isAuth: boolean
@@ -37,25 +38,30 @@ export const setAuthData = (isAuth: boolean) => {
 export const LogOutTC = (): AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             let response = await AppAPI.logOut()
-            if (response.info.length > 0) {
+            if (response.status === 200) {
                 dispatch(setAuthData(false))
             }
         } catch (error) {
             console.log(error)
+        } finally {
+            dispatch(setAppStatus('succeeded'))
         }
-
     }
 }
 //LogIn todo: 1. Добавить после логинизации запрос на  /auth/me - загрузить данные пользователя; 2. нужен лоудер
 export const logInTC = (data: LogInDataType): AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             let response = await AppAPI.logIn(data)
             console.log(response)
             if (response.status === 200) dispatch(setAuthData(true))
         } catch (error) {
             console.log(error)
+        } finally {
+            dispatch(setAppStatus('succeeded'))
         }
     }
 }
@@ -94,3 +100,5 @@ export type LogInDataType = {
     rememberMe: boolean,
 }
 export type LogOutType = {}
+
+
