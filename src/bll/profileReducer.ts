@@ -1,15 +1,23 @@
+import { AppAPI } from "../api/cards-api"
+import { setAppError } from "./appReducers"
+import { AppThunk } from "./store"
+
 export type UserDataType = {
-    nickname: string | null,
-    email: string | null,
-    avatar: string | undefined,
+    nickName: string,
+    email: string,
+    avatar: string,
+}
+export type UserdataForChangeType = {
+    name: string,
+    avatar: string
 }
 type InitStateType = {
     userData: UserDataType
 }
 const initState = {
     userData: {
-        nickname: 'orion2004',
-        email: 'orion2004@mail.ru',
+        nickName: '',
+        email: '',
         avatar: "https://png.pngtree.com/png-vector/20190504/ourmid/pngtree-vector-men-avatar-icon-png-image_1020927.jpg",
     }
 }
@@ -17,18 +25,18 @@ export type ProfileReducerActionsType = SetAuthDataACType
 export const profileReducer = (state: InitStateType = initState, action:ProfileReducerActionsType):InitStateType => {
     switch (action.type) {
         case "PROFILE-REDUCER/SET-AUTH-DATA": {
-            return {...state, userData:{...state.userData, email:action.email, nickname:action.nickname}}
+            return {...state, userData:{...state.userData, email:action.email, nickName:action.nickName}}
         }
         default: {
             return state
         }
     }
 }
-export type SetAuthDataACType = ReturnType<typeof setAuthData>
-const setAuthData = (nickname: string, email: string) => {
+export type SetAuthDataACType = ReturnType<typeof setUserData>
+export const setUserData = (nickName: string, email: string) => {
     return {
         type: 'PROFILE-REDUCER/SET-AUTH-DATA',
-        nickname,
+        nickName,
         email
     } as const
 }
@@ -36,11 +44,29 @@ const setAuthData = (nickname: string, email: string) => {
 
 //THUNK
 
-export const getAutData = (): AppThunk => {
+export const getUserData = (): AppThunk => {
     return async (dispatch) => {
-        const responce = await AppAPI.me()
-        if (responce.status===200) {
-            dispatch(setAuthData(responce.data.name, responce.data.email))
+        try {
+            const response = await AppAPI.me()
+            if (response.status===200) {
+                dispatch(setUserData(response.data.name, response.data.email))
+            }
+        } catch (error:any) {
+            dispatch(setAppError(error.response.data.error))
+        }
+    }
+}
+
+export const changeUserData = (data: UserdataForChangeType):AppThunk => {
+    return async (dispatch) => {
+        try {
+            const response = await AppAPI.changeUserData(data)
+            console.log(response)
+            if (response.status===200) {
+                dispatch(getUserData())
+            }
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
         }
     }
 }

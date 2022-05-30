@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {useFormik} from "formik";
 import {LoginValidationSchema} from "../../utils/validators/validators";
-import {logInTC,} from "../../bll/authReducer";
+import {logInTC} from "../../bll/authReducer";
 import s from "./SignUp.module.css";
 import {Button, Checkbox, FormControlLabel, InputAdornment, TextField} from "@mui/material";
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -21,10 +21,10 @@ export const SignIn = () => {
         setShowHide(!showHide)
     }
 // логика перехода на профайл в случае удачной Логинизации
-const isAuth = useAppSelector<boolean>(state => state.authReducer.isAuth)
+    const isAuth = useAppSelector<boolean>(state => state.authReducer.isAuth)
     const status = useAppSelector<RequestStatusType>(state => state.appReducer.status)
 
-const navigate = useNavigate();
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -33,7 +33,6 @@ const navigate = useNavigate();
         },
         validationSchema: LoginValidationSchema,
         onSubmit: (values, actions) => {
-            console.log('ONSUBMIT')
             const email = values.email
             const password = values.password
             const rememberMe = values.rememberMe
@@ -48,57 +47,59 @@ const navigate = useNavigate();
        return  <Navigate to={'/'}/>
     }
     return (
-        <div className={s.container}>
-            <h2>Sign in</h2>
+        <>
             {status === 'loading' && <Loader/>}
-            <form onSubmit={formik.handleSubmit}>
-                <div className={s.form}>
-                    <TextField
-                        {...formik.getFieldProps('email')}
-                        size='small'
-                        type="string"
-                        label="Email"
-                        sx={{margin: '10px', width: '204px'}}
-                        error={!!formik.errors.email && formik.touched.email}
-                        helperText={formik.touched.email ? formik.errors.email : null}/>
-                    <TextField
-                        {...formik.getFieldProps('password')}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    {!showHide
-                                        ? <VisibilityIcon onClick={onClickShowPassword}/>
-                                        : <VisibilityOffIcon onClick={onClickShowPassword}/>}
-                                </InputAdornment>
-                            ),
-                        }}
-                        className={s.passwordField}
-                        sx={{width: '204px'}}
-                        size='small'
-                        type={showHide ? 'text' : 'password'}
-                        label="Password"
-                        error={!!formik.errors.password && formik.touched.password}
-                        helperText={formik.touched.password ? formik.errors.password : null}
-                    />
+            <div className={s.container}>
+                <h2>Sign in</h2>
+                <form onSubmit={formik.handleSubmit}>
+                    <div className={s.form}>
+                        <TextField
+                            {...formik.getFieldProps('email')}
+                            size='small'
+                            type="string"
+                            label="Email"
+                            sx={{margin: '10px', width: '204px'}}
+                            error={!!formik.errors.email && formik.touched.email}
+                            helperText={formik.touched.email ? formik.errors.email : null}/>
+                        <TextField
+                            {...formik.getFieldProps('password')}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        {!showHide
+                                            ? <VisibilityIcon onClick={onClickShowPassword}/>
+                                            : <VisibilityOffIcon onClick={onClickShowPassword}/>}
+                                    </InputAdornment>
+                                ),
+                            }}
+                            className={s.passwordField}
+                            sx={{width: '204px'}}
+                            size='small'
+                            type={showHide ? 'text' : 'password'}
+                            label="Password"
+                            error={!!formik.errors.password && formik.touched.password}
+                            helperText={formik.touched.password ? formik.errors.password : null}
+                        />
 
-                    <FormControlLabel
-                        control={<Checkbox/>}
-                        checked={formik.values.rememberMe}
-                        name={"rememberMe"}
-                        label={'remember'}
-                        onChange={formik.handleChange}
-                    />
-                    <div className={s.buttons}>
-                        <Button variant='contained' type="reset" onClick={formik.handleReset}
-                                sx={{marginRight: '30px'}}>
-                            Cancel
-                        </Button>
-                        <Button variant='contained' type='submit'>
-                            Sign in
-                        </Button>
+                        <FormControlLabel
+                            control={<Checkbox/>}
+                            checked={formik.values.rememberMe}
+                            name={"rememberMe"}
+                            label={'remember'}
+                            onChange={formik.handleChange}
+                        />
+                        <div className={s.buttons}>
+                            <Button variant='contained' type="reset" onClick={formik.handleReset}
+                                    sx={{marginRight: '30px'}}>
+                                Cancel
+                            </Button>
+                            <Button variant='contained' type='submit'>
+                                Sign in
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        </>
     );
 };

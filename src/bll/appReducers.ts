@@ -58,10 +58,9 @@ export const initializeAppTC = (): AppThunk => {
     return async (dispatch) => {
         try {
             const response = await AppAPI.me()
-            console.log(response)
+            // console.log(response)
 
         } catch (error: any) {
-            console.log(error)
             dispatch(setAppError(error.response.data.error))
         } finally {
             dispatch(initializedSuccess())

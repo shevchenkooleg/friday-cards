@@ -2,37 +2,49 @@ import Button from '@mui/material/Button/Button';
 import TextField from '@mui/material/TextField/TextField';
 import {useFormik} from 'formik';
 import React from 'react';
-import {UserDataType} from '../../bll/profileReducer';
-import {useAppSelector} from '../../bll/store';
-import { ProfileValidationSchema } from '../../utils/validators/validators';
+import {Navigate} from 'react-router-dom';
+import {changeUserData, UserDataType} from '../../bll/profileReducer';
+import {useAppDispatch, useAppSelector} from '../../bll/store';
+import {ProfileValidationSchema} from '../../utils/validators/validators';
 import s from './Profile.module.css'
 
 const Profile = () => {
 
-    const userData = useAppSelector<UserDataType>((state) => state.profileReducer.userData)
+    const nickName = useAppSelector<string>((state) => state.profileReducer.userData.nickName)
+    const email = useAppSelector<string>((state) => state.profileReducer.userData.email)
+    const avatar = useAppSelector<string>((state) => state.profileReducer.userData.avatar)
+    const isAuth = useAppSelector<boolean>((state) => state.authReducer.isAuth)
+    const dispatch = useAppDispatch()
 
     const formik = useFormik({
         initialValues: {
-            nickName: userData.nickname,
-            email: userData.email,
+            nickName: nickName,
+            email: email,
         },
         validationSchema: ProfileValidationSchema,
         onSubmit: (values, actions) => {
-            // props.makeSignUp(values.email, values.password, values.confirmPassword, actions.setStatus)
-            console.log(values)
-            // const email = values.email
-            // const password = values.password
-            // dispatch(registerUserTC({email, password}))
-            actions.resetForm({values: {nickName: userData.nickname, email: userData.email}})
+            const nickName = values.nickName
+            const email = values.email
+            const data = {
+                name: values.nickName,
+                avatar: avatar
+            }
+            dispatch(changeUserData(data))
+
+            actions.resetForm({values: {nickName: nickName, email: email}})
         }
     });
+
+    if (!isAuth) {
+        return <Navigate to={'/sign_in'}/>
+    }
 
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className={s.container}>
                 <h2>Profile</h2>
                 <div className={s.content}>
-                    <img src={userData.avatar}/>
+                    <img src={avatar}/>
                 </div>
 
                 <TextField

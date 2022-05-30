@@ -1,6 +1,7 @@
 import {AppAPI} from "../api/cards-api";
 import {AppThunk} from "./store";
-import {setAppStatus} from "./appReducers";
+import {setAppError, setAppStatus} from "./appReducers";
+import { setUserData } from "./profileReducer";
 
 type AuthReducerStateType = {
     isAuth: boolean
@@ -24,10 +25,11 @@ export const authReducer = (state: AuthReducerStateType = initState, action: Aut
     }
 }
 //Action creators
-export type SetAuthDataACType = ReturnType<typeof setAuthData>
-export const setAuthData = (isAuth: boolean) => {
+export type SetAuthDataACType = ReturnType<typeof setAuthStatus>
+export const setAuthStatus = (isAuth: boolean) => {
     return {
         type: 'AUTH-REDUCER/SET-AUTH-DATA',
+        
         isAuth
     } as const
 }
@@ -41,10 +43,10 @@ export const LogOutTC = (): AppThunk => {
             dispatch(setAppStatus('loading'))
             let response = await AppAPI.logOut()
             if (response.status === 200) {
-                dispatch(setAuthData(false))
+                dispatch(setAuthStatus(false))
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error:any) {
+            dispatch(setAppError(error.response.data.error))
         } finally {
             dispatch(setAppStatus('succeeded'))
         }
@@ -56,10 +58,12 @@ export const logInTC = (data: LogInDataType): AppThunk => {
         try {
             dispatch(setAppStatus('loading'))
             let response = await AppAPI.logIn(data)
-            console.log(response)
-            if (response.status === 200) dispatch(setAuthData(true))
-        } catch (error) {
-            console.log(error)
+            if (response.status === 200) {
+                dispatch(setAuthStatus(true))
+                dispatch(setUserData(response.data.name, response.data.email))
+            }
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
         } finally {
             dispatch(setAppStatus('succeeded'))
         }
@@ -71,8 +75,8 @@ export const pingServerTC = (): AppThunk => {
         try {
             let response = await AppAPI.ping()
             console.log(response)
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
         }
     }
 }
@@ -82,8 +86,8 @@ export const registerUserTC = (data: RegistrationDataType): AppThunk => {
         try {
             let response = await AppAPI.register(data)
             console.log(response)
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
         }
     }
 }

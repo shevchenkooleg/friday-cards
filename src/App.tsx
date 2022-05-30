@@ -37,13 +37,12 @@ function App() {
 
     return (
         <HashRouter>
-
-            {isInitialized ?<>
                     <ErrorSnackbar/>
                     <div className="App">
                         <nav className='Nav'>
                             <Navbar/>
                         </nav>
+                        {isInitialized ?
                         <div>
                             <Routes>
                                 <Route path={'/'} element={<Navigate to={PATH.PROFILE}/>}/>
@@ -56,9 +55,9 @@ function App() {
                                 <Route path='/*' element={<Error404/>}/>
                             </Routes>
                         </div>
+                            : <Loader/> }
                     </div>
-                </>
-            : <Loader/> }
+
         </HashRouter>
 
     );

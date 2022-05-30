@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import {LogInDataType, LogOutType, RegistrationDataType} from "../bll/authReducer";
+import {UserdataForChangeType} from "../bll/profileReducer";
 
 
 const instance = axios.create({
@@ -24,6 +25,9 @@ export const AppAPI = {
     },
     logOut(){
         return instance.delete<LogOutType, AxiosResponse>('/auth/me')
+    },
+    changeUserData(data: UserdataForChangeType){
+        return instance.put<UserdataForChangeType, AxiosResponse>('auth/me', data)
     }
 }
 
