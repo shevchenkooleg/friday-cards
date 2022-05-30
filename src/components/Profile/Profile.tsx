@@ -1,15 +1,10 @@
-import {InputAdornment} from '@mui/material';
 import Button from '@mui/material/Button/Button';
 import TextField from '@mui/material/TextField/TextField';
 import {useFormik} from 'formik';
-import React, {ChangeEvent, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {compose} from 'redux';
+import React from 'react';
 import {UserDataType} from '../../bll/profileReducer';
 import {useAppSelector} from '../../bll/store';
-import {withAuthRedirect} from '../../hoc/withAuthRedirect';
 import { ProfileValidationSchema } from '../../utils/validators/validators';
-import {Return} from "../Error404/Return";
 import s from './Profile.module.css'
 
 const Profile = () => {

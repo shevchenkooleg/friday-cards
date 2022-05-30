@@ -1,7 +1,7 @@
 import {AppThunk} from "./store";
 import {AppAPI} from "../api/cards-api";
 
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed' // Используем для LOADING
 export type AppDataType = {
     initialized: boolean
     status: RequestStatusType
@@ -13,10 +13,12 @@ const initialState: AppDataType = {
     status: 'idle',
     error: null
 }
-export type AppReducerActionsType = InitializedSuccessType | SetAppErrorACType
-export const appReducer = (state: AppDataType = initialState, action:AppReducerActionsType) => {
+export type AppReducerActionsType = InitializedSuccessType | SetAppErrorACType | SetAppStatusACType
+export const appReducer = (state: AppDataType = initialState, action: AppReducerActionsType) => {
     switch (action.type) {
-
+        case "APP-REDUCER/SET-APP-STATUS": {
+            return {...state, status: action.status}
+        }
         case "APP-REDUCER/INITIALIZED-SUCCESS": {
             return {...state, initialized: true}
         }
@@ -28,6 +30,11 @@ export const appReducer = (state: AppDataType = initialState, action:AppReducerA
         }
     }
 }
+export type SetAppStatusACType = ReturnType<typeof setAppStatus>
+export const setAppStatus = (status: RequestStatusType) => ({
+    type: 'APP-REDUCER/SET-APP-STATUS',
+    status
+}as const)
 
 type InitializedSuccessType = ReturnType<typeof initializedSuccess>
 export const initializedSuccess = () => {
@@ -36,14 +43,13 @@ export const initializedSuccess = () => {
     } as const
 }
 
-type SetAppErrorACType =  ReturnType<typeof setAppError>
+type SetAppErrorACType = ReturnType<typeof setAppError>
 export const setAppError = (error: string | null) => {
     return {
         type: 'APP-REDUCER/SET-APP-ERROR',
         error
     } as const
 }
-
 
 
 //THUNK
@@ -54,12 +60,10 @@ export const initializeAppTC = (): AppThunk => {
             const response = await AppAPI.me()
             console.log(response)
 
-        }
-        catch (error: any) {
+        } catch (error: any) {
             console.log(error)
             dispatch(setAppError(error.response.data.error))
-        }
-        finally {
+        } finally {
             dispatch(initializedSuccess())
         }
     }

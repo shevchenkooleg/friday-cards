@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import {RegistrationDataType} from "../bll/authReducer";
+import {LogInDataType, LogOutType, RegistrationDataType} from "../bll/authReducer";
 
 
 const instance = axios.create({
@@ -18,5 +18,13 @@ export const AppAPI = {
     },
     register(data: RegistrationDataType) {
         return instance.post<RegistrationDataType, AxiosResponse>('auth/register', data)
+    },
+    logIn(data: LogInDataType){
+        return instance.post<LogInDataType, AxiosResponse>('/auth/login', data)
+    },
+    logOut(){
+        return instance.delete<LogOutType, AxiosResponse>('/auth/me')
     }
 }
+
+

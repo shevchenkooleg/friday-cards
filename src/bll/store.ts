@@ -3,7 +3,7 @@ import { legacy_createStore as createStore} from "redux";
 import {profileReducer} from "./profileReducer";
 import thunk, {ThunkAction, ThunkDispatch } from 'redux-thunk'
 import {authReducer} from "./authReducer";
-import {TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./appReducers";
 
 
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
     authReducer: authReducer,
     appReducer: appReducer,
 })
+
 export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector
 export const useAppDispatch = () => useDispatch<ThunkDispatch<AppStateType, unknown, RootReducerType>>()
 export type AppThunk<T = void> = ThunkAction<T, AppStateType, unknown, RootReducerType>

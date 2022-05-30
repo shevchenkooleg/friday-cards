@@ -1,6 +1,3 @@
-import { AppAPI } from "../api/cards-api"
-import { AppThunk } from "./store"
-
 export type UserDataType = {
     nickname: string | null,
     email: string | null,
