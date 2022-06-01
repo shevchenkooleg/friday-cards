@@ -1,5 +1,7 @@
 import {AppThunk} from "./store";
 import {AppAPI} from "../api/cards-api";
+import { setUserData } from "./profileReducer";
+import { setAuthStatus } from "./authReducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed' // Используем для LOADING
 export type AppDataType = {
@@ -58,7 +60,10 @@ export const initializeAppTC = (): AppThunk => {
     return async (dispatch) => {
         try {
             const response = await AppAPI.me()
-            // console.log(response)
+            if (response.status === 200) {
+                dispatch(setUserData(response.data.name, response.data.email))
+                dispatch(setAuthStatus(true))
+            }
 
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))

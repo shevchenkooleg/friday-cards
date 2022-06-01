@@ -1,8 +1,8 @@
-import { Logout } from '@mui/icons-material';
+import {Logout} from '@mui/icons-material';
+import {IconButton} from '@mui/material';
 import React from 'react';
 import {LogOutTC} from "../../bll/authReducer";
 import {useAppDispatch} from "../../bll/store";
-
 
 
 export const LogOut = () => {
@@ -14,7 +14,10 @@ export const LogOut = () => {
     }
 
     return (
-        <Logout onClick={logOutHandle}/>
+        <IconButton aria-label="logOut" color={"secondary"} size={"small"}>
+            <Logout onClick={logOutHandle}/>
+        </IconButton>
+
     );
 };
 

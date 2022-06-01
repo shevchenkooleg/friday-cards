@@ -5,6 +5,7 @@ import {Button, TextField} from "@mui/material";
 import {useAppDispatch} from "../../bll/store";
 import {registerUserTC} from "../../bll/authReducer";
 import {RegisterValidationSchema} from '../../utils/validators/validators';
+import {Link} from 'react-router-dom';
 
 export const SignUp = () => {
 
@@ -76,11 +77,10 @@ export const SignUp = () => {
                         <Button variant='contained' type="submit">
                             Register
                         </Button>
-
                     </div>
-
+                    <span>Do you have account?</span>
+                    <Link to={'/sign_in'} className={s.signLink}>Sign in</Link>
                 </div>
-
             </form>
         </div>
     );
