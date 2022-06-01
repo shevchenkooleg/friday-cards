@@ -28,3 +28,9 @@ export const LoginValidationSchema = Yup.object().shape({
         .min(8, 'At least 8 char')
         .required('Must be filled'),
 })
+
+export const RestorePasswordValidationSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Incorrect email')
+        .required('Must be filled'),
+})

@@ -48,7 +48,7 @@ export const LogOutTC = (): AppThunk => {
         } catch (error:any) {
             dispatch(setAppError(error.response.data.error))
         } finally {
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus('idle'))
         }
     }
 }
@@ -65,7 +65,7 @@ export const logInTC = (data: LogInDataType): AppThunk => {
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus('idle'))
         }
     }
 }
@@ -92,6 +92,17 @@ export const registerUserTC = (data: RegistrationDataType): AppThunk => {
     }
 }
 
+export const restorePassword = (data: RestorePasswordDataType): AppThunk => {
+    return async (dispatch) => {
+        try {
+            let response = AppAPI.restorePassword(data)
+            console.log(response)
+        } catch (error: any) {
+        dispatch(setAppError(error.response.data.error))
+    }
+    }
+}
+
 
 //types
 export type RegistrationDataType = {
@@ -104,5 +115,10 @@ export type LogInDataType = {
     rememberMe: boolean,
 }
 export type LogOutType = {}
+export type RestorePasswordDataType = {
+    email: string
+    from: string
+    message: string
+}
 
 

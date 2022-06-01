@@ -1,5 +1,5 @@
 import { AppAPI } from "../api/cards-api"
-import { setAppError } from "./appReducers"
+import {setAppError, setAppStatus} from "./appReducers"
 import { AppThunk } from "./store"
 
 export type UserDataType = {
@@ -63,6 +63,7 @@ export const changeUserData = (data: UserdataForChangeType):AppThunk => {
             const response = await AppAPI.changeUserData(data)
             console.log(response)
             if (response.status===200) {
+                dispatch(setAppStatus('succeeded'))
                 dispatch(getUserData())
             }
         } catch (error: any) {

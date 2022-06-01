@@ -10,6 +10,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import {Link, Navigate, NavLink, useNavigate} from "react-router-dom";
 import {Loader} from "../common/Loader/Loader";
 import {RequestStatusType} from "../../bll/appReducers";
+import {PATH} from "../../App";
 
 
 
@@ -88,7 +89,7 @@ export const SignIn = () => {
                             label={'remember'}
                             onChange={formik.handleChange}
                         />
-                        <div className={s.forgot}><Link to={'/sign_in'} >Forgot Password?</Link></div>
+                        <div className={s.forgot}><Link to={PATH.LOGIN.RESTORE_PASS} >Forgot Password?</Link></div>
 
                         <div className={s.buttons}>
                             <Button variant='contained' type="reset" onClick={formik.handleReset}
@@ -100,7 +101,7 @@ export const SignIn = () => {
                             </Button>
                         </div>
                         <span>Don't have account?</span>
-                        <NavLink to={'/sign_up'} className={s.signLink}>Sign up</NavLink>
+                        <NavLink to={PATH.LOGIN.SIGN_UP} className={s.signLink}>Sign up</NavLink>
                     </div>
                 </form>
             </div>

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import {LogInDataType, LogOutType, RegistrationDataType} from "../bll/authReducer";
+import {LogInDataType, LogOutType, RegistrationDataType, RestorePasswordDataType} from "../bll/authReducer";
 import {UserdataForChangeType} from "../bll/profileReducer";
 
 
@@ -29,6 +29,9 @@ export const AppAPI = {
     },
     changeUserData(data: UserdataForChangeType){
         return instance.put<UserdataForChangeType, AxiosResponse>('auth/me', data)
+    },
+    restorePassword(data: RestorePasswordDataType){
+        return instance.post<RestorePasswordDataType, AxiosResponse>('auth/forgot', data)
     }
 }
 
