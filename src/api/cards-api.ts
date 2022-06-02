@@ -7,12 +7,11 @@ import {
     UpdatePasswordDataType
 } from "../bll/authReducer";
 import {UserdataForChangeType} from "../bll/profileReducer";
-import {Params} from "react-router-dom";
 
 
 const instance = axios.create({
-    // baseURL:'http://localhost:7542/2.0/',
-    baseURL:'https://neko-back.herokuapp.com/2.0',
+    baseURL:'http://localhost:7542/2.0/',
+    // baseURL:'https://neko-back.herokuapp.com/2.0',
     withCredentials: true
 })
 
@@ -40,7 +39,7 @@ export const AppAPI = {
     restorePassword(data: RestorePasswordDataType){
         return instance.post<RestorePasswordDataType, AxiosResponse>('auth/forgot', data)
     },
-    updatePassword(password: string, resetPasswordToken: Readonly<Params<string>>){
+    updatePassword(password: string, resetPasswordToken: string){
         return instance.post<UpdatePasswordDataType, AxiosResponse>('/auth/set-new-password', {password, resetPasswordToken})
     }
 }

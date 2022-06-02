@@ -27,8 +27,11 @@ export const UpdatePass = () => {
         validationSchema: UpdatePasswordValidationSchema,
         onSubmit: (values, actions) => {
             const password = values.password
-            const confirmPassword = values.confirmPassword
-            dispatch(updatePasswordTC(password, params))
+            console.log(`params: ${params.token}`)
+            if (params.token !== undefined) {
+                dispatch(updatePasswordTC(password, params.token))
+            }
+            actions.resetForm({values: {email: '', password: '', confirmPassword: ''}})
         },
         onReset: (values) => {
             values.password = ''

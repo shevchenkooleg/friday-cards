@@ -2,7 +2,6 @@ import {AppAPI} from "../api/cards-api";
 import {AppThunk} from "./store";
 import {setAppError, setAppStatus} from "./appReducers";
 import {setUserData} from "./profileReducer";
-import {Api} from "@mui/icons-material";
 import {Params} from "react-router-dom";
 
 type AuthReducerStateType = {
@@ -105,10 +104,15 @@ export const restorePassword = (data: RestorePasswordDataType): AppThunk => {
         }
     }
 }
-export const updatePasswordTC = (password: string, resetPasswordToken: Readonly<Params<string>>): AppThunk => {
+export const updatePasswordTC = (password: string, resetPasswordToken: string): AppThunk => {
     return async (dispatch) => {
         try {
-            let response = AppAPI.updatePassword(password, resetPasswordToken )
+            let response = await AppAPI.updatePassword(password, resetPasswordToken)
+            console.log(response)
+            if (response.data.info === 'setNewPassword success —ฅ/ᐠ.̫ .ᐟฅ—') {
+                dispatch(setAppStatus('succeeded'))
+
+            }
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         }
