@@ -26,8 +26,8 @@ export const RestorePass = () => {
             const data = {
                 email: values.email,
                 from: 'test-front-admin <ai73a@yandex.by>',
-                message: `<div style="background-color: lime; padding: 15px"> password recovery link:
-                <a href='http://localhost:3000/#/update_pass/$token$'>link</a></div>`
+                message: `<div style="background-color: cornflowerblue; padding: 15px"> password recovery link:
+                <a href='https://shevchenkooleg.github.io/friday-cards/#/update_pass/$token$'>link</a></div>`
             }
             dispatch(restorePassword(data))
             actions.resetForm({values: {email: ''}})
