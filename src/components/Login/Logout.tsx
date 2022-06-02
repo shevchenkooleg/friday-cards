@@ -10,9 +10,7 @@ export const LogOut = () => {
 
     const logOutHandle = () => {
         dispatch(LogOutTC())
-
     }
-
     return (
         <IconButton aria-label="logOut" color={"secondary"} size={"small"}>
             <Logout onClick={logOutHandle}/>

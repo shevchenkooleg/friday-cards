@@ -34,3 +34,12 @@ export const RestorePasswordValidationSchema = Yup.object().shape({
         .email('Incorrect email')
         .required('Must be filled'),
 })
+export const UpdatePasswordValidationSchema = Yup.object().shape({
+    password: Yup.string()
+        .min(8, 'At least 8 char')
+        .required('Must be filled'),
+    confirmPassword: Yup.string()
+        .min(8, 'At least 8 char')
+        .required('Must be filled')
+        .oneOf([Yup.ref("password"), null], "Pass must match"),
+})

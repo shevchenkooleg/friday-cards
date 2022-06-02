@@ -21,7 +21,7 @@ export const PATH = {
         SIGN_IN: '/sign_in',
         SIGN_UP: '/sign_up',
         RESTORE_PASS: '/restore_pass',
-        UPDATE_PASS: '/update_pass',
+        UPDATE_PASS: '/update_pass/:token',
     },
     TESTING_PAGE: '/test'
 }

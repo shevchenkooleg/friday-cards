@@ -1,7 +1,9 @@
 import {AppAPI} from "../api/cards-api";
 import {AppThunk} from "./store";
 import {setAppError, setAppStatus} from "./appReducers";
-import { setUserData } from "./profileReducer";
+import {setUserData} from "./profileReducer";
+import {Api} from "@mui/icons-material";
+import {Params} from "react-router-dom";
 
 type AuthReducerStateType = {
     isAuth: boolean
@@ -9,6 +11,7 @@ type AuthReducerStateType = {
 
 const initState = {
     isAuth: false
+
 }
 export type AuthReducerType = SetAuthDataACType
 export const authReducer = (state: AuthReducerStateType = initState, action: AuthReducerType): AuthReducerStateType => {
@@ -29,7 +32,7 @@ export type SetAuthDataACType = ReturnType<typeof setAuthStatus>
 export const setAuthStatus = (isAuth: boolean) => {
     return {
         type: 'AUTH-REDUCER/SET-AUTH-DATA',
-        
+
         isAuth
     } as const
 }
@@ -45,7 +48,7 @@ export const LogOutTC = (): AppThunk => {
             if (response.status === 200) {
                 dispatch(setAuthStatus(false))
             }
-        } catch (error:any) {
+        } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {
             dispatch(setAppStatus('idle'))
@@ -98,8 +101,17 @@ export const restorePassword = (data: RestorePasswordDataType): AppThunk => {
             let response = AppAPI.restorePassword(data)
             console.log(response)
         } catch (error: any) {
-        dispatch(setAppError(error.response.data.error))
+            dispatch(setAppError(error.response.data.error))
+        }
     }
+}
+export const updatePasswordTC = (password: string, resetPasswordToken: Readonly<Params<string>>): AppThunk => {
+    return async (dispatch) => {
+        try {
+            let response = AppAPI.updatePassword(password, resetPasswordToken )
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
+        }
     }
 }
 
@@ -120,5 +132,9 @@ export type RestorePasswordDataType = {
     from: string
     message: string
 }
+export type UpdatePasswordDataType = {
+     password: string, resetPasswordToken: Readonly<Params<string>>
+}
+
 
 

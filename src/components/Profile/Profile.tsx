@@ -7,15 +7,16 @@ import {changeUserData, UserDataType} from '../../bll/profileReducer';
 import {useAppDispatch, useAppSelector} from '../../bll/store';
 import {ProfileValidationSchema} from '../../utils/validators/validators';
 import s from './Profile.module.css'
+import {PATH} from "../../App";
+
 
 const Profile = () => {
 
     const nickName = useAppSelector<string>((state) => state.profileReducer.userData.nickName)
     const email = useAppSelector<string>((state) => state.profileReducer.userData.email)
     const avatar = useAppSelector<string>((state) => state.profileReducer.userData.avatar)
-    const isAuth = useAppSelector<boolean>((state) => state.authReducer.isAuth)
     const dispatch = useAppDispatch()
-
+    const isAuth = useAppSelector<boolean>(state => state.authReducer.isAuth)
     const formik = useFormik({
         initialValues: {
             nickName: nickName,
@@ -36,9 +37,8 @@ const Profile = () => {
     });
 
     if (!isAuth) {
-        return <Navigate to={'/sign_in'}/>
+        return <Navigate to={PATH.LOGIN.SIGN_IN}/>
     }
-
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className={s.container}>

@@ -13,7 +13,6 @@ import {RequestStatusType} from "../../bll/appReducers";
 import {PATH} from "../../App";
 
 
-
 export const SignIn = () => {
     const dispatch = useAppDispatch()
 // Переключатель для показа пороля
@@ -45,7 +44,7 @@ export const SignIn = () => {
         }
     })
     if (isAuth) {
-       return  <Navigate to={'/'}/>
+        return <Navigate to={'/'}/>
     }
     return (
         <>
