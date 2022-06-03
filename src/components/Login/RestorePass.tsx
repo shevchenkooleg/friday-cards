@@ -13,7 +13,9 @@ import {restorePassword} from "../../bll/authReducer";
 export const RestorePass = () => {
 
     const dispatch = useAppDispatch()
-    const status = useAppSelector<RequestStatusType>((state)=> state.appReducer.status)
+    const status = useAppSelector<RequestStatusType>((state) => state.appReducer.status)
+    const isAuth = useAppSelector<boolean>(state => state.authReducer.isAuth)
+    const userMail = useAppSelector<string>(state => state.profileReducer.userData.email)
 
     const formik = useFormik({
         initialValues: {
@@ -38,7 +40,10 @@ export const RestorePass = () => {
         <div>
             {status === 'loading' && <Loader/>}
             <div className={s.container}>
-                <h2>Forgot your password?</h2>
+                <h2>{isAuth
+                    ? `We send you instructions please
+                              check your `
+                    : 'Forgot your password?'}</h2>
 
                 <form onSubmit={formik.handleSubmit}>
                     <div className={s.form}>
@@ -49,7 +54,9 @@ export const RestorePass = () => {
                             label="Email"
                             sx={{margin: '10px'}}
                             onChange={formik.handleChange}
-                            value={formik.values.email}
+                            value={isAuth
+                                ? userMail
+                                : formik.values.email}
                             onBlur={formik.handleBlur}
                             error={!!formik.errors.email && formik.touched.email}
                             helperText={formik.touched.email ? formik.errors.email : null}/>
