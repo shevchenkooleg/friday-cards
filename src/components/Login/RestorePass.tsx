@@ -23,7 +23,6 @@ export const RestorePass = () => {
         },
         validationSchema: RestorePasswordValidationSchema,
         onSubmit: (values, actions) => {
-            // props.makeSignUp(values.email, values.password, values.confirmPassword, actions.setStatus)
             console.log(values)
             const data = {
                 email: values.email,
@@ -42,12 +41,13 @@ export const RestorePass = () => {
             <div className={s.container}>
                 <h2>{isAuth
                     ? `We send you instructions please
-                              check your `
+                              check your email`
                     : 'Forgot your password?'}</h2>
 
                 <form onSubmit={formik.handleSubmit}>
                     <div className={s.form}>
                         <TextField
+                            disabled={isAuth}
                             size='small'
                             type="string"
                             id="email"
@@ -65,8 +65,13 @@ export const RestorePass = () => {
                                 Send Instructions
                             </Button>
                         </div>
-                        <span>Did you remember your password?</span>
-                        <Link to={PATH.LOGIN.SIGN_IN} className={s.signLink}>Try to login</Link>
+                        {!isAuth &&
+                            <>
+                                < span> Did you remember your password?</span>
+                                <Link to={PATH.LOGIN.SIGN_IN} className={s.signLink}>Try to login</Link>
+                            </>
+                        }
+
                     </div>
                 </form>
             </div>

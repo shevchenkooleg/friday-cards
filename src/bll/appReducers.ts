@@ -60,11 +60,8 @@ export const initializeAppTC = (): AppThunk => {
     return async (dispatch) => {
         try {
             const response = await AppAPI.me()
-            if (response.status === 200) {
                 dispatch(setUserData(response.data.name, response.data.email))
                 dispatch(setAuthStatus(true))
-            }
-
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {

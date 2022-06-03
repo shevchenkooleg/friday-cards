@@ -61,7 +61,7 @@ export const UpdatePass = () => {
                                 ),
                             }}
                             className={s.passwordField}
-                            sx={{width: '204px'}}
+                            sx={{width: '204px', paddingBottom: '12px'}}
                             size='small'
                             type={visibility ? 'text' : 'password'}
                             label="Password"

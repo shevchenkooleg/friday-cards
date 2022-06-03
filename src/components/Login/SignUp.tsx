@@ -20,8 +20,6 @@ export const SignUp = () => {
         },
         validationSchema: RegisterValidationSchema,
         onSubmit: (values, actions) => {
-            // props.makeSignUp(values.email, values.password, values.confirmPassword, actions.setStatus)
-            console.log(values)
             const email = values.email
             const password = values.password
             dispatch(registerUserTC({email, password}))
@@ -32,7 +30,6 @@ export const SignUp = () => {
     return (
         <div className={s.container}>
             <h2>Sign up</h2>
-
             <form onSubmit={formik.handleSubmit}>
                 <div className={s.form}>
                     <TextField

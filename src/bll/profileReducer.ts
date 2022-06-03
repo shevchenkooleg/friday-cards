@@ -48,9 +48,7 @@ export const getUserData = (): AppThunk => {
     return async (dispatch) => {
         try {
             const response = await AppAPI.me()
-            if (response.status===200) {
                 dispatch(setUserData(response.data.name, response.data.email))
-            }
         } catch (error:any) {
             dispatch(setAppError(error.response.data.error))
         }
@@ -60,12 +58,9 @@ export const getUserData = (): AppThunk => {
 export const changeUserData = (data: UserdataForChangeType):AppThunk => {
     return async (dispatch) => {
         try {
-            const response = await AppAPI.changeUserData(data)
-            console.log(response)
-            if (response.status===200) {
+            await AppAPI.changeUserData(data)
                 dispatch(setAppStatus('succeeded'))
                 dispatch(getUserData())
-            }
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         }

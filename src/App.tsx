@@ -14,9 +14,13 @@ import {useSelector} from "react-redux";
 import { Loader } from './components/common/Loader/Loader';
 import Profile from './components/Profile/Profile';
 import { ErrorSnackbar } from './components/ErrorSnackbar/ErrorSnackbar';
+import {SettingsMenu} from "./components/Profile/Profile_Settings/SettingsMenu";
 
 export const PATH = {
-    PROFILE: '/profile',
+    PROFILE: {
+        MAIN: '/profile',
+        SETTINGS: '/settings'
+    },
     LOGIN: {
         SIGN_IN: '/sign_in',
         SIGN_UP: '/sign_up',
@@ -45,11 +49,12 @@ function App() {
                         {isInitialized ?
                         <div>
                             <Routes>
-                                <Route path={'/'} element={<Navigate to={PATH.PROFILE}/>}/>
-                                <Route path={PATH.PROFILE} element={<Profile/>}/>
+                                <Route path={'/'} element={<Navigate to={PATH.PROFILE.MAIN}/>}/>
+                                <Route path={PATH.PROFILE.MAIN} element={<Profile/>}/>
                                 <Route path={PATH.TESTING_PAGE} element={<TestPage/>}/>
                                 <Route path={PATH.LOGIN.SIGN_UP} element={<SignUp/>}/>
                                 <Route path={PATH.LOGIN.SIGN_IN} element={<SignIn/>}/>
+                                <Route path={PATH.PROFILE.SETTINGS} element={<SettingsMenu/>}/>
                                 <Route path={PATH.LOGIN.RESTORE_PASS} element={<RestorePass/>}/>
                                 <Route path={PATH.LOGIN.UPDATE_PASS} element={<UpdatePass/>}/>
                                 <Route path='/*' element={<Error404/>}/>
