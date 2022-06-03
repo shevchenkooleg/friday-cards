@@ -24,7 +24,6 @@ export const RestorePass = () => {
         validationSchema: RestorePasswordValidationSchema,
         onSubmit: (values, actions) => {
             // props.makeSignUp(values.email, values.password, values.confirmPassword, actions.setStatus)
-            console.log(values)
             const data = {
                 email: values.email,
                 from: 'test-front-admin <ai73a@yandex.by>',

@@ -75,8 +75,7 @@ export const logInTC = (data: LogInDataType): AppThunk => {
 export const pingServerTC = (): AppThunk => {
     return async (dispatch) => {
         try {
-            let response = await AppAPI.ping()
-            console.log(response)
+            await AppAPI.ping()
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         }
@@ -86,8 +85,7 @@ export const pingServerTC = (): AppThunk => {
 export const registerUserTC = (data: RegistrationDataType): AppThunk => {
     return async (dispatch) => {
         try {
-            let response = await AppAPI.register(data)
-            console.log(response)
+            await AppAPI.register(data)
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         }
@@ -97,8 +95,7 @@ export const registerUserTC = (data: RegistrationDataType): AppThunk => {
 export const restorePassword = (data: RestorePasswordDataType): AppThunk => {
     return async (dispatch) => {
         try {
-            let response = AppAPI.restorePassword(data)
-            console.log(response)
+            await AppAPI.restorePassword(data)
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         }
@@ -108,7 +105,6 @@ export const updatePasswordTC = (password: string, resetPasswordToken: string): 
     return async (dispatch) => {
         try {
             let response = await AppAPI.updatePassword(password, resetPasswordToken)
-            console.log(response)
             if (response.data.info === 'setNewPassword success —ฅ/ᐠ.̫ .ᐟฅ—') {
                 dispatch(setAppStatus('succeeded'))
 
