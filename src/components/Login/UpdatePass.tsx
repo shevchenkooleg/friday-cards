@@ -27,7 +27,6 @@ export const UpdatePass = () => {
         validationSchema: UpdatePasswordValidationSchema,
         onSubmit: (values, actions) => {
             const password = values.password
-            console.log(`params: ${params.token}`)
             if (params.token !== undefined) {
                 dispatch(updatePasswordTC(password, params.token))
             }
