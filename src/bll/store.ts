@@ -5,6 +5,7 @@ import thunk, {ThunkAction, ThunkDispatch } from 'redux-thunk'
 import {authReducer} from "./authReducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./appReducers";
+import { cardReducer } from "./cardReducer";
 
 
 export type AppStateType = ReturnType<typeof rootReducer>
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     profileReducer: profileReducer,
     authReducer: authReducer,
     appReducer: appReducer,
+    cardReducer: cardReducer,
 })
 
 export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector

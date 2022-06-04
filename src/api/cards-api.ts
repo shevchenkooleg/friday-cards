@@ -7,11 +7,12 @@ import {
     UpdatePasswordDataType
 } from "../bll/authReducer";
 import {UserdataForChangeType} from "../bll/profileReducer";
+import {CardsPacksDataType} from "../bll/cardReducer";
 
 
 const instance = axios.create({
     baseURL:'http://localhost:7542/2.0/',
-    // baseURL:'https://neko-back.herokuapp.com/2.0',
+    //baseURL:'https://neko-back.herokuapp.com/2.0',
     withCredentials: true
 })
 
@@ -43,5 +44,11 @@ export const AppAPI = {
         return instance.post<UpdatePasswordDataType, AxiosResponse>('/auth/set-new-password', {password, resetPasswordToken})
     }
 }
+export const CardsAPI = {
+  getCardPacks(data:CardsPacksDataType) {
+      return instance.get<CardsPacksDataType,AxiosResponse >('/cards/pack', {})
+  }
+}
+
 
 
