@@ -7,7 +7,7 @@ import {
     UpdatePasswordDataType
 } from "../bll/authReducer";
 import {UserdataForChangeType} from "../bll/profileReducer";
-import {CardsPacksDataType} from "../bll/cardReducer";
+import {AddPackDataType, CardsPacksDataType} from "../bll/cardReducer";
 
 
 const instance = axios.create({
@@ -46,7 +46,10 @@ export const AppAPI = {
 }
 export const CardsAPI = {
   getCardPacks(data:CardsPacksDataType) {
-      return instance.get<CardsPacksDataType,AxiosResponse >('/cards/pack', {})
+      return instance.get<CardsPacksDataType,AxiosResponse >('/cards/pack', {params: data})
+  },
+  addCardPack(data:AddPackDataType) {
+      return instance.post<AddPackDataType, AxiosResponse>('/cards/pack', data)
   }
 }
 

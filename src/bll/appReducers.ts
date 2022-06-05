@@ -13,7 +13,7 @@ export type AppDataType = {
 const initialState: AppDataType = {
     initialized: false,
     status: 'idle',
-    error: null
+    error: null,
 }
 export type AppReducerActionsType = InitializedSuccessType | SetAppErrorACType | SetAppStatusACType
 export const appReducer = (state: AppDataType = initialState, action: AppReducerActionsType) => {
@@ -60,7 +60,7 @@ export const initializeAppTC = (): AppThunk => {
     return async (dispatch) => {
         try {
             const response = await AppAPI.me()
-                dispatch(setUserData(response.data.name, response.data.email))
+                dispatch(setUserData(response.data.name, response.data.email, response.data._id))
                 dispatch(setAuthStatus(true))
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))

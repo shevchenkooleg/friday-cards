@@ -3,11 +3,13 @@ import TextField from '@mui/material/TextField/TextField';
 import {useFormik} from 'formik';
 import React from 'react';
 import {Navigate} from 'react-router-dom';
-import {changeUserData, UserDataType} from '../../bll/profileReducer';
+import {changeUserData} from '../../bll/profileReducer';
 import {useAppDispatch, useAppSelector} from '../../bll/store';
 import {ProfileValidationSchema} from '../../utils/validators/validators';
 import s from './Profile.module.css'
 import {PATH} from "../../App";
+import { compose } from 'redux';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 
 const Profile = () => {
@@ -44,7 +46,7 @@ const Profile = () => {
             <div className={s.container}>
                 <h2>Profile</h2>
                 <div className={s.content}>
-                    <img src={avatar}/>
+                    <img src={avatar} alt={'avatar'}/>
                 </div>
 
                 <TextField
@@ -75,5 +77,5 @@ const Profile = () => {
         </form>
     );
 };
-export default Profile
-// export default compose<React.ComponentType>(withAuthRedirect)(Profile);
+// export default Profile
+export default compose<React.ComponentType>(withAuthRedirect)(Profile);

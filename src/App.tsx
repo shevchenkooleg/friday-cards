@@ -14,8 +14,8 @@ import {useSelector} from "react-redux";
 import {Loader} from './components/common/Loader/Loader';
 import Profile from './components/Profile/Profile';
 import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar';
-import {SettingsMenu} from "./components/Profile/Profile_Settings/SettingsMenu";
-import {CardPacks} from "./components/CardPack/CardPacks";
+import SettingsMenu from "./components/Profile/Profile_Settings/SettingsMenu";
+import CardPacks from "./components/CardPack/CardPacks";
 
 export const PATH = {
     PROFILE: {

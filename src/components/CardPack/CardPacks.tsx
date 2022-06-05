@@ -1,17 +1,32 @@
 import React, {useEffect} from 'react';
 import {CardsPacksTable} from "./CardsPacksTable";
-import {setCardsPacksTableTC} from "../../bll/cardReducer";
 import {useAppDispatch} from "../../bll/store";
+import { getCardReducerData } from '../../bll/cardReducer';
+import s from './CardPacks.module.css'
+import SideBar from "../SideBar/SideBar";
+import SearchBlock from "./SearchBlock";
+import {compose} from "redux";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
-export const CardPacks = () => {
+const CardPacks = () => {
     const dispatch = useAppDispatch();
     useEffect(()=>{
-        dispatch(setCardsPacksTableTC({}))
-    }, [])
+        dispatch(getCardReducerData({pageCount:10, user_id: ''}))
+    }, [dispatch])
     return (
-        <div>
-            <CardsPacksTable/>
+        <div className={s.container}>
+            <div className={s.sideBar}>
+                <SideBar/>
+            </div>
+            <div className={s.content}>
+                <h2>Packs list</h2>
+                <SearchBlock/>
+                <CardsPacksTable/>
+            </div>
         </div>
     );
 };
+
+
+export default compose<React.ComponentType>(withAuthRedirect)(CardPacks);
 

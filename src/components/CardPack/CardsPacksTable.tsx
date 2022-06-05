@@ -6,26 +6,28 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import s from './CardPacks.module.css'
+import s from './CardsPacksTable.module.css'
 import {Button} from "@mui/material";
+import {useAppSelector} from "../../bll/store";
+import {CardPacksType} from "../../bll/cardReducer";
 
 
 const COLUMNS = [
     {
-        Header: 'ID',
-        accessor: 'id',
+        Header: 'Name',
+        accessor: 'name',
     },
     {
-        Header: 'Last Name',
-        accessor: 'last_name',
+        Header: 'Cards',
+        accessor: 'cards',
     },
     {
-        Header: 'First Name',
-        accessor: 'first_name',
+        Header: 'Last Updated',
+        accessor: 'last_updated',
     },
     {
-        Header: 'Age',
-        accessor: 'age',
+        Header: 'Created by',
+        accessor: 'created_by',
     },
     {
         Header: 'Action',
@@ -34,19 +36,10 @@ const COLUMNS = [
 
 ]
 
-const rows = [
-    {id: 1, lastName: 'Snow', firstName: 'Jon', age: 35},
-    {id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42},
-    {id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45},
-    {id: 4, lastName: 'Stark', firstName: 'Arya', age: 16},
-    {id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null},
-    {id: 6, lastName: 'Melisandre', firstName: null, age: 150},
-    {id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44},
-    {id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36},
-    {id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-];
-
 export const CardsPacksTable = () => {
+
+    const cardPacks = useAppSelector<CardPacksType[]>((state)=> state.cardReducer.cardPacks)
+
     return (
 
         <div className={s.container}>
@@ -59,17 +52,17 @@ export const CardsPacksTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {cardPacks.map((pack) => (
                             <TableRow
-                                key={row.id}
+                                key={pack._id}
                                 sx={{'&:last-child td, &:last-child th': { border: 0, textAlign: 'right' }}}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.id}
+                                    {pack.name}
                                 </TableCell>
-                                <TableCell align="right">{row.lastName}</TableCell>
-                                <TableCell align="right">{row.firstName}</TableCell>
-                                <TableCell align="right">{row.age}</TableCell>
+                                <TableCell align="right">{pack.cardsCount}</TableCell>
+                                <TableCell align="right">{pack.updated}</TableCell>
+                                <TableCell align="right">{pack.user_name}</TableCell>
                                 <TableCell>
                                     <Button>Delete</Button>
                                     <Button>Edit</Button>

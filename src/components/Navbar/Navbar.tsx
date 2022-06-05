@@ -11,8 +11,8 @@ export const Navbar = () => {
     const isAuth = useAppSelector<boolean>(state => state.authReducer.isAuth)
     return (
         <div className={s.content}>
+            {isAuth && <NavLink to={PATH.CARD.PACKS} className={s.lnk}>Packs list</NavLink>}
             {isAuth && <NavLink to={PATH.PROFILE.MAIN} className={s.lnk}>Profile</NavLink>}
-            {isAuth && <NavLink to={PATH.CARD.PACKS} className={s.lnk}>CardPacks</NavLink> }
             {/*{isAuth && <NavLink to={PATH.TESTING_PAGE} className={s.lnk}>Testing Page</NavLink>}*/}
             {/*{!isAuth && <NavLink to={PATH.LOGIN.SIGN_UP} className={s.lnk}>Sign up</NavLink>}
             {!isAuth && <NavLink to={PATH.LOGIN.SIGN_IN} className={s.lnk}>Sign in</NavLink>}

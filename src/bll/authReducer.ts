@@ -57,7 +57,7 @@ export const logInTC = (data: LogInDataType): AppThunk => {
             dispatch(setAppStatus('loading'))
             let response = await AppAPI.logIn(data)
                 dispatch(setAuthStatus(true))
-                dispatch(setUserData(response.data.name, response.data.email))
+                dispatch(setUserData(response.data.name, response.data.email, response.data._id))
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {

@@ -7,6 +7,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useNavigate} from "react-router-dom";
 import {PATH} from '../../../App';
 import s from './Settings.module.css';
+import {compose} from "redux";
+import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
 
 
 
@@ -63,3 +65,5 @@ export const SettingsMenu = () => {
         </>
     );
 }
+
+export default compose<React.ComponentType>(withAuthRedirect)(SettingsMenu);
