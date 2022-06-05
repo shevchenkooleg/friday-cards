@@ -3,7 +3,7 @@ import {CardsPacksTable} from "./CardsPacksTable";
 import {useAppDispatch} from "../../bll/store";
 import { getCardReducerData } from '../../bll/cardReducer';
 import s from './CardPacks.module.css'
-import SideBar from "../SideBar/SideBar";
+import {SideBar} from "../SideBar/SideBar";
 import SearchBlock from "./SearchBlock";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";

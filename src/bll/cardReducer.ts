@@ -84,12 +84,16 @@ export type AppReducerActionsType =
     SetCarsPacksTableACType |
     SetCardsReducerDataACType |
     SetMinMaxSearchValueACType |
-    SetUserIDForSearchACType
+    SetUserIDForSearchACType |
+    resetCardPacksFilterACType
 
 export const cardReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
     switch (action.type) {
+        case "CARDS-REDUCER/RESET-FILTER": {
+            return {...state, searchSettings: {...state.searchSettings, minMax: [0,100], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
+        }
         case 'CARDS-REDUCER/SET-CARDS-PACKS-TABLE': {
-            return {...state, cardPacks:[...action.cardPacks]}
+            return {...state, cardPacks: [...action.cardPacks]}
         }
         case "CARDS-REDUCER/SET-CARDS-REDUCER-DATA": {
             return {...state, ...action.cardReducerData}
@@ -105,6 +109,10 @@ export const cardReducer = (state: InitialStateType = initialState, action: AppR
         }
     }
 }
+export type resetCardPacksFilterACType = ReturnType<typeof resetCardPacksFilterAC>
+export const resetCardPacksFilterAC = () => ({
+    type: 'CARDS-REDUCER/RESET-FILTER'
+}as const)
 export type SetCarsPacksTableACType = ReturnType<typeof setCarsPacksTableAC>
 export const setCarsPacksTableAC = (cardPacks: CardPacksType[]) => ({
     type: 'CARDS-REDUCER/SET-CARDS-PACKS-TABLE',
@@ -163,7 +171,7 @@ export const addCardPack = (data: AddPackDataType): AppThunk => {
         try {
             const response = await CardsAPI.addCardPack(data)
             console.log(response)
-            dispatch(getCardReducerData({pageCount:10, user_id: ''}))
+            dispatch(getCardReducerData({pageCount: 10, user_id: ''}))
         } catch (error) {
             console.log(error)
         }
