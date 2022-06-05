@@ -8,8 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import s from './CardsPacksTable.module.css'
 import {Button} from "@mui/material";
-import {useAppSelector} from "../../bll/store";
-import {CardPacksType} from "../../bll/cardReducer";
+import {useAppDispatch, useAppSelector} from "../../bll/store";
+import {CardPacksType, deleteCardsPackTC} from "../../bll/cardReducer";
 
 
 const COLUMNS = [
@@ -39,7 +39,10 @@ const COLUMNS = [
 export const CardsPacksTable = () => {
 
     const cardPacks = useAppSelector<CardPacksType[]>((state)=> state.cardReducer.cardPacks)
-
+    const dispatch = useAppDispatch()
+    const deleteButtonHandler = (_id: string) => {
+      dispatch(deleteCardsPackTC(_id))
+    }
     return (
 
         <div className={s.container}>
@@ -64,7 +67,7 @@ export const CardsPacksTable = () => {
                                 <TableCell align="right">{pack.updated}</TableCell>
                                 <TableCell align="right">{pack.user_name}</TableCell>
                                 <TableCell>
-                                    <Button>Delete</Button>
+                                    <Button onClick={()=>deleteButtonHandler(pack._id)}>Delete</Button>
                                     <Button>Edit</Button>
                                     <Button>Learn</Button>
                                 </TableCell>

@@ -50,6 +50,9 @@ export const CardsAPI = {
   },
   addCardPack(data:AddPackDataType) {
       return instance.post<AddPackDataType, AxiosResponse>('/cards/pack', data)
+  },
+  deleteCardPack(data: string) {
+      return instance.delete<string, AxiosResponse>(`/cards/pack/?id=${data}`)
   }
 }
 

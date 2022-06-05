@@ -50,6 +50,9 @@ export type AddPackDataType = {
         type?: string
     }
 }
+export type DeletePackDataType = {
+    _id: string
+}
 export type CardsPacksDataType = {
     packName?: string // не обязательно
     min?: number // не обязательно
@@ -85,12 +88,26 @@ export type AppReducerActionsType =
     SetCardsReducerDataACType |
     SetMinMaxSearchValueACType |
     SetUserIDForSearchACType |
-    resetCardPacksFilterACType
+    resetCardPacksFilterACType |
+    deleteCardsPackAC
 
 export const cardReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
     switch (action.type) {
         case "CARDS-REDUCER/RESET-FILTER": {
-            return {...state, searchSettings: {...state.searchSettings, minMax: [0,100], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
+            return {...state,
+                searchSettings: {
+                    ...state.searchSettings,
+                    minMax: [0, 100],
+                    packName: '',
+                    page: 1,
+                    pageCount: 10,
+                    user_id: '',
+                    sortPacks: ''
+                }
+            }
+        }
+        case "CARDS-REDUCER/DELETE-CARDS-PACK": {
+            return {...state, cardPacks: [...state.cardPacks.filter((pack)=>pack._id !== action.id)]}
         }
         case 'CARDS-REDUCER/SET-CARDS-PACKS-TABLE': {
             return {...state, cardPacks: [...action.cardPacks]}
@@ -109,10 +126,16 @@ export const cardReducer = (state: InitialStateType = initialState, action: AppR
         }
     }
 }
+
+export type deleteCardsPackAC = ReturnType<typeof deleteCardsPackAC>
+export const deleteCardsPackAC = (id: string) => ({
+    type: 'CARDS-REDUCER/DELETE-CARDS-PACK',
+    id
+} as const)
 export type resetCardPacksFilterACType = ReturnType<typeof resetCardPacksFilterAC>
 export const resetCardPacksFilterAC = () => ({
     type: 'CARDS-REDUCER/RESET-FILTER'
-}as const)
+} as const)
 export type SetCarsPacksTableACType = ReturnType<typeof setCarsPacksTableAC>
 export const setCarsPacksTableAC = (cardPacks: CardPacksType[]) => ({
     type: 'CARDS-REDUCER/SET-CARDS-PACKS-TABLE',
@@ -142,6 +165,18 @@ export const setUserIDForSearchAC = (id: string) => {
 
 
 //THUNK
+export const deleteCardsPackTC = (data: string): AppThunk => {
+  return async (dispatch)=> {
+      try {
+          let response = await CardsAPI.deleteCardPack(data)
+          console.log(response)
+      }
+      catch (e) {
+          console.log(e)
+      }
+  }
+}
+
 export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {
