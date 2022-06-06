@@ -90,7 +90,7 @@ export type AppReducerActionsType =
 export const cardReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
     switch (action.type) {
         case "CARDS-REDUCER/RESET-FILTER": {
-            return {...state, searchSettings: {...state.searchSettings, minMax: [0,100], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
+            return {...state, searchSettings: {...state.searchSettings, minMax: [0,103], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
         }
         case 'CARDS-REDUCER/SET-CARDS-PACKS-TABLE': {
             return {...state, cardPacks: [...action.cardPacks]}
