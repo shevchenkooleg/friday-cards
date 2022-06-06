@@ -3,7 +3,7 @@ import s from './SideBar.module.css'
 import OwnCardsSelector from "./OwnCardsSelector/OwnCardsSelector";
 import DoubleRange from "./DoubleRange/DoubleRange";
 import {useAppDispatch} from "../../bll/store";
-import {getCardsPacksTableTC, resetCardPacksFilterAC} from "../../bll/cardReducer";
+import {getCardReducerData,resetCardPacksFilterAC} from "../../bll/cardReducer";
 import {Button} from "@mui/material";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
 
@@ -21,7 +21,7 @@ export const SideBar = () => {
                 user_id: '',
         }
         dispatch(resetCardPacksFilterAC())
-        dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(defaultSearchSettings, '')))
+        dispatch(getCardReducerData(prepareDataForSearchRequest(defaultSearchSettings, '')))
         //вынес подготовку объекта для отправки в отдельную функцию prepareDataForSearchRequest
         //два диспатча выполняются как хотят (в произвольном порядке)
     };

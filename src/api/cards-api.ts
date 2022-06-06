@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, {AxiosResponse} from "axios";
 import {
     LogInDataType,
     LogOutType,
@@ -7,11 +7,11 @@ import {
     UpdatePasswordDataType
 } from "../bll/authReducer";
 import {UserdataForChangeType} from "../bll/profileReducer";
-import {AddPackDataType, CardsPacksDataType} from "../bll/cardReducer";
+import {AddPackDataType, CardsPacksDataType, SingleCardPackRequestDataType} from "../bll/cardReducer";
 
 
 const instance = axios.create({
-    baseURL:'http://localhost:7542/2.0/',
+    baseURL: 'http://localhost:7542/2.0/',
     // baseURL:'https://neko-back.herokuapp.com/2.0',
     withCredentials: true
 })
@@ -28,32 +28,38 @@ export const AppAPI = {
     register(data: RegistrationDataType) {
         return instance.post<RegistrationDataType, AxiosResponse>('auth/register', data)
     },
-    logIn(data: LogInDataType){
+    logIn(data: LogInDataType) {
         return instance.post<LogInDataType, AxiosResponse>('/auth/login', data)
     },
-    logOut(){
+    logOut() {
         return instance.delete<LogOutType, AxiosResponse>('/auth/me')
     },
-    changeUserData(data: UserdataForChangeType){
+    changeUserData(data: UserdataForChangeType) {
         return instance.put<UserdataForChangeType, AxiosResponse>('auth/me', data)
     },
-    restorePassword(data: RestorePasswordDataType){
+    restorePassword(data: RestorePasswordDataType) {
         return instance.post<RestorePasswordDataType, AxiosResponse>('auth/forgot', data)
     },
-    updatePassword(password: string, resetPasswordToken: string){
-        return instance.post<UpdatePasswordDataType, AxiosResponse>('/auth/set-new-password', {password, resetPasswordToken})
+    updatePassword(password: string, resetPasswordToken: string) {
+        return instance.post<UpdatePasswordDataType, AxiosResponse>('/auth/set-new-password', {
+            password,
+            resetPasswordToken
+        })
     }
 }
 export const CardsAPI = {
-  getCardPacks(data:CardsPacksDataType) {
-      return instance.get<CardsPacksDataType,AxiosResponse >('/cards/pack', {params: data})
-  },
-  addCardPack(data:AddPackDataType) {
-      return instance.post<AddPackDataType, AxiosResponse>('/cards/pack', data)
-  },
-  deleteCardPack(data: string) {
-      return instance.delete<string, AxiosResponse>(`/cards/pack/?id=${data}`)
-  }
+    getCardSPacks(data: CardsPacksDataType) {
+        return instance.get<CardsPacksDataType, AxiosResponse>('/cards/pack', {params: data})
+    },
+    addCardsPack(data: AddPackDataType) {
+        return instance.post<AddPackDataType, AxiosResponse>('/cards/pack', data)
+    },
+    getSingleCardPack(data: SingleCardPackRequestDataType) {
+        return instance.get<SingleCardPackRequestDataType, AxiosResponse>('/cards/card', {params: data})
+    },
+    deleteCardsPack(id: string) {
+        return instance.delete<LogOutType, AxiosResponse>('/cards/pack', {params: {id}})
+    }
 }
 
 
