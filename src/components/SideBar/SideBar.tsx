@@ -2,19 +2,31 @@ import React from 'react';
 import s from './SideBar.module.css'
 import OwnCardsSelector from "./OwnCardsSelector/OwnCardsSelector";
 import DoubleRange from "./DoubleRange/DoubleRange";
-import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {getCardsPacksTableTC, resetCardPacksFilterAC, SearchSettingsType} from "../../bll/cardReducer";
+import {useAppDispatch} from "../../bll/store";
+import {getCardsPacksTableTC, resetCardPacksFilterAC} from "../../bll/cardReducer";
 import {Button} from "@mui/material";
-
+import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
 
 
 export const SideBar = () => {
     const dispatch = useAppDispatch();
-    const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardReducer.searchSettings)
+
     const resetButtonHandler = () => {
+        const defaultSearchSettings = {
+            packName: '',
+                minMax: [0, 103],
+                sortPacks: '',
+                page: 1,
+                pageCount: 10,
+                user_id: '',
+        }
         dispatch(resetCardPacksFilterAC())
-        dispatch(getCardsPacksTableTC(searchSettings))
-    }
+        dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(defaultSearchSettings, '')))
+        //вынес подготовку объекта для отправки в отдельную функцию prepareDataForSearchRequest
+        //два диспатча выполняются как хотят (в произвольном порядке)
+    };
+
+
     return (
         <>
             <div className={s.content}>
@@ -26,5 +38,4 @@ export const SideBar = () => {
             </Button>
         </>
     );
-};
-
+}
