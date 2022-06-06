@@ -1,5 +1,6 @@
 import {AppThunk} from "./store";
 import {CardsAPI} from "../api/cards-api";
+import {setAppError} from "./appReducers";
 
 
 export type InitialStateType = {
@@ -59,7 +60,16 @@ export type CardsPacksDataType = {
     pageCount?: number // не обязательно
     user_id?: string
 }
-
+export type SingleCardPackRequestDataType = {
+    cardAnswer?:string
+    cardsQuestion?:string
+    cardsPack_id?:string
+    min?:number
+    max?:number
+    sortCards?:string
+    page?:number
+    pageCount?:number
+}
 export const initialState: InitialStateType = {
     cardPacks: [],
     cardPacksTotalCount: undefined,
@@ -78,8 +88,6 @@ export const initialState: InitialStateType = {
         user_id: '',
     }
 }
-
-
 export type AppReducerActionsType =
     SetCarsPacksTableACType |
     SetCardsReducerDataACType |
@@ -145,10 +153,11 @@ export const setUserIDForSearchAC = (id: string) => {
 export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {
-            let response = await CardsAPI.getCardPacks(data)
+            let response = await CardsAPI.getCardSPacks(data)
             dispatch(setCarsPacksTableAC(response.data.cardPacks))
-        } catch (error) {
+        } catch (error:any) {
             console.log(error)
+            // dispatch(setAppError(error.response.data.error))
         }
     }
 }
@@ -157,11 +166,11 @@ export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
 export const getCardReducerData = (data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {
-            const response = await CardsAPI.getCardPacks(data)
+            const response = await CardsAPI.getCardSPacks(data)
             dispatch(setCardsReducerDataAC(response.data))
             dispatch(setMinMaxSearchValueAC([response.data.minCardsCount, response.data.maxCardsCount]))
-        } catch (error) {
-            console.log(error)
+        } catch (error:any) {
+            dispatch(setAppError(error.response.data.error))
         }
     }
 }
@@ -169,11 +178,33 @@ export const getCardReducerData = (data: CardsPacksDataType): AppThunk => {
 export const addCardPack = (data: AddPackDataType): AppThunk => {
     return async (dispatch) => {
         try {
-            const response = await CardsAPI.addCardPack(data)
+            const response = await CardsAPI.addCardsPack(data)
             console.log(response)
             dispatch(getCardReducerData({pageCount: 10, user_id: ''}))
-        } catch (error) {
-            console.log(error)
+        } catch (error:any) {
+            dispatch(setAppError(error.response.data.error))
+        }
+    }
+}
+
+export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThunk => {
+    return async (dispatch) => {
+        try {
+            let response = await CardsAPI.getSingleCardPack(data)
+            console.log(response)
+        } catch (error:any) {
+            dispatch(setAppError(error.response.data.error))
+        }
+    }
+}
+export const deleteCardsPackTC = (id:string, data:CardsPacksDataType): AppThunk => {
+    return async (dispatch) => {
+        try {
+            await CardsAPI.deleteCardsPack(id)
+            dispatch(getCardReducerData(data))
+
+        } catch (error:any) {
+            dispatch(setAppError(error.response.data.error))
         }
     }
 }
