@@ -3,14 +3,14 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import {setMinMaxSearchValueAC} from "../../../bll/cardReducer";
+import {setMinMaxSearchValueAC} from "../../../bll/cardPacksReducer";
 
 const DoubleRange = () => {
 
     const dispatch = useAppDispatch()
-    const ninMaxValue = useAppSelector<number | number[]>((state)=>state.cardReducer.searchSettings.minMax)
-    const minAmount = useAppSelector<number | undefined>((state)=>state.cardReducer.minCardsCount)
-    const maxAmount = useAppSelector<number | undefined>((state)=>state.cardReducer.maxCardsCount)
+    const ninMaxValue = useAppSelector<number | number[]>((state)=>state.cardPacksReducer.searchSettings.minMax)
+    const minAmount = useAppSelector<number | undefined>((state)=>state.cardPacksReducer.minCardsCount)
+    const maxAmount = useAppSelector<number | undefined>((state)=>state.cardPacksReducer.maxCardsCount)
 
     const handleChange = (event: Event, value: number | number[]) => {
         dispatch(setMinMaxSearchValueAC(value))

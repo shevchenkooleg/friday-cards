@@ -3,7 +3,7 @@ import s from './SideBar.module.css'
 import OwnCardsSelector from "./OwnCardsSelector/OwnCardsSelector";
 import DoubleRange from "./DoubleRange/DoubleRange";
 import {useAppDispatch} from "../../bll/store";
-import {getCardReducerData,resetCardPacksFilterAC} from "../../bll/cardReducer";
+import {getCardReducerData,resetCardPacksFilterAC} from "../../bll/cardPacksReducer";
 import {Button} from "@mui/material";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
 

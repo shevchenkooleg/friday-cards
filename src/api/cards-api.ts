@@ -7,7 +7,8 @@ import {
     UpdatePasswordDataType
 } from "../bll/authReducer";
 import {UserdataForChangeType} from "../bll/profileReducer";
-import {AddPackDataType, CardsPacksDataType, SingleCardPackRequestDataType} from "../bll/cardReducer";
+import {AddPackDataType, CardsPacksDataType} from "../bll/cardPacksReducer";
+import {SingleCardPackRequestDataType} from "../bll/packReducer";
 
 
 const instance = axios.create({

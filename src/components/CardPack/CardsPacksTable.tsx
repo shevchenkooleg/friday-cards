@@ -7,10 +7,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import s from './CardsPacksTable.module.css'
-import {Button} from "@mui/material";
+import {Button, Link} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {CardPacksType, deleteCardsPackTC, getSinglePackDataTC, SearchSettingsType} from "../../bll/cardReducer";
+import {CardPacksType, deleteCardsPackTC, SearchSettingsType} from "../../bll/cardPacksReducer";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
+import {getSinglePackDataTC} from "../../bll/packReducer";
+import {useNavigate} from "react-router-dom";
 
 
 const COLUMNS = [
@@ -39,10 +41,10 @@ const COLUMNS = [
 
 export const CardsPacksTable = () => {
 
-    const cardPacks = useAppSelector<CardPacksType[]>((state) => state.cardReducer.cardPacks)
+    const cardPacks = useAppSelector<CardPacksType[]>((state) => state.cardPacksReducer.cardPacks)
     const dispatch = useAppDispatch()
-    const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardReducer.searchSettings)
-
+    const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardPacksReducer.searchSettings)
+    const navigate = useNavigate()
     return (
 
         <div className={s.container}>
@@ -58,9 +60,11 @@ export const CardsPacksTable = () => {
                         {cardPacks.map((pack) => {
 
                             const onTitleClickHandler = () => {
+
                                 //По нажатию на имя колоды происходит запрос и должен случиться переход на новую компоненту
                                 //Cards, но не судьба, т.к. я хз как это сделать...
                                 dispatch(getSinglePackDataTC({cardsPack_id:pack._id}))
+                                navigate('/card-list')
                             }
                             const onDeleteButtonClickHandler = () => {
                                 dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, '')))
@@ -73,7 +77,15 @@ export const CardsPacksTable = () => {
                                     sx={{'&:last-child td, &:last-child th': {border: 0, textAlign: 'right'}}}
                                 >
                                     <TableCell component="th" scope="row" onClick={onTitleClickHandler}>
-                                        {pack.name}
+                                        <Link
+                                            component="button"
+                                            variant="body2"
+                                            onClick={() => {
+                                                console.info("I'm a button.");
+                                            }}
+                                        >
+                                            {pack.name}
+                                        </Link>
                                     </TableCell>
                                     <TableCell align="right">{pack.cardsCount}</TableCell>
                                     <TableCell align="right">{pack.updated}</TableCell>
@@ -92,4 +104,5 @@ export const CardsPacksTable = () => {
         </div>
     );
 }
+
 

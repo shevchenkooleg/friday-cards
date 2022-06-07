@@ -60,16 +60,7 @@ export type CardsPacksDataType = {
     pageCount?: number // не обязательно
     user_id?: string
 }
-export type SingleCardPackRequestDataType = {
-    cardAnswer?:string
-    cardsQuestion?:string
-    cardsPack_id?:string
-    min?:number
-    max?:number
-    sortCards?:string
-    page?:number
-    pageCount?:number
-}
+
 export const initialState: InitialStateType = {
     cardPacks: [],
     cardPacksTotalCount: undefined,
@@ -95,7 +86,7 @@ export type AppReducerActionsType =
     SetUserIDForSearchACType |
     resetCardPacksFilterACType
 
-export const cardReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
+export const cardPacksReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
     switch (action.type) {
         case "CARDS-REDUCER/RESET-FILTER": {
             return {...state, searchSettings: {...state.searchSettings, minMax: [0,103], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
@@ -186,7 +177,7 @@ export const addCardPack = (data: AddPackDataType): AppThunk => {
         }
     }
 }
-
+/*
 export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThunk => {
     return async (dispatch) => {
         try {
@@ -196,7 +187,7 @@ export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThu
             dispatch(setAppError(error.response.data.error))
         }
     }
-}
+}*/
 export const deleteCardsPackTC = (id:string, data:CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {

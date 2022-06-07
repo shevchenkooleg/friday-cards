@@ -1,13 +1,13 @@
 import React from 'react';
 import {Button, ButtonGroup} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../bll/store";
-import {setUserIDForSearchAC} from "../../../bll/cardReducer";
+import {setUserIDForSearchAC} from "../../../bll/cardPacksReducer";
 
 const OwnCardsSelector = () => {
 
     const dispatch = useAppDispatch()
     const Id = useAppSelector<string>((state)=>state.profileReducer.userData.id)
-    const userIdForSearch = useAppSelector<string>((state)=>state.cardReducer.searchSettings.user_id)
+    const userIdForSearch = useAppSelector<string>((state)=>state.cardPacksReducer.searchSettings.user_id)
 
     type ButtonType = 'my' | 'all'
 

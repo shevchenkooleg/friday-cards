@@ -1,4 +1,4 @@
-import {CardsPacksDataType, SearchSettingsType} from "../../bll/cardReducer";
+import {CardsPacksDataType, SearchSettingsType} from "../../bll/cardPacksReducer";
 
 export const prepareDataForSearchRequest = (searchSettings: SearchSettingsType, searchName: string) => {
     let data = {} as CardsPacksDataType & { minMax?: number | number[] }

@@ -2,12 +2,12 @@ import {Button, TextField} from '@mui/material';
 import React, {ChangeEvent, useState} from 'react';
 import s from './SearchBlock.module.css'
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {addCardPack, CardsPacksDataType, getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardReducer";
+import {addCardPack, CardsPacksDataType, getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardPacksReducer";
 
 const SearchBlock = () => {
 
     const dispatch = useAppDispatch()
-    const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardReducer.searchSettings)
+    const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardPacksReducer.searchSettings)
     const [searchName, setSearchName] = useState<string>('')
 
     //Поиск по имени

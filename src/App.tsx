@@ -16,6 +16,7 @@ import Profile from './components/Profile/Profile';
 import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar';
 import SettingsMenu from "./components/Profile/Profile_Settings/SettingsMenu";
 import CardPacks from "./components/CardPack/CardPacks";
+import Cards from "./components/Cards/Cards";
 
 export const PATH = {
     PROFILE: {
@@ -30,6 +31,7 @@ export const PATH = {
     },
     CARD: {
         PACKS: '/cards_packs',
+        CARD_LIST: '/card-list',
     },
     TESTING_PAGE: '/test'
 }
@@ -62,6 +64,8 @@ function App() {
                             <Route path={PATH.LOGIN.RESTORE_PASS} element={<RestorePass/>}/>
                             <Route path={PATH.LOGIN.UPDATE_PASS} element={<UpdatePass/>}/>
                             <Route path={PATH.CARD.PACKS} element={<CardPacks/>}/>
+                            <Route path={PATH.CARD.CARD_LIST} element={<Cards/>}/>
+
 
                             <Route path='/*' element={<Error404/>}/>
                         </Routes>

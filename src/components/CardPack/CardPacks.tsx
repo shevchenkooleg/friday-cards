@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {CardsPacksTable} from "./CardsPacksTable";
 import {useAppDispatch} from "../../bll/store";
-import { getCardReducerData } from '../../bll/cardReducer';
+import { getCardReducerData } from '../../bll/cardPacksReducer';
 import s from './CardPacks.module.css'
 import {SideBar} from "../SideBar/SideBar";
 import SearchBlock from "./SearchBlock";

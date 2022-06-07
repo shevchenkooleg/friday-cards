@@ -1,11 +1,11 @@
 import {TextField} from '@mui/material';
 import React, {ChangeEvent, useState} from 'react';
-import {getCardsPacksTableTC, SearchSettingsType } from '../../../bll/cardReducer';
+import {getCardsPacksTableTC, SearchSettingsType } from '../../../bll/cardPacksReducer';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
 import s from './SearchCardBlock.module.css'
 
 const SearchCardBlock = () => {
-    const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardReducer.searchSettings)
+    const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardPacksReducer.searchSettings)
     const [searchName, setSearchName] = useState<string>('')
     const dispatch = useAppDispatch()
 
