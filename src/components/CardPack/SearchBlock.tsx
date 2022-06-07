@@ -4,8 +4,11 @@ import s from './SearchBlock.module.css'
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {addCardPack, CardsPacksDataType, getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardPacksReducer";
 
-const SearchBlock = () => {
+type PropsType = {
+    id?: string
+}
 
+const SearchBlock = (props: PropsType) => {
     const dispatch = useAppDispatch()
     const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardPacksReducer.searchSettings)
     const [searchName, setSearchName] = useState<string>('')
@@ -15,16 +18,16 @@ const SearchBlock = () => {
     const onChangeHandle = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setSearchName(e.currentTarget.value)
         if (searchName.trim().length >= 0) {
-            setTimeout(()=>{
+            setTimeout(() => {
                 searchSettings.packName = searchName;
                 dispatch(getCardsPacksTableTC(searchSettings))
-            },1500)
+            }, 1500)
         }
     }
 
     const onAddCardPackClickHandler = () => {
-        console.log('Pack added')
-        dispatch(addCardPack({cardsPack: {name: 'My Pack'}}))
+
+        dispatch(addCardPack({cardsPack: {name: 'My Pack'}}, props.id))
     }
     const onSearchClickHandler = () => {
         let data = {} as CardsPacksDataType & { minMax?: number | number[] }
@@ -40,7 +43,7 @@ const SearchBlock = () => {
             data = {...data, min: data.minMax[0], max: data.minMax[1]}
             delete data.minMax
         }
-        if (searchName.trim().length >= 0) data={...data, packName: searchName} //Добавил для поиска по имени
+        if (searchName.trim().length >= 0) data = {...data, packName: searchName} //Добавил для поиска по имени
         dispatch(getCardsPacksTableTC(data))
     }
     return (
