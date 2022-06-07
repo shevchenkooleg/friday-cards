@@ -8,12 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import {Button} from "@mui/material";
 
 
-type StarProps = {
-    grade: number
-}
+
+
 
 const COLUMNS = [
     {
@@ -35,14 +33,7 @@ const COLUMNS = [
 
 ]
 
-//todo: сделать компонент рейтинга зависящий от получеаиого GRADE и отрисовать в ячейке
-export const Star = (props: StarProps) => {
-  return (
-      <>
 
-      </>
-  )
-}
 
 const PackTable = () => {
 
@@ -72,10 +63,6 @@ const PackTable = () => {
                                     <TableCell align="right">{c.answer}</TableCell>
                                     <TableCell align="right">{c.updated}</TableCell>
                                     <TableCell align="right">{c.grade}</TableCell>
-                                    <TableCell>
-                                        <Button>Edit</Button>
-                                        <Button>Learn</Button>
-                                    </TableCell>
 
                                 </TableRow>)
                         })}

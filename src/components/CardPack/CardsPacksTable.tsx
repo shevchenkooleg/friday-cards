@@ -11,7 +11,7 @@ import {Button, Link} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {CardPacksType, deleteCardsPackTC, SearchSettingsType} from "../../bll/cardPacksReducer";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
-import {getSinglePackDataTC} from "../../bll/packReducer";
+import {getSinglePackDataTC, setCardsPackTitleAC} from "../../bll/packReducer";
 import {useNavigate} from "react-router-dom";
 
 
@@ -58,19 +58,16 @@ export const CardsPacksTable = () => {
                     </TableHead>
                     <TableBody>
                         {cardPacks.map((pack) => {
-
+                            // let packTitle = pack.name
                             const onTitleClickHandler = () => {
 
-                                //По нажатию на имя колоды происходит запрос и должен случиться переход на новую компоненту
-                                //Cards, но не судьба, т.к. я хз как это сделать...
                                 dispatch(getSinglePackDataTC({cardsPack_id:pack._id}))
+                                dispatch(setCardsPackTitleAC(pack.name, pack._id))
                                 navigate('/card-list')
                             }
                             const onDeleteButtonClickHandler = () => {
                                 dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, '')))
                             }
-
-
                             return (
                                 <TableRow
                                     key={pack._id}
@@ -80,13 +77,11 @@ export const CardsPacksTable = () => {
                                         <Link
                                             component="button"
                                             variant="body2"
-                                            onClick={() => {
-                                                console.info("I'm a button.");
-                                            }}
                                         >
                                             {pack.name}
                                         </Link>
                                     </TableCell>
+
                                     <TableCell align="right">{pack.cardsCount}</TableCell>
                                     <TableCell align="right">{pack.updated}</TableCell>
                                     <TableCell align="right">{pack.user_name}</TableCell>
@@ -95,7 +90,6 @@ export const CardsPacksTable = () => {
                                         <Button>Edit</Button>
                                         <Button>Learn</Button>
                                     </TableCell>
-
                                 </TableRow>)
                         })}
                     </TableBody>

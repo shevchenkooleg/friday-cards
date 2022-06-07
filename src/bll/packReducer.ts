@@ -33,25 +33,37 @@ export type CardsType = {
     _id: string
 }
 export type InitialStateType = {
-    cards?: CardsType[] | undefined
-    cardsTotalCount?: number
-    maxGrade?: number
-    minGrade?: number
-    packUserId?: string
-    page?: number
-    pageCount?: number
-    token?: string
-    tokenDeathTime?: number
+    cardPackId: string
+    title: string
+    cards: CardsType[] | undefined
+    cardsTotalCount: number
+    maxGrade: number
+    minGrade: number
+    packUserId: string
+    page: number
+    pageCount: number
+    token: string
+    tokenDeathTime: number
 }
-export type ActionsType = CardsActionACType
-export const initialState: InitialStateType = {}
+export type ActionsType =
+    CardsActionACType |
+    setCardsPackTitleAC
+    // searchByQuestionACType
+export const initialState: InitialStateType = {title: ''} as InitialStateType
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
+        // case "SINGLE-PACK-REDUCER/SEARCH-BY-QUESTION": {
+        //     return { ...state, cards: state.cards?.map((c)=>)}
+
         case "SINGLE-PACK-REDUCER/GET-PACK": {
-            state = action.data
-            return {...state}
+            const newState = action.data
+            return {...state, ...newState}
         }
+        case "SINGLE-PACK-REDUCER/SET-NAME": {
+            return {...state, title: action.title, cardPackId: action.packID}
+        }
+
         default:
             return {...state}
     }
@@ -66,6 +78,12 @@ export const getCardsActionAC = (data: InitialStateType) => ({
     type: 'SINGLE-PACK-REDUCER/GET-PACK',
     data,
 } as const)
+export type setCardsPackTitleAC = ReturnType<typeof setCardsPackTitleAC>
+export const setCardsPackTitleAC = (title: string, packID: string) => ({
+    type: 'SINGLE-PACK-REDUCER/SET-NAME',
+    title,
+    packID
+} as const)
 
 //THUNK
 export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThunk => {
@@ -74,6 +92,7 @@ export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThu
             dispatch(setAppStatus('loading'))
             let response = await CardsAPI.getSingleCardPack(data)
             dispatch(getCardsActionAC(response.data))
+
             console.log(response)
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
