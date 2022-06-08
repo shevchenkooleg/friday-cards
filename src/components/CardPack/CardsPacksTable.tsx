@@ -39,7 +39,11 @@ const COLUMNS = [
 
 ]
 
-export const CardsPacksTable = () => {
+type PropsType = {
+    id?: string
+}
+
+export const CardsPacksTable = (props: PropsType) => {
 
     const cardPacks = useAppSelector<CardPacksType[]>((state) => state.cardPacksReducer.cardPacks)
     const dispatch = useAppDispatch()
@@ -66,7 +70,7 @@ export const CardsPacksTable = () => {
                                 navigate('/card-list')
                             }
                             const onDeleteButtonClickHandler = () => {
-                                dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, '')))
+                                dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, '', props.id)))
                             }
                             return (
                                 <TableRow

@@ -6,9 +6,13 @@ import {useAppDispatch} from "../../bll/store";
 import {getCardReducerData,resetCardPacksFilterAC} from "../../bll/cardPacksReducer";
 import {Button} from "@mui/material";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
+import ProfileBlock from "./ProfileBlock/ProfileBlock";
 
+type PropsType = {
+    id?: string
+}
 
-export const SideBar = () => {
+export const SideBar = (props: PropsType) => {
     const dispatch = useAppDispatch();
 
     const resetButtonHandler = () => {
@@ -30,7 +34,7 @@ export const SideBar = () => {
     return (
         <>
             <div className={s.content}>
-                <OwnCardsSelector/>
+                {props.id ? <ProfileBlock/> : <OwnCardsSelector/>}
                 <DoubleRange/>
             </div>
             <Button sx={{width: '140px', marginLeft: '20px'}}

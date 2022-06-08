@@ -17,11 +17,13 @@ import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar';
 import SettingsMenu from "./components/Profile/Profile_Settings/SettingsMenu";
 import CardPacks from "./components/CardPack/CardPacks";
 import Cards from "./components/Cards/Cards";
+import EditProfile from "./components/Profile/EditProfile/EditProfile";
 
 export const PATH = {
     PROFILE: {
         MAIN: '/profile',
-        SETTINGS: '/settings'
+        SETTINGS: '/settings',
+        EDIT: '/profile/edit'
     },
     LOGIN: {
         SIGN_IN: '/sign_in',
@@ -65,6 +67,7 @@ function App() {
                             <Route path={PATH.LOGIN.UPDATE_PASS} element={<UpdatePass/>}/>
                             <Route path={PATH.CARD.PACKS} element={<CardPacks/>}/>
                             <Route path={PATH.CARD.CARD_LIST} element={<Cards/>}/>
+                            <Route path={PATH.PROFILE.EDIT} element={<EditProfile/>}/>
 
 
                             <Route path='/*' element={<Error404/>}/>

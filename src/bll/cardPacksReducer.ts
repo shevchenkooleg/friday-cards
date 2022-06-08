@@ -92,17 +92,7 @@ export type AppReducerActionsType =
 export const cardPacksReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
     switch (action.type) {
         case "CARDS-REDUCER/RESET-FILTER": {
-            return {...state,
-                searchSettings: {
-                    ...state.searchSettings,
-                    minMax: [0, 103],
-                    packName: '',
-                    page: 1,
-                    pageCount: 10,
-                    user_id: '',
-                    sortPacks: ''
-                }
-            }
+            return {...state, searchSettings: {...state.searchSettings, minMax: [0,103], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
         }
         case 'CARDS-REDUCER/SET-CARDS-PACKS-TABLE': {
             return {...state, cardPacks: [...action.cardPacks]}
@@ -210,12 +200,13 @@ export const getCardReducerData = (data: CardsPacksDataType): AppThunk => {
     }
 }
 
-export const addCardPack = (data: AddPackDataType): AppThunk => {
+export const addCardPack = (data: AddPackDataType, user_id?: string): AppThunk => {
     return async (dispatch) => {
         try {
-            const response = await CardsAPI.addCardsPack(data)
-            console.log(response)
-            dispatch(getCardReducerData({pageCount: 10, user_id: ''}))
+            await CardsAPI.addCardsPack(data)
+            user_id
+                ? dispatch(getCardReducerData({pageCount: 10, user_id}))
+                : dispatch(getCardReducerData({pageCount: 10, user_id: ''}))
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         }
@@ -232,10 +223,10 @@ export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThu
         }
     }
 }*/
-export const deleteCardsPackTC = (id: string, data: CardsPacksDataType): AppThunk => {
+export const deleteCardsPackTC = (card_id: string, data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {
-            await CardsAPI.deleteCardsPack(id)
+            await CardsAPI.deleteCardsPack(card_id)
             dispatch(getCardReducerData(data))
 
         } catch (error: any) {
