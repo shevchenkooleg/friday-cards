@@ -6,7 +6,8 @@ import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {
     getCardsPacksTableTC,
     SearchSettingsType,
-    setCurrentPageAC, setPageCountAC} from "../../bll/cardPacksReducer";
+    setCurrentPageAC, setPagesAmountAC
+} from "../../bll/cardPacksReducer";
 import { prepareDataForSearchRequest } from '../../utils/dataPrepare/searchDataPrepare';
 
 const Pagination = () => {
@@ -15,17 +16,18 @@ const Pagination = () => {
 
     const dispatch = useAppDispatch()
     const searchSettings = useAppSelector<SearchSettingsType>((state)=>state.cardPacksReducer.searchSettings)
+    const searchSettingsCurrentPage = useAppSelector<number>((state)=>state.cardPacksReducer.searchSettings.page)
     const cardPacksTotalCount = useAppSelector<number | undefined>((state) => state.cardPacksReducer.cardPacksTotalCount)
     const currentPage = useAppSelector<number | undefined>((state) => state.cardPacksReducer.page)
     const pageCount = useAppSelector<number | undefined>((state) => state.cardPacksReducer.pageCount)
 
     useEffect(()=>{
         dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
-    },[searchSettings, pageCount, dispatch])
-
-    useEffect(()=>{
-        dispatch(setCurrentPageAC(1))
-    },[pageCount, dispatch])
+    },[dispatch, searchSettingsCurrentPage, pageCount])
+    //
+    // useEffect(()=>{
+    //     dispatch(setCurrentPageAC(1))
+    // },[pageCount, dispatch])
 
     let totalPages: number | undefined
 
@@ -73,7 +75,8 @@ const SelectorNumberCards = () => {
     const [pageAmount, setPageAmount] = React.useState(10);
 
     useEffect(()=>{
-        dispatch(setPageCountAC(pageAmount))
+        dispatch(setCurrentPageAC(1))
+        dispatch(setPagesAmountAC(pageAmount))
     }, [pageAmount, dispatch])
 
 

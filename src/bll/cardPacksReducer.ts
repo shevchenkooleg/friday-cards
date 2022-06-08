@@ -87,12 +87,12 @@ export type AppReducerActionsType =
     ResetCardPacksFilterACType |
     SetCurrentPageACType |
     SetPageInPaginationACType |
-    SetPageCountACType
+    SetPageAmountACType
 
 export const cardPacksReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
     switch (action.type) {
         case "CARDS-REDUCER/RESET-FILTER": {
-            return {...state, searchSettings: {...state.searchSettings, minMax: [0,103], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
+            return {...state, searchSettings: {...state.searchSettings, minMax: [0, action.maxCardsCount], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
         }
         case 'CARDS-REDUCER/SET-CARDS-PACKS-TABLE': {
             return {...state, cardPacks: [...action.cardPacks]}
@@ -112,7 +112,7 @@ export const cardPacksReducer = (state: InitialStateType = initialState, action:
         case "CARDS-REDUCER/SET-PAGE-IN-PAGINATION": {
             return {...state, page: action.page}
         }
-        case "CARDS-REDUCER/SET-PAGE-COUNT": {
+        case "CARDS-REDUCER/SET-PAGES-AMOUNT": {
             return {...state, pageCount: action.amount, searchSettings:{...state.searchSettings, pageCount:action.amount}}
         }
         default: {
@@ -121,8 +121,9 @@ export const cardPacksReducer = (state: InitialStateType = initialState, action:
     }
 }
 export type ResetCardPacksFilterACType = ReturnType<typeof resetCardPacksFilterAC>
-export const resetCardPacksFilterAC = () => ({
-    type: 'CARDS-REDUCER/RESET-FILTER'
+export const resetCardPacksFilterAC = (maxCardsCount: number) => ({
+    type: 'CARDS-REDUCER/RESET-FILTER',
+    maxCardsCount
 } as const)
 export type SetCarsPacksTableACType = ReturnType<typeof setCarsPacksTableAC>
 export const setCarsPacksTableAC = (cardPacks: CardPacksType[]) => ({
@@ -164,10 +165,10 @@ export const setPageInPaginationAC = (page: number) => {
         page
     } as const
 }
-export type SetPageCountACType = ReturnType<typeof setPageCountAC>
-export const setPageCountAC = (amount: number) => {
+export type SetPageAmountACType = ReturnType<typeof setPagesAmountAC>
+export const setPagesAmountAC = (amount: number) => {
     return {
-        type: 'CARDS-REDUCER/SET-PAGE-COUNT',
+        type: 'CARDS-REDUCER/SET-PAGES-AMOUNT',
         amount
     } as const
 }

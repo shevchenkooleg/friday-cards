@@ -5,6 +5,8 @@ import SearchBlock from "../CardPack/SearchBlock";
 import {CardsPacksTable} from "../CardPack/CardsPacksTable";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {getCardReducerData} from "../../bll/cardPacksReducer";
+import {compose} from "redux";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 const Profile = () => {
     const user_id = useAppSelector<string>((state)=> state.profileReducer.userData.id)
@@ -28,4 +30,5 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+// export default Profile;
+export default compose<React.ComponentType>(withAuthRedirect)(Profile);

@@ -2,10 +2,9 @@ import React from 'react';
 import s from './SideBar.module.css'
 import OwnCardsSelector from "./OwnCardsSelector/OwnCardsSelector";
 import DoubleRange from "./DoubleRange/DoubleRange";
-import {useAppDispatch} from "../../bll/store";
-import {getCardReducerData,resetCardPacksFilterAC} from "../../bll/cardPacksReducer";
+import {useAppDispatch, useAppSelector} from "../../bll/store";
+import {resetCardPacksFilterAC} from "../../bll/cardPacksReducer";
 import {Button} from "@mui/material";
-import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
 import ProfileBlock from "./ProfileBlock/ProfileBlock";
 
 type PropsType = {
@@ -14,6 +13,7 @@ type PropsType = {
 
 export const SideBar = (props: PropsType) => {
     const dispatch = useAppDispatch();
+    const maxCardsCount = useAppSelector<number | undefined>((state => state.cardPacksReducer.maxCardsCount))
 
     const resetButtonHandler = () => {
         const defaultSearchSettings = {
@@ -24,8 +24,8 @@ export const SideBar = (props: PropsType) => {
                 pageCount: 10,
                 user_id: '',
         }
-        dispatch(resetCardPacksFilterAC())
-        dispatch(getCardReducerData(prepareDataForSearchRequest(defaultSearchSettings, '')))
+        maxCardsCount && dispatch(resetCardPacksFilterAC(maxCardsCount))
+        // dispatch(getCardReducerData(prepareDataForSearchRequest(defaultSearchSettings, '')))
         //вынес подготовку объекта для отправки в отдельную функцию prepareDataForSearchRequest
         //два диспатча выполняются как хотят (в произвольном порядке)
     };
