@@ -1,6 +1,6 @@
 import {CardsPacksDataType, SearchSettingsType} from "../../bll/cardPacksReducer";
 
-export const prepareDataForSearchRequest = (searchSettings: SearchSettingsType, searchName: string) => {
+export const prepareDataForSearchRequest = (searchSettings: SearchSettingsType, searchName?: string) => {
     let data = {} as CardsPacksDataType & { minMax?: number | number[] }
     for (let key in searchSettings) {
         if (searchSettings[key as keyof SearchSettingsType]) {
@@ -11,6 +11,6 @@ export const prepareDataForSearchRequest = (searchSettings: SearchSettingsType, 
         data = {...data, min: data.minMax[0], max: data.minMax[1]}
         delete data.minMax
     }
-    if (searchName.trim().length >= 0) data = {...data, packName: searchName} //Добавил для поиска по имени
+    if (searchName && searchName.trim().length >= 0) data = {...data, packName: searchName} //Добавил для поиска по имени
     return data
 }

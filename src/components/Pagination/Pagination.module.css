@@ -1,0 +1,18 @@
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selected {
+    color: #ff002e;
+    font-weight: bold;
+}
+
+.selector {
+    display: inline-block;
+}
+
+.pagination {
+    margin-right: 50px;
+}
