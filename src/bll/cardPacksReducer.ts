@@ -49,7 +49,6 @@ export type AddPackDataType = {
         deckCover?: string
         private?: boolean
         type?: string
-
     }
 }
 export type CardsPacksDataType = {
@@ -85,23 +84,15 @@ export type AppReducerActionsType =
     SetCardsReducerDataACType |
     SetMinMaxSearchValueACType |
     SetUserIDForSearchACType |
-    resetCardPacksFilterACType
+    ResetCardPacksFilterACType |
+    SetCurrentPageACType |
+    SetPageInPaginationACType |
+    SetPageCountACType
 
 export const cardPacksReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
     switch (action.type) {
         case "CARDS-REDUCER/RESET-FILTER": {
-            return {
-                ...state,
-                searchSettings: {
-                    ...state.searchSettings,
-                    minMax: [0, 103],
-                    packName: '',
-                    page: 1,
-                    pageCount: 10,
-                    user_id: '',
-                    sortPacks: ''
-                }
-            }
+            return {...state, searchSettings: {...state.searchSettings, minMax: [0,103], packName: '', page: 1, pageCount: 10, user_id: '', sortPacks:''}}
         }
         case 'CARDS-REDUCER/SET-CARDS-PACKS-TABLE': {
             return {...state, cardPacks: [...action.cardPacks]}
@@ -115,12 +106,21 @@ export const cardPacksReducer = (state: InitialStateType = initialState, action:
         case "CARDS-REDUCER/SET-USER-ID-FOR-SEARCH": {
             return {...state, searchSettings: {...state.searchSettings, user_id: action.id}}
         }
+        case "CARDS-REDUCER/SET-CURRENT-PAGE": {
+            return {...state, searchSettings: {...state.searchSettings, page: action.page}}
+        }
+        case "CARDS-REDUCER/SET-PAGE-IN-PAGINATION": {
+            return {...state, page: action.page}
+        }
+        case "CARDS-REDUCER/SET-PAGE-COUNT": {
+            return {...state, pageCount: action.amount, searchSettings:{...state.searchSettings, pageCount:action.amount}}
+        }
         default: {
             return state
         }
     }
 }
-export type resetCardPacksFilterACType = ReturnType<typeof resetCardPacksFilterAC>
+export type ResetCardPacksFilterACType = ReturnType<typeof resetCardPacksFilterAC>
 export const resetCardPacksFilterAC = () => ({
     type: 'CARDS-REDUCER/RESET-FILTER'
 } as const)
@@ -150,6 +150,27 @@ export const setUserIDForSearchAC = (id: string) => {
         id
     } as const
 }
+export type SetCurrentPageACType = ReturnType<typeof setCurrentPageAC>
+export const setCurrentPageAC = (page: number) => {
+    return {
+        type: 'CARDS-REDUCER/SET-CURRENT-PAGE',
+        page
+    } as const
+}
+export type SetPageInPaginationACType = ReturnType<typeof setPageInPaginationAC>
+export const setPageInPaginationAC = (page: number) => {
+    return {
+        type: 'CARDS-REDUCER/SET-PAGE-IN-PAGINATION',
+        page
+    } as const
+}
+export type SetPageCountACType = ReturnType<typeof setPageCountAC>
+export const setPageCountAC = (amount: number) => {
+    return {
+        type: 'CARDS-REDUCER/SET-PAGE-COUNT',
+        amount
+    } as const
+}
 
 
 //THUNK
@@ -158,6 +179,7 @@ export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
         try {
             let response = await CardsAPI.getCardSPacks(data)
             dispatch(setCarsPacksTableAC(response.data.cardPacks))
+            dispatch(setPageInPaginationAC(response.data.page))
         } catch (error: any) {
             console.log(error)
             // dispatch(setAppError(error.response.data.error))

@@ -7,6 +7,7 @@ import {SideBar} from "../SideBar/SideBar";
 import SearchBlock from "./SearchBlock";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import Pagination from "../Pagination/Pagination";
 
 const CardPacks = () => {
     const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ const CardPacks = () => {
                 <h2>Packs list</h2>
                 <SearchBlock/>
                 <CardsPacksTable/>
+                <Pagination/>
             </div>
         </div>
     );
