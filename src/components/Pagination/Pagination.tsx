@@ -24,10 +24,6 @@ const Pagination = () => {
     useEffect(()=>{
         dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
     },[dispatch, searchSettingsCurrentPage, pageCount])
-    //
-    // useEffect(()=>{
-    //     dispatch(setCurrentPageAC(1))
-    // },[pageCount, dispatch])
 
     let totalPages: number | undefined
 

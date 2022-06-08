@@ -16,18 +16,7 @@ export const SideBar = (props: PropsType) => {
     const maxCardsCount = useAppSelector<number | undefined>((state => state.cardPacksReducer.maxCardsCount))
 
     const resetButtonHandler = () => {
-        const defaultSearchSettings = {
-            packName: '',
-                minMax: [0, 103],
-                sortPacks: '',
-                page: 1,
-                pageCount: 10,
-                user_id: '',
-        }
         maxCardsCount && dispatch(resetCardPacksFilterAC(maxCardsCount))
-        // dispatch(getCardReducerData(prepareDataForSearchRequest(defaultSearchSettings, '')))
-        //вынес подготовку объекта для отправки в отдельную функцию prepareDataForSearchRequest
-        //два диспатча выполняются как хотят (в произвольном порядке)
     };
 
 
