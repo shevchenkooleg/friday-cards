@@ -11,9 +11,6 @@ import TableBody from "@mui/material/TableBody";
 import {Button} from "@mui/material";
 
 
-type StarProps = {
-    grade: number
-}
 
 const COLUMNS = [
     {
@@ -34,15 +31,6 @@ const COLUMNS = [
     },
 
 ]
-
-//todo: сделать компонент рейтинга зависящий от получеаиого GRADE и отрисовать в ячейке
-export const Star = (props: StarProps) => {
-  return (
-      <>
-
-      </>
-  )
-}
 
 const PackTable = () => {
 
