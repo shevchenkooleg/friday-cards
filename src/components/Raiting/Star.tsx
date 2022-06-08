@@ -9,6 +9,6 @@ type StarPropsType = {
 
 
 export const Star = ({selected, half}: StarPropsType) => {
-    return <span>{half ? <StarHalfIcon/> : selected ? <StarIcon/> :<StarBorderIcon/>}</span>
+    return <>{half ? <StarHalfIcon fontSize={'small'}/> : selected ? <StarIcon fontSize={'small'}/> :<StarBorderIcon fontSize={'small'}/>}</>
 };
 

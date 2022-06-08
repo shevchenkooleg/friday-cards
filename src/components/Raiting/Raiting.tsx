@@ -1,12 +1,12 @@
 import React from 'react';
 import {Star} from './Star';
-
+import s from './rating.module.css'
 type RatingPropsType = {
     rating: number
 }
 export const Rating = ({rating}: RatingPropsType) => {
     return (
-        <div>
+        <div className={s.rating}>
             <Star selected={rating > 0} half={rating > 0 && rating < 1}/>
             <Star selected={rating > 1} half={rating > 1 && rating < 2}/>
             <Star selected={rating > 2} half={rating > 2 && rating < 3}/>
