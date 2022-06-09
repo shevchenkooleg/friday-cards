@@ -15,6 +15,6 @@ export const prepareDataForSearchRequest = (searchSettings: SearchSettingsType, 
         data = {...data, user_id}
     }
     if (searchName && searchName.trim().length >= 0) data = {...data, packName: searchName} //Добавил для поиска по имени
-    console.log(data)
+    // console.log(data)
     return data
 }

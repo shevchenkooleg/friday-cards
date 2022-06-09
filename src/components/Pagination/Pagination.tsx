@@ -4,47 +4,46 @@ import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from '@mui
 import s from './Pagination.module.css'
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {
-    getCardsPacksTableTC,
-    SearchSettingsType,
     setCurrentPageAC, setPagesAmountAC
 } from "../../bll/cardPacksReducer";
-import { prepareDataForSearchRequest } from '../../utils/dataPrepare/searchDataPrepare';
 
 const Pagination = () => {
 
 
-
     const dispatch = useAppDispatch()
-    const searchSettings = useAppSelector<SearchSettingsType>((state)=>state.cardPacksReducer.searchSettings)
-    const searchSettingsCurrentPage = useAppSelector<number>((state)=>state.cardPacksReducer.searchSettings.page)
     const cardPacksTotalCount = useAppSelector<number | undefined>((state) => state.cardPacksReducer.cardPacksTotalCount)
     const currentPage = useAppSelector<number | undefined>((state) => state.cardPacksReducer.page)
     const pageCount = useAppSelector<number | undefined>((state) => state.cardPacksReducer.pageCount)
-
-    useEffect(()=>{
-        dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
-    },[dispatch, searchSettingsCurrentPage, pageCount])
 
     let totalPages: number | undefined
 
     const getPagesForPagination = () => {
         totalPages = (cardPacksTotalCount && pageCount && Math.ceil(cardPacksTotalCount / pageCount))
         let pagesForPagination: number[] = []
-        if (currentPage && currentPage < 6) {
-            for (let i = 1; i <= 11; i++) {
+        if (totalPages && totalPages < 11) {
+            for (let i = 1; i <= totalPages; i++) {
                 pagesForPagination.push(i)
             }
-        } else if (currentPage && totalPages && (totalPages - currentPage) < 6) {
+            return pagesForPagination
+        } else {
+            if (currentPage && currentPage < 6) {
+                for (let i = 1; i <= 11; i++) {
+                    pagesForPagination.push(i)
+                }
+            } else if (currentPage && totalPages && (totalPages - currentPage) < 6) {
 
-            for (let i = totalPages - 10; i < totalPages + 1; i++) {
-                pagesForPagination.push(i)
+                for (let i = totalPages - 10; i < totalPages + 1; i++) {
+                    pagesForPagination.push(i)
+                }
+            } else if (currentPage) {
+                for (let i = currentPage - 5; i < currentPage + 6; i++) {
+                    pagesForPagination.push(i)
+                }
             }
-        } else if (currentPage) {
-            for (let i = currentPage - 5; i < currentPage + 6; i++) {
-                pagesForPagination.push(i)
-            }
+            return pagesForPagination
         }
-        return pagesForPagination
+
+
     }
 
     const onSpanClickHandler = (page: number) => {
@@ -55,9 +54,14 @@ const Pagination = () => {
     return (
         <div className={s.content}>
             <div className={s.pagination}>
-                <span onClick={()=>{dispatch(setCurrentPageAC(1))}}>{'<'}</span>
-                {getPagesForPagination().map((p)=><span onClick={()=>onSpanClickHandler(p)} className={p === currentPage ? s.selected : ''}>{p}</span>)}
-                <span onClick={()=>{cardPacksTotalCount && totalPages && dispatch(setCurrentPageAC(totalPages))}}>{'>'}</span>
+                <span onClick={() => {
+                    dispatch(setCurrentPageAC(1))
+                }}>{'<'}</span>
+                {getPagesForPagination().map((p,i) => <span key={i} onClick={() => onSpanClickHandler(p)}
+                                                          className={p === currentPage ? s.selected : ''}>{p}</span>)}
+                <span onClick={() => {
+                    cardPacksTotalCount && totalPages && dispatch(setCurrentPageAC(totalPages))
+                }}>{'>'}</span>
             </div>
             <SelectorNumberCards/>
         </div>
@@ -70,7 +74,8 @@ const SelectorNumberCards = () => {
     const dispatch = useAppDispatch()
     const [pageAmount, setPageAmount] = React.useState(10);
 
-    useEffect(()=>{
+    useEffect(() => {
+        console.log('effect')
         dispatch(setCurrentPageAC(1))
         dispatch(setPagesAmountAC(pageAmount))
     }, [pageAmount, dispatch])
@@ -83,7 +88,7 @@ const SelectorNumberCards = () => {
 
     return (
         <div className={s.selector}>
-            <Box sx={{width: 80, margin: '10px 0 10px 0'}} >
+            <Box sx={{width: 80, margin: '10px 0 10px 0'}}>
                 <FormControl fullWidth>
                     <InputLabel id="label">Pages</InputLabel>
                     <Select

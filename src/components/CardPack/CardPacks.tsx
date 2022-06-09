@@ -1,19 +1,36 @@
 import React, {useEffect} from 'react';
 import {CardsPacksTable} from "./CardsPacksTable";
-import {useAppDispatch} from "../../bll/store";
-import { getCardReducerData } from '../../bll/cardPacksReducer';
+import {useAppDispatch, useAppSelector} from "../../bll/store";
+import {getCardsPacksTableTC, SearchSettingsType} from '../../bll/cardPacksReducer';
 import s from './CardPacks.module.css'
 import {SideBar} from "../SideBar/SideBar";
 import SearchBlock from "./SearchBlock";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import Pagination from "../Pagination/Pagination";
+import { prepareDataForSearchRequest } from '../../utils/dataPrepare/searchDataPrepare';
 
 const CardPacks = () => {
+
     const dispatch = useAppDispatch();
+    const searchSettings = useAppSelector<SearchSettingsType>((state)=>state.cardPacksReducer.searchSettings)
+    const searchSettingsCurrentPage = useAppSelector<number>((state)=>state.cardPacksReducer.searchSettings.page)
+
+
+
+    //
+    // useEffect(()=>{
+    //     dispatch(getCardReducerData({pageCount:10, user_id: ''}))
+    // }, [dispatch])
+
+
     useEffect(()=>{
-        dispatch(getCardReducerData({pageCount:10, user_id: ''}))
-    }, [dispatch])
+        dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
+    },[dispatch, searchSettingsCurrentPage])
+
+
+
+
     return (
         <div className={s.container}>
             <div className={s.sideBar}>

@@ -7,6 +7,7 @@ import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {getCardReducerData} from "../../bll/cardPacksReducer";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import Pagination from "../Pagination/Pagination";
 
 const Profile = () => {
     const user_id = useAppSelector<string>((state)=> state.profileReducer.userData.id)
@@ -25,6 +26,7 @@ const Profile = () => {
                 <h2>My packs list</h2>
                 <SearchBlock id={user_id}/>
                 <CardsPacksTable id={user_id}/>
+                <Pagination/>
             </div>
         </div>
     );

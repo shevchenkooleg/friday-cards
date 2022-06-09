@@ -2,7 +2,8 @@ import {Button, TextField} from '@mui/material';
 import React, {ChangeEvent, useState} from 'react';
 import s from './SearchBlock.module.css'
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {addCardPack, CardsPacksDataType, getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardPacksReducer";
+import {addCardPack, getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardPacksReducer";
+import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
 
 type PropsType = {
     id?: string
@@ -30,21 +31,7 @@ const SearchBlock = (props: PropsType) => {
         dispatch(addCardPack({cardsPack: {name: 'My Pack'}}, props.id))
     }
     const onSearchClickHandler = () => {
-        let data = {} as CardsPacksDataType & { minMax?: number | number[] }
-        for (let key in searchSettings) {
-            // @ts-ignore
-            if (searchSettings[key]) {
-                // @ts-ignore
-                data = {...data, [key]: searchSettings[key]}
-            }
-        }
-        if (data.minMax) {
-            // @ts-ignore
-            data = {...data, min: data.minMax[0], max: data.minMax[1]}
-            delete data.minMax
-        }
-        if (searchName.trim().length >= 0) data = {...data, packName: searchName} //Добавил для поиска по имени
-        dispatch(getCardsPacksTableTC(data))
+        dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
     }
     return (
         <div className={s.content}>

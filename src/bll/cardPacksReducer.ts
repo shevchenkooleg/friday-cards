@@ -63,11 +63,11 @@ export type CardsPacksDataType = {
 
 export const initialState: InitialStateType = {
     cardPacks: [],
-    cardPacksTotalCount: undefined,
-    maxCardsCount: undefined,
-    minCardsCount: undefined,
-    page: undefined,
-    pageCount: undefined,
+    cardPacksTotalCount: 0,
+    maxCardsCount: 0,
+    minCardsCount: 0,
+    page: 1,
+    pageCount: 10,
     token: '',
     tokenDeathTime: undefined,
     searchSettings: {
@@ -82,12 +82,14 @@ export const initialState: InitialStateType = {
 export type AppReducerActionsType =
     SetCarsPacksTableACType |
     SetCardsReducerDataACType |
+    SetMaxCardsValueAC |
     SetMinMaxSearchValueACType |
     SetUserIDForSearchACType |
     ResetCardPacksFilterACType |
     SetCurrentPageACType |
     SetPageInPaginationACType |
-    SetPageAmountACType
+    SetPageAmountACType |
+    SetCardPacksTotalCountACType
 
 export const cardPacksReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
     switch (action.type) {
@@ -100,7 +102,11 @@ export const cardPacksReducer = (state: InitialStateType = initialState, action:
         case "CARDS-REDUCER/SET-CARDS-REDUCER-DATA": {
             return {...state, ...action.cardReducerData}
         }
+        case "CARDS-REDUCER/SET-MAX-CARDS-VALUE": {
+            return {...state, minCardsCount:0, maxCardsCount:action.maxCardValue}
+        }
         case "CARDS-REDUCER/SET-MIN-MAX-SEARCH-VALUE": {
+            // @ts-ignore
             return {...state, searchSettings: {...state.searchSettings, minMax: action.value}}
         }
         case "CARDS-REDUCER/SET-USER-ID-FOR-SEARCH": {
@@ -114,6 +120,9 @@ export const cardPacksReducer = (state: InitialStateType = initialState, action:
         }
         case "CARDS-REDUCER/SET-PAGES-AMOUNT": {
             return {...state, pageCount: action.amount, searchSettings:{...state.searchSettings, pageCount:action.amount}}
+        }
+        case "CARDS-REDUCER/SET-CARD-PACKS-TOTAL-COUNT": {
+            return {...state, cardPacksTotalCount: action.totalCount}
         }
         default: {
             return state
@@ -135,6 +144,13 @@ export const setCardsReducerDataAC = (cardReducerData: InitialStateType) => {
     return {
         type: 'CARDS-REDUCER/SET-CARDS-REDUCER-DATA',
         cardReducerData
+    } as const
+}
+export type SetMaxCardsValueAC = ReturnType<typeof setMaxCardsValueAC>
+export const setMaxCardsValueAC = (maxCardValue: number) => {
+    return {
+        type: 'CARDS-REDUCER/SET-MAX-CARDS-VALUE',
+        maxCardValue
     } as const
 }
 export type SetMinMaxSearchValueACType = ReturnType<typeof setMinMaxSearchValueAC>
@@ -172,6 +188,13 @@ export const setPagesAmountAC = (amount: number) => {
         amount
     } as const
 }
+export type SetCardPacksTotalCountACType = ReturnType<typeof setCardPacksTotalCountAC>
+export const setCardPacksTotalCountAC = (totalCount: number) => {
+    return {
+        type: 'CARDS-REDUCER/SET-CARD-PACKS-TOTAL-COUNT',
+        totalCount
+    } as const
+}
 
 
 //THUNK
@@ -181,6 +204,9 @@ export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
             let response = await CardsAPI.getCardSPacks(data)
             dispatch(setCarsPacksTableAC(response.data.cardPacks))
             dispatch(setPageInPaginationAC(response.data.page))
+            dispatch(setCardPacksTotalCountAC(response.data.cardPacksTotalCount))
+            dispatch(setMaxCardsValueAC(response.data.maxCardsCount))
+
         } catch (error: any) {
             console.log(error)
             // dispatch(setAppError(error.response.data.error))
