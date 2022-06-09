@@ -7,6 +7,8 @@
 .selected {
     color: #ff002e;
     font-weight: bold;
+    padding-left: 20px;
+    font-size: 20px;
 }
 
 .selector {
@@ -15,4 +17,7 @@
 
 .pagination {
     margin-right: 50px;
+}
+.span {
+    padding-left: 20px;
 }

@@ -18,7 +18,7 @@ export const Navbar = () => {
             {!isAuth && <NavLink to={PATH.LOGIN.SIGN_IN} className={s.lnk}>Sign in</NavLink>}
             {!isAuth && <NavLink to={PATH.LOGIN.UPDATE_PASS} className={s.lnk}>Update password</NavLink>}
             {!isAuth && <NavLink to={PATH.LOGIN.RESTORE_PASS} className={s.lnk}>Restore password</NavLink>}*/}
-            {isAuth && <span><Settings/><LogOut/></span>}
+            {isAuth && <span className={s.span}><Settings/><LogOut/></span>}
         </div>
     );
 };
