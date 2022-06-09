@@ -8,8 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-
-
+import {Rating} from "../../Raiting/Raiting";
 
 
 
@@ -32,8 +31,6 @@ const COLUMNS = [
     },
 
 ]
-
-
 
 const PackTable = () => {
 
@@ -62,7 +59,9 @@ const PackTable = () => {
                                     </TableCell>
                                     <TableCell align="right">{c.answer}</TableCell>
                                     <TableCell align="right">{c.updated}</TableCell>
-                                    <TableCell align="right">{c.grade}</TableCell>
+                                    <TableCell align="right">
+                                        <Rating rating={c.grade}/>
+                                    </TableCell>
 
                                 </TableRow>)
                         })}

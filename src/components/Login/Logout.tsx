@@ -7,7 +7,6 @@ import {useAppDispatch} from "../../bll/store";
 
 export const LogOut = () => {
     const dispatch = useAppDispatch();
-
     const logOutHandle = () => {
         dispatch(LogOutTC())
     }
