@@ -42,8 +42,8 @@ export type InitialStateType = {
     packUserId: string
     page: number
     pageCount: number
-    token: string
-    tokenDeathTime: number
+    token?: string
+    tokenDeathTime?: number
 }
 export type AddCardDataType = {
     card: {
@@ -60,12 +60,25 @@ export type AddCardDataType = {
         type?: string
     }
 }
+
+const initialState: InitialStateType = {
+    title: '',
+    cardPackId: '',
+    cards: [],
+    cardsTotalCount: 0,
+    maxGrade: 0,
+    minGrade: 0,
+    packUserId: '',
+    page: 1,
+    pageCount: 1,
+}
 export type ActionsType =
     CardsActionACType |
     SetCardsPackTitleAC |
-    SetCurrentPageACType
+    SetCurrentPageACType |
+    SetPageAmountACType
 // searchByQuestionACType
-export const initialState: InitialStateType = {title: ''} as InitialStateType
+// export const initialState: InitialStateType = {title: ''} as InitialStateType
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
@@ -80,9 +93,11 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
             return {...state, title: action.title, cardPackId: action.packID}
         }
         case "SINGLE-PACK-REDUCER/SET-CURRENT-PAGE": {
-            return {...state, page:action.page}
+            return {...state, page: action.page}
         }
-
+        case "SINGLE-PACK-REDUCER/SET-PAGE-AMOUNT": {
+            return {...state, pageCount: action.pageAmount}
+        }
         default:
             return {...state}
     }
@@ -108,7 +123,14 @@ export const setCurrentPageAC = (page: number) => {
     return {
         type: 'SINGLE-PACK-REDUCER/SET-CURRENT-PAGE',
         page
-    }as const
+    } as const
+}
+export type SetPageAmountACType = ReturnType<typeof setPageAmountAC>
+export const setPageAmountAC = (pageAmount: number) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/SET-PAGE-AMOUNT',
+        pageAmount
+    } as const
 }
 
 //THUNK

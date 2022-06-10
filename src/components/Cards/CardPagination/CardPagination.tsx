@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from '@mui/material';
 import s from './CardPagination.module.css'
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import { setCurrentPageAC } from '../../../bll/packReducer';
+import {setCurrentPageAC, setPageAmountAC} from '../../../bll/packReducer';
 
 const CardPagination = () => {
 
@@ -13,11 +13,16 @@ const CardPagination = () => {
     const currentPage = useAppSelector<number | undefined>((state) => state.singlePackReducer.page)
     const pageCount = useAppSelector<number | undefined>((state) => state.singlePackReducer.pageCount)
 
+
     let totalPages: number | undefined
 
     const getPagesForPagination = () => {
+
         totalPages = (cardTotalCount && pageCount && Math.ceil(cardTotalCount / pageCount))
         let pagesForPagination: number[] = []
+        if (!totalPages) {
+            return [1]
+        }
         if (totalPages && totalPages < 11) {
             for (let i = 1; i <= totalPages; i++) {
                 pagesForPagination.push(i)
@@ -67,18 +72,19 @@ const CardPagination = () => {
 
 const SelectorNumberCardsForCard = () => {
 
+
+
     const dispatch = useAppDispatch()
     const [pageAmount, setPageAmount] = React.useState(4);
 
     useEffect(() => {
-        // console.log('effect')
-        // dispatch(setCurrentPageAC(1))
-        // dispatch(setPagesAmountAC(pageAmount))
+        dispatch(setCurrentPageAC(1))
+        dispatch(setPageAmountAC(pageAmount))
     }, [pageAmount, dispatch])
 
 
     const handleChange = (event: SelectChangeEvent) => {
-        // setPageAmount(Number(event.target.value));
+        setPageAmount(Number(event.target.value));
     };
 
 

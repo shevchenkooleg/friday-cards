@@ -10,11 +10,16 @@ import CardPagination from './CardPagination/CardPagination';
 
 const Cards = () => {
 
-
+    const dispatch = useAppDispatch()
     const cardsPack_id = useAppSelector<string>((state) => state.singlePackReducer.cardPackId)
+    
+    // useEffect(()=>{
+    //     dispatch(getSinglePackDataTC({cardsPack_id, page:currentPage}))
+    // }, [currentPage])
+
+
     const data = {card:{cardsPack_id}}
 
-    const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const onClickBackHandler = () => {
       navigate('/cards_packs')

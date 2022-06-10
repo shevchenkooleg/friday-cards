@@ -59,7 +59,7 @@ const Pagination = () => {
                 }}>{'<'}</span>
                 {getPagesForPagination().map((p,i) => <span key={i} onClick={() => onSpanClickHandler(p)}
                                                           className={p === currentPage ? s.selected : s.span}>{p}</span>)}
-                <span onClick={() => {
+                <span className={s.span} onClick={() => {
                     cardPacksTotalCount && totalPages && dispatch(setCurrentPageAC(totalPages))
                 }}>{'>'}</span>
             </div>
