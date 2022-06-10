@@ -97,7 +97,7 @@ export const CardsPacksTable = (props: PropsType) => {
                             // let packTitle = pack.name
                             const onTitleClickHandler = () => {
 
-                                dispatch(getSinglePackDataTC({cardsPack_id: pack._id}))
+                                dispatch(getSinglePackDataTC({cardsPack_id:pack._id, page: 1}))
                                 dispatch(setCardsPackTitleAC(pack.name, pack._id))
                                 navigate('/card-list')
                             }

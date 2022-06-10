@@ -42,13 +42,45 @@ export type InitialStateType = {
     packUserId: string
     page: number
     pageCount: number
-    token: string
-    tokenDeathTime: number
+    token?: string
+    tokenDeathTime?: number
+}
+export type AddCardDataType = {
+    card: {
+        cardsPack_id: string
+        question?: string
+        answer?: string
+        garde?: number
+        shots?: number
+        rating?: number
+        answerImg?: string
+        questionImg?: string
+        questionVideo?: string
+        answerVideo?: string
+        type?: string
+    }
+}
+
+const initialState: InitialStateType = {
+    title: '',
+    cardPackId: '',
+    cards: [],
+    cardsTotalCount: 0,
+    maxGrade: 0,
+    minGrade: 0,
+    packUserId: '',
+    page: 1,
+    pageCount: 1,
 }
 export type ActionsType =
     CardsActionACType |
     setCardsPackTitleAC
 export const initialState: InitialStateType = {title: ''} as InitialStateType
+    SetCardsPackTitleAC |
+    SetCurrentPageACType |
+    SetPageAmountACType
+// searchByQuestionACType
+// export const initialState: InitialStateType = {title: ''} as InitialStateType
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
@@ -59,7 +91,12 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
         case "SINGLE-PACK-REDUCER/SET-NAME": {
             return {...state, title: action.title, cardPackId: action.packID}
         }
-
+        case "SINGLE-PACK-REDUCER/SET-CURRENT-PAGE": {
+            return {...state, page: action.page}
+        }
+        case "SINGLE-PACK-REDUCER/SET-PAGE-AMOUNT": {
+            return {...state, pageCount: action.pageAmount}
+        }
         default:
             return {...state}
     }
@@ -74,12 +111,26 @@ export const getCardsActionAC = (data: InitialStateType) => ({
     type: 'SINGLE-PACK-REDUCER/GET-PACK',
     data,
 } as const)
-export type setCardsPackTitleAC = ReturnType<typeof setCardsPackTitleAC>
+export type SetCardsPackTitleAC = ReturnType<typeof setCardsPackTitleAC>
 export const setCardsPackTitleAC = (title: string, packID: string) => ({
     type: 'SINGLE-PACK-REDUCER/SET-NAME',
     title,
     packID
 } as const)
+export type SetCurrentPageACType = ReturnType<typeof setCurrentPageAC>
+export const setCurrentPageAC = (page: number) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/SET-CURRENT-PAGE',
+        page
+    } as const
+}
+export type SetPageAmountACType = ReturnType<typeof setPageAmountAC>
+export const setPageAmountAC = (pageAmount: number) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/SET-PAGE-AMOUNT',
+        pageAmount
+    } as const
+}
 
 //THUNK
 export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThunk => {
@@ -94,6 +145,20 @@ export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThu
             dispatch(setAppError(error.response.data.error))
         } finally {
             dispatch(setAppStatus('idle'))
+        }
+    }
+}
+
+export const addCardTC = (data: AddCardDataType): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setAppStatus('loading'))
+            let response = await CardsAPI.addCard(data)
+            console.log(response.data)
+            dispatch(getSinglePackDataTC({cardsPack_id: data.card.cardsPack_id}))
+
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
         }
     }
 }
