@@ -241,17 +241,6 @@ export const addCardPack = (data: AddPackDataType, user_id?: string): AppThunk =
         }
     }
 }
-/*
-export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThunk => {
-    return async (dispatch) => {
-        try {
-            let response = await CardsAPI.getSingleCardPack(data)
-            console.log(response)
-        } catch (error:any) {
-            dispatch(setAppError(error.response.data.error))
-        }
-    }
-}*/
 export const deleteCardsPackTC = (card_id: string, data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {
