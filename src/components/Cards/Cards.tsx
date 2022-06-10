@@ -3,7 +3,7 @@ import s from "./Cards.module.css";
 import SearchCardBlock from './SearchCardBlock/SearchCardBlock';
 import PackTable from "./CardTable/PackTable";
 import {Button, Pagination, Stack} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import Typography from "@mui/material/Typography";
 import {getSinglePackDataTC} from "../../bll/packReducer";
@@ -17,13 +17,16 @@ const Cards = () => {
     const dispatch = useAppDispatch();
     const title = useAppSelector<string>(state => state.singlePackReducer.title)
     const pagesCount = useAppSelector<number>(state => Math.ceil(state.singlePackReducer.cardsTotalCount / state.singlePackReducer.pageCount))
-    const packID = useAppSelector<string>(state => state.singlePackReducer.cardPackId)
     const [page, setPage] = useState<number>(1);
 
-
+    let pack_ID = useParams().pack_ID;
+    // useEffect(()=>{
+    //     dispatch(getSinglePackDataTC({cardsPack_id: pack_ID}))
+    // },[])
+    //
     useEffect(()=>{
-        dispatch(getSinglePackDataTC(prepareSingleDataForSearchRequest({page, cardsPack_id: packID})))
-    },[page])
+        dispatch(getSinglePackDataTC(prepareSingleDataForSearchRequest({page, cardsPack_id: pack_ID})))
+    },[page, pack_ID])
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };

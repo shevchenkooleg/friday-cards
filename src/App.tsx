@@ -66,7 +66,7 @@ function App() {
                             <Route path={PATH.LOGIN.RESTORE_PASS} element={<RestorePass/>}/>
                             <Route path={PATH.LOGIN.UPDATE_PASS} element={<UpdatePass/>}/>
                             <Route path={PATH.CARD.PACKS} element={<CardPacks/>}/>
-                            <Route path={PATH.CARD.CARD_LIST} element={<Cards/>}/>
+                            <Route path={PATH.CARD.CARD_LIST + '/:pack_ID'} element={<Cards/>}/>
                             <Route path={PATH.PROFILE.EDIT} element={<EditProfile/>}/>
 
 

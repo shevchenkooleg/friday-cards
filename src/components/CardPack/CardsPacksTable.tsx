@@ -11,7 +11,7 @@ import {Button, Link} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {CardPacksType, deleteCardsPackTC, getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardPacksReducer";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
-import {getSinglePackDataTC, setCardsPackTitleAC} from "../../bll/packReducer";
+import {setCardsPackTitleAC} from "../../bll/packReducer";
 import {useNavigate} from "react-router-dom";
 import {UpdateFormat} from "../common/UpdateData_Format/UpdateFormat";
 import {SortButton} from "./SortButton";
@@ -97,9 +97,9 @@ export const CardsPacksTable = (props: PropsType) => {
                             // let packTitle = pack.name
                             const onTitleClickHandler = () => {
 
-                                dispatch(getSinglePackDataTC({cardsPack_id: pack._id}))
+                               // dispatch(getSinglePackDataTC({cardsPack_id: pack._id}))
                                 dispatch(setCardsPackTitleAC(pack.name, pack._id))
-                                navigate('/card-list')
+                                navigate(`/card-list/${pack._id}`)
                             }
                             const onDeleteButtonClickHandler = () => {
                                 dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, {user_id: props.id})))
