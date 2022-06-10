@@ -35,9 +35,9 @@ const Cards = () => {
     const [page, setPage] = useState<number>(1);
 
 
-    useEffect(()=>{
-        dispatch(getSinglePackDataTC(prepareSingleDataForSearchRequest({page, cardsPack_id: packID})))
-    },[page])
+    // useEffect(()=>{
+    //     dispatch(getSinglePackDataTC(prepareSingleDataForSearchRequest({page, cardsPack_id: packID})))
+    // },[page])
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };

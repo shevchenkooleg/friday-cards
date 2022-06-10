@@ -74,11 +74,13 @@ const initialState: InitialStateType = {
 }
 export type ActionsType =
     CardsActionACType |
-    setCardsPackTitleAC
-export const initialState: InitialStateType = {title: ''} as InitialStateType
     SetCardsPackTitleAC |
     SetCurrentPageACType |
     SetPageAmountACType
+
+
+// export const initialState: InitialStateType = {title: ''} as InitialStateType
+
 // searchByQuestionACType
 // export const initialState: InitialStateType = {title: ''} as InitialStateType
 
