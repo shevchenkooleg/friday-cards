@@ -2,13 +2,11 @@ import React, {useEffect, useState} from 'react';
 import s from "./Cards.module.css";
 import SearchCardBlock from './SearchCardBlock/SearchCardBlock';
 import PackTable from "./CardTable/PackTable";
-import {Button, Pagination, Stack} from "@mui/material";
+import {Button} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import Typography from "@mui/material/Typography";
 import {getSinglePackDataTC} from "../../bll/packReducer";
 import {prepareSingleDataForSearchRequest} from "../../utils/dataPrepare/searchSinglePackDataPrepare";
-import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {addCardTC} from "../../bll/packReducer";
 import CardPagination from './CardPagination/CardPagination';
 
