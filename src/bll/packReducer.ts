@@ -48,14 +48,10 @@ export type InitialStateType = {
 export type ActionsType =
     CardsActionACType |
     setCardsPackTitleAC
-    // searchByQuestionACType
 export const initialState: InitialStateType = {title: ''} as InitialStateType
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        // case "SINGLE-PACK-REDUCER/SEARCH-BY-QUESTION": {
-        //     return { ...state, cards: state.cards?.map((c)=>)}
-
         case "SINGLE-PACK-REDUCER/GET-PACK": {
             const newState = action.data
             return {...state, ...newState}

@@ -21,7 +21,7 @@ const SearchBlock = (props: PropsType) => {
         if (searchName.trim().length >= 0) {
             setTimeout(() => {
                 searchSettings.packName = searchName;
-                dispatch(getCardsPacksTableTC(searchSettings))
+                // dispatch(getCardsPacksTableTC(searchSettings))
             }, 1500)
         }
     }

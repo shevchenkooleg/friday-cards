@@ -7,8 +7,8 @@ type UpdateFormatPropsType = {
 export const UpdateFormat = ({time}:UpdateFormatPropsType) => {
     return (
         <div>
-            <span><span>{time.match(/(\d+\-)+\d+/g)}</span>
-                 (<span className={s.time}>{time.match(/(\d+\:)+(\d+)+(\d+)/g)}</span>)</span>
+            <span><span>{time.match(/(\d+-)+\d+/g)}</span>
+                 (<span className={s.time}>{time.match(/(\d+:)+(\d+)+(\d+)/g)}</span>)</span>
         </div>
     );
 };
