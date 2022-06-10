@@ -46,7 +46,7 @@ const PackTable = () => {
                     sx={{'&:last-child td, &:last-child th': {border: 0, textAlign: 'right'}}}>
                     <TableHead>
                         <TableRow>
-                            {COLUMNS.map((c) => <TableCell>{c.Header}</TableCell>)}
+                            {COLUMNS.map((c, i) => <TableCell key={i}>{c.Header}</TableCell>)}
                         </TableRow>
                     </TableHead>
                     <TableBody>

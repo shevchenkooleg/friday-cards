@@ -1,0 +1,23 @@
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selected {
+    color: #ff002e;
+    font-weight: bold;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.selector {
+    display: inline-block;
+}
+
+.pagination {
+    margin-right: 50px;
+}
+.span {
+    padding-left: 20px;
+}
