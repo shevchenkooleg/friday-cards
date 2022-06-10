@@ -17,13 +17,6 @@ const CardPacks = () => {
     const searchSettingsCurrentPage = useAppSelector<number>((state)=>state.cardPacksReducer.searchSettings.page)
 
 
-
-    //
-    // useEffect(()=>{
-    //     dispatch(getCardReducerData({pageCount:10, user_id: ''}))
-    // }, [dispatch])
-
-
     useEffect(()=>{
         dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
     },[dispatch, searchSettingsCurrentPage])

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,32 +9,39 @@ import Paper from '@mui/material/Paper';
 import s from './CardsPacksTable.module.css'
 import {Button, Link} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {CardPacksType, deleteCardsPackTC, SearchSettingsType} from "../../bll/cardPacksReducer";
+import {CardPacksType, deleteCardsPackTC, getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardPacksReducer";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
 import {getSinglePackDataTC, setCardsPackTitleAC} from "../../bll/packReducer";
 import {useNavigate} from "react-router-dom";
+import {UpdateFormat} from "../common/UpdateData_Format/UpdateFormat";
+import {SortButton} from "./SortButton";
 
 
 const COLUMNS = [
     {
         Header: 'Name',
         accessor: 'name',
+        type: 'sorted',
     },
     {
         Header: 'Cards',
-        accessor: 'cards',
+        accessor: 'cardsCount',
+        type: 'sorted',
     },
     {
         Header: 'Last Updated',
-        accessor: 'last_updated',
+        accessor: 'updated',
+        type: 'sorted',
     },
     {
         Header: 'Created by',
         accessor: 'created_by',
+        type: 'noSorted',
     },
     {
         Header: 'Action',
-        accessor: 'actions'
+        accessor: 'actions',
+        type: 'noSorted',
     },
 
 ]
@@ -44,11 +51,27 @@ type PropsType = {
 }
 
 export const CardsPacksTable = (props: PropsType) => {
+    const [sortDir, setSortDir] = useState({direction: ''})
 
     const cardPacks = useAppSelector<CardPacksType[]>((state) => state.cardPacksReducer.cardPacks)
     const dispatch = useAppDispatch()
     const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardPacksReducer.searchSettings)
     const navigate = useNavigate()
+
+//Сортировка
+    const sortButtonHandler = (newDirection: string, accessor: string) => {
+        if (newDirection === '1') {
+            setSortDir({...sortDir, direction: newDirection})
+            dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings, {sortType: '0' +accessor})))
+        } else if (newDirection === '0') {
+            setSortDir({...sortDir, direction: newDirection})
+            dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings, {sortType: '1'+accessor})))
+        } else if (newDirection === '') {
+            setSortDir({...sortDir, direction: ''})
+            dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings, {sortType: 'delete'})))
+        }
+    }
+
     return (
 
         <div className={s.container}>
@@ -57,7 +80,16 @@ export const CardsPacksTable = (props: PropsType) => {
                     sx={{'&:last-child td, &:last-child th': {border: 0, textAlign: 'right'}}}>
                     <TableHead>
                         <TableRow>
-                            {COLUMNS.map((c,i) => <TableCell key={i}>{c.Header}</TableCell>)}
+
+                            {COLUMNS.map((c, i) => <TableCell key={i}
+                                                              className={c.type === 'sorted' ? s.sortedHeader : ''}>
+                                <SortButton header={c.Header}
+                                            accessor={c.accessor}
+                                            type={c.type}
+                                            sortDir={sortDir}
+                                            onClick={sortButtonHandler}/>
+                            </TableCell>)}
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -65,12 +97,12 @@ export const CardsPacksTable = (props: PropsType) => {
                             // let packTitle = pack.name
                             const onTitleClickHandler = () => {
 
-                                dispatch(getSinglePackDataTC({cardsPack_id:pack._id}))
+                                dispatch(getSinglePackDataTC({cardsPack_id: pack._id}))
                                 dispatch(setCardsPackTitleAC(pack.name, pack._id))
                                 navigate('/card-list')
                             }
                             const onDeleteButtonClickHandler = () => {
-                                dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, '', props.id)))
+                                dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, {user_id: props.id})))
                             }
                             return (
                                 <TableRow
@@ -87,7 +119,7 @@ export const CardsPacksTable = (props: PropsType) => {
                                     </TableCell>
 
                                     <TableCell align="right">{pack.cardsCount}</TableCell>
-                                    <TableCell align="right">{pack.updated}</TableCell>
+                                    <TableCell align="right"><UpdateFormat time={pack.updated}/></TableCell>
                                     <TableCell align="right">{pack.user_name}</TableCell>
                                     <TableCell>
                                         <Button onClick={onDeleteButtonClickHandler}>Delete</Button>

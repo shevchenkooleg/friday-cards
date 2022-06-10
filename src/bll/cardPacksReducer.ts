@@ -129,6 +129,7 @@ export const cardPacksReducer = (state: InitialStateType = initialState, action:
         }
     }
 }
+
 export type ResetCardPacksFilterACType = ReturnType<typeof resetCardPacksFilterAC>
 export const resetCardPacksFilterAC = (maxCardsCount: number) => ({
     type: 'CARDS-REDUCER/RESET-FILTER',
@@ -198,6 +199,7 @@ export const setCardPacksTotalCountAC = (totalCount: number) => {
 
 
 //THUNK
+
 export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {
