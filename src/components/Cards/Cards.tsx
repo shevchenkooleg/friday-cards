@@ -5,7 +5,7 @@ import PackTable from "./CardTable/PackTable";
 import {Button} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {getSinglePackDataTC} from "../../bll/packReducer";
+import {getSinglePackDataTC, setPackIdAC} from "../../bll/packReducer";
 import {prepareSingleDataForSearchRequest} from "../../utils/dataPrepare/searchSinglePackDataPrepare";
 import {addCardTC} from "../../bll/packReducer";
 import CardPagination from './CardPagination/CardPagination';
@@ -32,8 +32,9 @@ const Cards = () => {
     let pack_ID = useParams().pack_ID;
 
     useEffect(()=>{
+        pack_ID && dispatch(setPackIdAC(pack_ID))
         dispatch(getSinglePackDataTC(prepareSingleDataForSearchRequest({page, cardsPack_id: pack_ID})))
-    },[page, pack_ID])
+    },[page, pack_ID, dispatch], )
 
     return (
         <div className={s.container}>

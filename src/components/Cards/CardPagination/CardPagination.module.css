@@ -7,7 +7,7 @@
 .selected {
     color: #ff002e;
     font-weight: bold;
-    padding-left: 20px;
+    padding: 0 12px 0 12px;
     font-size: 20px;
 }
 
@@ -19,5 +19,5 @@
     margin-right: 50px;
 }
 .span {
-    padding-left: 20px;
+    padding: 0 10px 0 10px
 }

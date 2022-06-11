@@ -44,6 +44,7 @@ export type InitialStateType = {
     pageCount: number
     token?: string
     tokenDeathTime?: number
+    searchSettings: SinglePackSearchSettingsTye
 }
 export type AddCardDataType = {
     card: {
@@ -60,7 +61,14 @@ export type AddCardDataType = {
         type?: string
     }
 }
-
+export type SinglePackSearchSettingsTye = {
+    cardPackId: string,
+    min: number,
+    max: number,
+    sortCards: string,
+    page: number,
+    pageCount: number,
+}
 const initialState: InitialStateType = {
     title: '',
     cardPackId: '',
@@ -71,12 +79,21 @@ const initialState: InitialStateType = {
     packUserId: '',
     page: 1,
     pageCount: 1,
+    searchSettings: {
+        cardPackId: '',
+        min: 1,
+        max: 6,
+        sortCards: '',
+        page: 1,
+        pageCount: 1,
+    }
 }
 export type ActionsType =
-    CardsActionACType |
+    SetCardsDataACType |
     SetCardsPackTitleAC |
     SetCurrentPageACType |
-    SetPageAmountACType
+    SetPageCountACType |
+    SetPackIdACType
 
 
 // export const initialState: InitialStateType = {title: ''} as InitialStateType
@@ -86,18 +103,29 @@ export type ActionsType =
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case "SINGLE-PACK-REDUCER/GET-PACK": {
+        case "SINGLE-PACK-REDUCER/SET-CARDS-DATA": {
+            debugger
             const newState = action.data
-            return {...state, ...newState}
+            return {...state, ...newState,
+                searchSettings:{...state.searchSettings,
+                    min: action.data.minGrade,
+                    max: action.data.maxGrade,
+                    page: action.data.page,
+                    pageCount: action.data.pageCount
+            }}
         }
         case "SINGLE-PACK-REDUCER/SET-NAME": {
             return {...state, title: action.title, cardPackId: action.packID}
         }
+        case "SINGLE-PACK-REDUCER/SET-PACK-ID": {
+            return {...state, cardPackId: action.pack_ID, searchSettings:{...state.searchSettings, cardPackId: action.pack_ID,}}
+        }
         case "SINGLE-PACK-REDUCER/SET-CURRENT-PAGE": {
+            debugger
             return {...state, page: action.page}
         }
-        case "SINGLE-PACK-REDUCER/SET-PAGE-AMOUNT": {
-            return {...state, pageCount: action.pageAmount}
+        case "SINGLE-PACK-REDUCER/SET-PAGE-COUNT": {
+            return {...state, pageCount: action.pageCount}
         }
         default:
             return {...state}
@@ -108,9 +136,9 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
 
 //ACTIONS
 
-export type CardsActionACType = ReturnType<typeof getCardsActionAC>
-export const getCardsActionAC = (data: InitialStateType) => ({
-    type: 'SINGLE-PACK-REDUCER/GET-PACK',
+export type SetCardsDataACType = ReturnType<typeof setCardsDataAC>
+export const setCardsDataAC = (data: InitialStateType) => ({
+    type: 'SINGLE-PACK-REDUCER/SET-CARDS-DATA',
     data,
 } as const)
 export type SetCardsPackTitleAC = ReturnType<typeof setCardsPackTitleAC>
@@ -119,6 +147,13 @@ export const setCardsPackTitleAC = (title: string, packID: string) => ({
     title,
     packID
 } as const)
+export type SetPackIdACType = ReturnType<typeof setPackIdAC>
+export const setPackIdAC = (pack_ID: string) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/SET-PACK-ID',
+        pack_ID
+    } as const
+}
 export type SetCurrentPageACType = ReturnType<typeof setCurrentPageAC>
 export const setCurrentPageAC = (page: number) => {
     return {
@@ -126,11 +161,11 @@ export const setCurrentPageAC = (page: number) => {
         page
     } as const
 }
-export type SetPageAmountACType = ReturnType<typeof setPageAmountAC>
-export const setPageAmountAC = (pageAmount: number) => {
+export type SetPageCountACType = ReturnType<typeof setPageCountAC>
+export const setPageCountAC = (pageCount: number) => {
     return {
-        type: 'SINGLE-PACK-REDUCER/SET-PAGE-AMOUNT',
-        pageAmount
+        type: 'SINGLE-PACK-REDUCER/SET-PAGE-COUNT',
+        pageCount
     } as const
 }
 
@@ -140,7 +175,7 @@ export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThu
         try {
             dispatch(setAppStatus('loading'))
             let response = await CardsAPI.getSingleCardPack(data)
-            dispatch(getCardsActionAC(response.data))
+            dispatch(setCardsDataAC(response.data))
 
             console.log(response)
         } catch (error: any) {

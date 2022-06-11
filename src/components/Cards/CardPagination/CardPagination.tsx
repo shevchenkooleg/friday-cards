@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from '@mui/material';
 import s from './CardPagination.module.css'
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import {setCurrentPageAC, setPageAmountAC} from '../../../bll/packReducer';
+import {setCurrentPageAC, setPageCountAC} from '../../../bll/packReducer';
 
 const CardPagination = () => {
 
@@ -79,7 +79,7 @@ const SelectorNumberCardsForCard = () => {
 
     useEffect(() => {
         dispatch(setCurrentPageAC(1))
-        dispatch(setPageAmountAC(pageAmount))
+        dispatch(setPageCountAC(pageAmount))
     }, [pageAmount, dispatch])
 
 
