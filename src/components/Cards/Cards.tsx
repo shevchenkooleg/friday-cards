@@ -5,8 +5,10 @@ import PackTable from "./CardTable/PackTable";
 import {Button} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {getSinglePackDataTC, setPackIdAC} from "../../bll/packReducer";
-import {prepareSingleDataForSearchRequest} from "../../utils/dataPrepare/searchSinglePackDataPrepare";
+import {getSinglePackDataTC, setPackIdAC, SinglePackSearchSettingsType} from "../../bll/packReducer";
+import {
+    prepareSinglePackDataForSearchRequest
+} from "../../utils/dataPrepare/searchSinglePackDataPrepare";
 import {addCardTC} from "../../bll/packReducer";
 import CardPagination from './CardPagination/CardPagination';
 
@@ -14,7 +16,7 @@ const Cards = () => {
 
     const dispatch = useAppDispatch()
     const cardsPack_id = useAppSelector<string>((state) => state.singlePackReducer.cardPackId)
-    const page = useAppSelector(state => state.singlePackReducer.page)
+    const singlePackSearchSettings = useAppSelector<SinglePackSearchSettingsType>((state)=>state.singlePackReducer.searchSettings)
 
     const data = {card:{cardsPack_id}}
 
@@ -33,8 +35,16 @@ const Cards = () => {
 
     useEffect(()=>{
         pack_ID && dispatch(setPackIdAC(pack_ID))
-        dispatch(getSinglePackDataTC(prepareSingleDataForSearchRequest({page, cardsPack_id: pack_ID})))
-    },[page, pack_ID, dispatch], )
+        dispatch(getSinglePackDataTC(prepareSinglePackDataForSearchRequest(singlePackSearchSettings, {cardsPack_id:pack_ID})))
+    },[
+        singlePackSearchSettings.page,
+        singlePackSearchSettings.cardsPack_id,
+        singlePackSearchSettings.pageCount,
+        pack_ID,
+        dispatch
+    ], )
+
+    console.log(prepareSinglePackDataForSearchRequest(singlePackSearchSettings))
 
     return (
         <div className={s.container}>

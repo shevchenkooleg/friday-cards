@@ -44,7 +44,7 @@ export type InitialStateType = {
     pageCount: number
     token?: string
     tokenDeathTime?: number
-    searchSettings: SinglePackSearchSettingsTye
+    searchSettings: SinglePackSearchSettingsType
 }
 export type AddCardDataType = {
     card: {
@@ -61,9 +61,9 @@ export type AddCardDataType = {
         type?: string
     }
 }
-export type SinglePackSearchSettingsTye = {
-    cardPackId: string,
-    min: number,
+export type SinglePackSearchSettingsType = {
+    cardsPack_id: string,
+    min?: number,
     max: number,
     sortCards: string,
     page: number,
@@ -80,20 +80,20 @@ const initialState: InitialStateType = {
     page: 1,
     pageCount: 1,
     searchSettings: {
-        cardPackId: '',
-        min: 1,
+        cardsPack_id: '',
+        // min: 1,
         max: 6,
         sortCards: '',
         page: 1,
-        pageCount: 1,
+        pageCount: 4,
     }
 }
 export type ActionsType =
     SetCardsDataACType |
     SetCardsPackTitleAC |
+    SetPackIdACType |
     SetCurrentPageACType |
-    SetPageCountACType |
-    SetPackIdACType
+    SetPageCountACType
 
 
 // export const initialState: InitialStateType = {title: ''} as InitialStateType
@@ -104,28 +104,38 @@ export type ActionsType =
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case "SINGLE-PACK-REDUCER/SET-CARDS-DATA": {
-            debugger
             const newState = action.data
-            return {...state, ...newState,
-                searchSettings:{...state.searchSettings,
+            return {
+                ...state, ...newState,
+                searchSettings: {
+                    ...state.searchSettings,
                     min: action.data.minGrade,
                     max: action.data.maxGrade,
                     page: action.data.page,
                     pageCount: action.data.pageCount
-            }}
+                }
+            }
         }
         case "SINGLE-PACK-REDUCER/SET-NAME": {
-            return {...state, title: action.title, cardPackId: action.packID}
+            return {
+                ...state,
+                title: action.title,
+                cardPackId: action.packID,
+                searchSettings: {...state.searchSettings, cardsPack_id: action.packID}
+            }
         }
         case "SINGLE-PACK-REDUCER/SET-PACK-ID": {
-            return {...state, cardPackId: action.pack_ID, searchSettings:{...state.searchSettings, cardPackId: action.pack_ID,}}
+            return {
+                ...state, cardPackId: action.packID,
+                searchSettings: {...state.searchSettings, cardsPack_id: action.packID}
+            }
         }
         case "SINGLE-PACK-REDUCER/SET-CURRENT-PAGE": {
-            debugger
-            return {...state, page: action.page}
+            // debugger
+            return {...state, searchSettings: {...state.searchSettings, page: action.page}}
         }
         case "SINGLE-PACK-REDUCER/SET-PAGE-COUNT": {
-            return {...state, pageCount: action.pageCount}
+            return {...state, searchSettings: {...state.searchSettings, pageCount: action.pageCount}}
         }
         default:
             return {...state}
@@ -142,16 +152,18 @@ export const setCardsDataAC = (data: InitialStateType) => ({
     data,
 } as const)
 export type SetCardsPackTitleAC = ReturnType<typeof setCardsPackTitleAC>
-export const setCardsPackTitleAC = (title: string, packID: string) => ({
-    type: 'SINGLE-PACK-REDUCER/SET-NAME',
-    title,
-    packID
-} as const)
+export const setCardsPackTitleAC = (title: string, packID: string) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/SET-NAME',
+        title,
+        packID
+    } as const
+}
 export type SetPackIdACType = ReturnType<typeof setPackIdAC>
-export const setPackIdAC = (pack_ID: string) => {
+export const setPackIdAC = (packID: string) => {
     return {
         type: 'SINGLE-PACK-REDUCER/SET-PACK-ID',
-        pack_ID
+        packID
     } as const
 }
 export type SetCurrentPageACType = ReturnType<typeof setCurrentPageAC>
