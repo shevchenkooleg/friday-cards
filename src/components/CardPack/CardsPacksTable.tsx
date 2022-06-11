@@ -94,10 +94,7 @@ export const CardsPacksTable = (props: PropsType) => {
                     </TableHead>
                     <TableBody>
                         {cardPacks.map((pack) => {
-                            // let packTitle = pack.name
                             const onTitleClickHandler = () => {
-
-                               // dispatch(getSinglePackDataTC({cardsPack_id: pack._id}))
                                 dispatch(setCardsPackTitleAC(pack.name, pack._id))
                                 navigate(`/card-list/${pack._id}`)
                             }
