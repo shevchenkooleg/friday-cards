@@ -25,6 +25,7 @@ export const prepareSinglePackDataForSearchRequest = (searchSettingsSinglePack: 
                                                           user_id?: string,
                                                           sortType?: string,
                                                           cardsPack_id?: string,
+                                                          cardAnswer?: string,
                                                       }) => {
 
     let data = {} as SinglePackSearchSettingsType

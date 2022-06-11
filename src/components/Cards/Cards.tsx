@@ -40,6 +40,8 @@ const Cards = () => {
         singlePackSearchSettings.page,
         singlePackSearchSettings.cardsPack_id,
         singlePackSearchSettings.pageCount,
+        singlePackSearchSettings.cardQuestion,
+        singlePackSearchSettings.cardAnswer,
         pack_ID,
         dispatch
     ], )

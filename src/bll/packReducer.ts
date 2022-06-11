@@ -62,12 +62,14 @@ export type AddCardDataType = {
     }
 }
 export type SinglePackSearchSettingsType = {
-    cardsPack_id: string,
-    min?: number,
-    max: number,
-    sortCards: string,
-    page: number,
-    pageCount: number,
+    cardAnswer?:string
+    cardQuestion?:string
+    cardsPack_id: string
+    min?: number
+    max?: number
+    sortCards?: string
+    page?: number
+    pageCount?: number
 }
 const initialState: InitialStateType = {
     title: '',
@@ -80,6 +82,8 @@ const initialState: InitialStateType = {
     page: 1,
     pageCount: 1,
     searchSettings: {
+        cardAnswer:'',
+        cardQuestion:'',
         cardsPack_id: '',
         // min: 1,
         max: 6,
@@ -93,7 +97,9 @@ export type ActionsType =
     SetCardsPackTitleAC |
     SetPackIdACType |
     SetCurrentPageACType |
-    SetPageCountACType
+    SetPageCountACType |
+    SetCardQuestionForSearchRequestACType |
+    SetCardAnswerForSearchRequestACType
 
 
 // export const initialState: InitialStateType = {title: ''} as InitialStateType
@@ -137,6 +143,12 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
         case "SINGLE-PACK-REDUCER/SET-PAGE-COUNT": {
             return {...state, searchSettings: {...state.searchSettings, pageCount: action.pageCount}}
         }
+        case "SINGLE-PACK-REDUCER/SET-CARD-QUESTION-FOR-SEARCH-REQUEST": {
+            return {...state, searchSettings: {...state.searchSettings, cardQuestion: action.question}}
+        }
+        case "SINGLE-PACK-REDUCER/SET-CARD-ANSWER-FOR-SEARCH-REQUEST": {
+            return {...state, searchSettings: {...state.searchSettings, cardAnswer: action.answer}}
+        }
         default:
             return {...state}
     }
@@ -178,6 +190,20 @@ export const setPageCountAC = (pageCount: number) => {
     return {
         type: 'SINGLE-PACK-REDUCER/SET-PAGE-COUNT',
         pageCount
+    } as const
+}
+export type SetCardQuestionForSearchRequestACType = ReturnType<typeof setCardQuestionForSearchRequestAC>
+export const setCardQuestionForSearchRequestAC = (question: string) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/SET-CARD-QUESTION-FOR-SEARCH-REQUEST',
+        question
+    } as const
+}
+export type SetCardAnswerForSearchRequestACType = ReturnType<typeof setCardAnswerForSearchRequestAC>
+export const setCardAnswerForSearchRequestAC = (answer: string) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/SET-CARD-ANSWER-FOR-SEARCH-REQUEST',
+        answer
     } as const
 }
 
