@@ -8,8 +8,9 @@ const OwnCardsSelector = () => {
     const dispatch = useAppDispatch()
     const Id = useAppSelector<string>((state)=>state.profileReducer.userData.id)
     const userIdForSearch = useAppSelector<string>((state)=>state.cardPacksReducer.searchSettings.user_id)
-
     type ButtonType = 'my' | 'all'
+
+
 
     const onButtonClickHandler = (type: ButtonType)=>{
         if (type === 'my') {
