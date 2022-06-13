@@ -204,6 +204,7 @@ export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {
             let response = await CardsAPI.getCardSPacks(data)
+            console.log(response)
             dispatch(setCarsPacksTableAC(response.data.cardPacks))
             dispatch(setPageInPaginationAC(response.data.page))
             dispatch(setCardPacksTotalCountAC(response.data.cardPacksTotalCount))
