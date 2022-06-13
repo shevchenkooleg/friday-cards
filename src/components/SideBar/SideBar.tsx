@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {resetCardPacksFilterAC, setSearchAreaValueAC} from "../../bll/cardPacksReducer";
 import {Button} from "@mui/material";
 import ProfileBlock from "./ProfileBlock/ProfileBlock";
+import {RequestStatusType} from "../../bll/appReducers";
 
 type PropsType = {
     id?: string
@@ -14,6 +15,7 @@ type PropsType = {
 export const SideBar = (props: PropsType) => {
     const dispatch = useAppDispatch();
     const maxCardsCount = useAppSelector<number | undefined>((state => state.cardPacksReducer.maxCardsCount))
+    const appStatus = useAppSelector<RequestStatusType>((state)=>state.appReducer.status)
 
     const resetButtonHandler = () => {
         maxCardsCount && dispatch(resetCardPacksFilterAC(maxCardsCount))
@@ -27,8 +29,8 @@ export const SideBar = (props: PropsType) => {
                 {props.id ? <ProfileBlock/> : <OwnCardsSelector/>}
                 <DoubleRange/>
             </div>
-            <Button sx={{width: '140px', margin:'30px 0 0 0'}}
-                    variant={"contained"} color="secondary" onClick={resetButtonHandler}>Reset filter
+            <Button sx={{width: '140px', margin:'10px 0 0 0'}}
+                    variant={"contained"} color="secondary" onClick={resetButtonHandler} disabled={appStatus === 'loading'}>Reset filter
             </Button>
         </>
     );

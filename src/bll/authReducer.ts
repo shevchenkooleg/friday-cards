@@ -69,9 +69,12 @@ export const logInTC = (data: LogInDataType): AppThunk => {
 export const pingServerTC = (): AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             await AppAPI.ping()
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
         }
     }
 }
@@ -79,9 +82,12 @@ export const pingServerTC = (): AppThunk => {
 export const registerUserTC = (data: RegistrationDataType): AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             await AppAPI.register(data)
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
         }
     }
 }
@@ -89,22 +95,27 @@ export const registerUserTC = (data: RegistrationDataType): AppThunk => {
 export const restorePassword = (data: RestorePasswordDataType): AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             await AppAPI.restorePassword(data)
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
         }
     }
 }
 export const updatePasswordTC = (password: string, resetPasswordToken: string): AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             let response = await AppAPI.updatePassword(password, resetPasswordToken)
             if (response.data.info === 'setNewPassword success —ฅ/ᐠ.̫ .ᐟฅ—') {
                 dispatch(setAppStatus('succeeded'))
-
             }
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
         }
     }
 }

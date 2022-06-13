@@ -9,11 +9,15 @@ import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import Pagination from "../Pagination/Pagination";
 import { prepareDataForSearchRequest } from '../../utils/dataPrepare/searchDataPrepare';
+import {Loader} from "../common/Loader/Loader";
+import {RequestStatusType} from "../../bll/appReducers";
 
 const CardPacks = () => {
 
     const dispatch = useAppDispatch();
     const searchSettings = useAppSelector<SearchSettingsType>((state)=>state.cardPacksReducer.searchSettings)
+    const appStatus = useAppSelector<RequestStatusType>((state)=>state.appReducer.status)
+
 
 
     useEffect(()=>{
@@ -31,17 +35,21 @@ const CardPacks = () => {
 
 
     return (
-        <div className={s.container}>
-            <div className={s.sideBar}>
-                <SideBar/>
+        <>
+            {appStatus === 'loading' && <Loader/>}
+            <div className={s.container}>
+                <div className={s.sideBar}>
+                    <SideBar/>
+                </div>
+                <div className={s.content}>
+                    <h2>Packs list</h2>
+                    <SearchBlock/>
+                    <CardsPacksTable/>
+                    <Pagination/>
+                </div>
             </div>
-            <div className={s.content}>
-                <h2>Packs list</h2>
-                <SearchBlock/>
-                <CardsPacksTable/>
-                <Pagination/>
-            </div>
-        </div>
+        </>
+
     );
 };
 

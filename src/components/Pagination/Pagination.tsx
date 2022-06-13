@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {
     setCurrentPageAC, setPagesAmountAC
 } from "../../bll/cardPacksReducer";
+import {RequestStatusType} from "../../bll/appReducers";
 
 const Pagination = () => {
 
@@ -14,6 +15,7 @@ const Pagination = () => {
     const cardPacksTotalCount = useAppSelector<number | undefined>((state) => state.cardPacksReducer.cardPacksTotalCount)
     const currentPage = useAppSelector<number | undefined>((state) => state.cardPacksReducer.page)
     const pageCount = useAppSelector<number | undefined>((state) => state.cardPacksReducer.pageCount)
+    const appStatus = useAppSelector<RequestStatusType>((state)=>state.appReducer.status)
 
     let totalPages: number | undefined
 
@@ -47,7 +49,7 @@ const Pagination = () => {
     }
 
     const onSpanClickHandler = (page: number) => {
-        dispatch(setCurrentPageAC(page))
+        appStatus !=='loading' && dispatch(setCurrentPageAC(page))
     }
 
 
@@ -55,12 +57,12 @@ const Pagination = () => {
         <div className={s.content}>
             <div className={s.pagination}>
                 <span className={s.span} onClick={() => {
-                    dispatch(setCurrentPageAC(1))
+                    appStatus !=='loading' && dispatch(setCurrentPageAC(1))
                 }}>{'<'}</span>
                 {getPagesForPagination().map((p,i) => <span key={i} onClick={() => onSpanClickHandler(p)}
                                                           className={p === currentPage ? s.selected : s.span}>{p}</span>)}
                 <span className={s.span} onClick={() => {
-                    cardPacksTotalCount && totalPages && dispatch(setCurrentPageAC(totalPages))
+                    appStatus !=='loading' && cardPacksTotalCount && totalPages && dispatch(setCurrentPageAC(totalPages))
                 }}>{'>'}</span>
             </div>
             <SelectorNumberCards/>
@@ -72,7 +74,7 @@ const Pagination = () => {
 const SelectorNumberCards = () => {
 
     const pageCount = useAppSelector<number | undefined>((state) => state.cardPacksReducer.pageCount)
-
+    const appStatus = useAppSelector<RequestStatusType>((state)=>state.appReducer.status)
     const dispatch = useAppDispatch()
     const [pageAmount, setPageAmount] = React.useState(10);
 
@@ -96,6 +98,7 @@ const SelectorNumberCards = () => {
                         value={String(pageCount)}
                         onChange={handleChange}
                         size={"small"}
+                        disabled={appStatus==='loading'}
                     >
                         <MenuItem value={5}>5</MenuItem>
                         <MenuItem value={10}>10</MenuItem>

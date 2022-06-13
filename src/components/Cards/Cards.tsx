@@ -11,14 +11,21 @@ import {
 } from "../../utils/dataPrepare/searchSinglePackDataPrepare";
 import {addCardTC} from "../../bll/packReducer";
 import CardPagination from './CardPagination/CardPagination';
+import {Loader} from "../common/Loader/Loader";
+import {RequestStatusType} from "../../bll/appReducers";
 
 const Cards = () => {
 
     const dispatch = useAppDispatch()
     const cardsPack_id = useAppSelector<string>((state) => state.singlePackReducer.cardPackId)
+    const packUserId = useAppSelector<string>((state)=>state.singlePackReducer.packUserId)
+    const user_id = useAppSelector<string>((state)=>state.profileReducer.userData.id)
     const singlePackSearchSettings = useAppSelector<SinglePackSearchSettingsType>((state)=>state.singlePackReducer.searchSettings)
-
+    const appStatus = useAppSelector<RequestStatusType>((state)=>state.appReducer.status)
     const data = {card:{cardsPack_id}}
+
+    console.log(packUserId)
+    console.log(user_id)
 
     const navigate = useNavigate();
     const onClickBackHandler = () => {
@@ -46,19 +53,22 @@ const Cards = () => {
         dispatch
     ], )
 
-    console.log(prepareSinglePackDataForSearchRequest(singlePackSearchSettings))
-
     return (
-        <div className={s.container}>
-            <Button onClick={onClickBackHandler} variant='contained'>Back</Button>
-            <h2>{title}</h2>
-            <div className={s.button}>
-                <Button variant={"contained"} sx={{width:'200px'}} onClick={onAddCardClickHandler}>Add Card</Button>
+        <>
+            {appStatus === 'loading' && <Loader/>}
+            <div className={s.container}>
+                <Button onClick={onClickBackHandler} variant='contained'>Back</Button>
+                <h2>{title}</h2>
+                <div className={s.button}>
+                    {packUserId === user_id && <Button variant={"contained"} sx={{width: '200px'}} onClick={onAddCardClickHandler}>Add
+                        Card</Button>}
+                </div>
+                <SearchCardBlock/>
+                <PackTable/>
+                <CardPagination/>
             </div>
-            <SearchCardBlock/>
-            <PackTable/>
-            <CardPagination/>
-        </div>
+        </>
+
     );
 };
 

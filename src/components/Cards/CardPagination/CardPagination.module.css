@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-height: 200px;
 }
 
 .selected {
@@ -20,4 +21,8 @@
 }
 .span {
     padding: 0 10px 0 10px
+}
+
+h2 {
+    margin-top: 20px;
 }

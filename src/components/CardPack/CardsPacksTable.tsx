@@ -15,6 +15,7 @@ import {setCardsPackTitleAC} from "../../bll/packReducer";
 import {useNavigate} from "react-router-dom";
 import {UpdateFormat} from "../common/UpdateData_Format/UpdateFormat";
 import {SortButton} from "./SortButton";
+import {RequestStatusType} from "../../bll/appReducers";
 
 
 const COLUMNS = [
@@ -53,19 +54,21 @@ type PropsType = {
 export const CardsPacksTable = (props: PropsType) => {
     const [sortDir, setSortDir] = useState({direction: ''})
 
+    const userId = useAppSelector<string>((state) => state.profileReducer.userData.id)
     const cardPacks = useAppSelector<CardPacksType[]>((state) => state.cardPacksReducer.cardPacks)
     const dispatch = useAppDispatch()
     const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardPacksReducer.searchSettings)
+    const appStatus = useAppSelector<RequestStatusType>((state) => state.appReducer.status)
     const navigate = useNavigate()
 
 //Сортировка
     const sortButtonHandler = (newDirection: string, accessor: string) => {
         if (newDirection === '1') {
             setSortDir({...sortDir, direction: newDirection})
-            dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings, {sortType: '0' +accessor})))
+            dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings, {sortType: '0' + accessor})))
         } else if (newDirection === '0') {
             setSortDir({...sortDir, direction: newDirection})
-            dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings, {sortType: '1'+accessor})))
+            dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings, {sortType: '1' + accessor})))
         } else if (newDirection === '') {
             setSortDir({...sortDir, direction: ''})
             dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings, {sortType: 'delete'})))
@@ -107,21 +110,25 @@ export const CardsPacksTable = (props: PropsType) => {
                                     sx={{'&:last-child td, &:last-child th': {border: 0, textAlign: 'right'}}}
                                 >
                                     <TableCell component="th" scope="row" onClick={onTitleClickHandler}>
-                                        <Link
-                                            component="button"
-                                            variant="body2"
-                                        >
-                                            {pack.name}
-                                        </Link>
+                                        {(appStatus !=='loading')
+                                            ? <Link
+                                                component="button"
+                                                variant="body2"
+                                            >
+                                                {pack.name}
+                                            </Link>
+                                            : <span>{pack.name}</span>}
                                     </TableCell>
 
                                     <TableCell align="right">{pack.cardsCount}</TableCell>
                                     <TableCell align="right"><UpdateFormat time={pack.updated}/></TableCell>
                                     <TableCell align="right">{pack.user_name}</TableCell>
                                     <TableCell>
-                                        <Button onClick={onDeleteButtonClickHandler}>Delete</Button>
-                                        <Button>Edit</Button>
-                                        <Button>Learn</Button>
+                                        {userId === pack.user_id && <Button onClick={onDeleteButtonClickHandler}
+                                                                            disabled={appStatus === 'loading'}>Delete</Button>}
+                                        {userId === pack.user_id &&
+                                            <Button disabled={appStatus === 'loading'}>Edit</Button>}
+                                        <Button disabled={appStatus === 'loading'}>Learn</Button>
                                     </TableCell>
                                 </TableRow>)
                         })}

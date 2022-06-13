@@ -67,7 +67,6 @@ export const SignUp = () => {
                         onBlur={formik.handleBlur}
                         error={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
                         helperText={formik.touched.confirmPassword ? formik.errors.confirmPassword : null}/>
-                    {/*{(formik.status) ? <div className={s.error}>{formik.status.error.length > 0 ? formik.status.error[0] : 'Some error' }</div> : null}*/}
                     <div className={s.buttons}>
                         <Button variant='contained' type="reset" onClick={formik.handleReset} sx={{marginRight: '30px'}}>
                             Cancel

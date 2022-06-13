@@ -59,6 +59,7 @@ export const setAppError = (error: string | null) => {
 export const initializeAppTC = (): AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             const response = await AppAPI.me()
                 dispatch(setUserData(response.data.name, response.data.email, response.data._id))
                 dispatch(setAuthStatus(true))
@@ -66,6 +67,7 @@ export const initializeAppTC = (): AppThunk => {
             dispatch(setAppError(error.response.data.error))
         } finally {
             dispatch(initializedSuccess())
+            dispatch(setAppStatus('idle'))
         }
     }
 }

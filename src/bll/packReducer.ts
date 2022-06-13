@@ -234,6 +234,8 @@ export const addCardTC = (data: AddCardDataType): AppThunk => {
 
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
         }
     }
 }

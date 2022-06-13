@@ -1,12 +1,13 @@
 import {TextField} from '@mui/material';
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {useAppDispatch} from '../../../bll/store';
+import {useAppDispatch, useAppSelector} from '../../../bll/store';
 import s from './SearchCardBlock.module.css'
 import {
     setCardAnswerForSearchRequestAC,
     setCardQuestionForSearchRequestAC,
 } from "../../../bll/packReducer";
 import { useDebounce } from 'use-debounce';
+import {RequestStatusType} from "../../../bll/appReducers";
 
 const SearchCardBlock = () => {
 
@@ -15,6 +16,7 @@ const SearchCardBlock = () => {
     const dispatch = useAppDispatch()
     const [debouncedSearchQuestionValue, func1] = useDebounce<string>(searchQuestion, 700)
     const [debouncedSearchAnswerValue, func2] = useDebounce<string>(searchAnswer, 700)
+    const appStatus = useAppSelector<RequestStatusType>((state)=>state.appReducer.status)
 
     //Поиск по вопросу
 
@@ -51,11 +53,11 @@ const SearchCardBlock = () => {
     return (
         <div className={s.content}>
             <TextField id="outlined-basic" label="Search by question"
-                       variant="outlined" sx={{width: '90%'}} size={'small'} onKeyPress={requestSearchByQuestion}
-                       value={searchQuestion} onChange={setSearchQuestionHandle}/>
+                       variant="outlined" sx={{width: '90%', marginRight:'20px'}} size={'small'} onKeyPress={requestSearchByQuestion}
+                       value={searchQuestion} disabled={appStatus ==='loading'} onChange={setSearchQuestionHandle}/>
             <TextField id="outlined-basic" label="Search by answer"
                        variant="outlined" sx={{width: '90%'}} size={'small'}
-                       value={searchAnswer} onChange={setSearchAnswerHandle} onKeyPress={requestSearchByAnswer}/>
+                       value={searchAnswer} disabled={appStatus ==='loading'} onChange={setSearchAnswerHandle} onKeyPress={requestSearchByAnswer}/>
 
         </div>
     );

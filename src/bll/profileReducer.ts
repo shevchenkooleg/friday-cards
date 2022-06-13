@@ -50,10 +50,13 @@ export const setUserData = (nickName: string, email: string, id: string) => {
 export const getUserData = (): AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             const response = await AppAPI.me()
                 dispatch(setUserData(response.data.name, response.data.email, response.data._id))
         } catch (error:any) {
             dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
         }
     }
 }
@@ -61,11 +64,14 @@ export const getUserData = (): AppThunk => {
 export const changeUserData = (data: UserdataForChangeType):AppThunk => {
     return async (dispatch) => {
         try {
+            dispatch(setAppStatus('loading'))
             await AppAPI.changeUserData(data)
                 dispatch(setAppStatus('succeeded'))
                 dispatch(getUserData())
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
         }
     }
 }
