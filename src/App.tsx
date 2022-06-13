@@ -8,7 +8,7 @@ import {SignUp} from "./components/Login/SignUp";
 import {SignIn} from "./components/Login/SignIn";
 import {RestorePass} from "./components/Login/RestorePass";
 import {UpdatePass} from "./components/Login/UpdatePass";
-import {AppStateType, useAppDispatch, useAppSelector} from "./bll/store";
+import {AppStateType, useAppDispatch} from "./bll/store";
 import {initializeAppTC} from "./bll/appReducers";
 import {useSelector} from "react-redux";
 import {Loader} from './components/common/Loader/Loader';
@@ -18,7 +18,6 @@ import SettingsMenu from "./components/Profile/Profile_Settings/SettingsMenu";
 import CardPacks from "./components/CardPack/CardPacks";
 import Cards from "./components/Cards/Cards";
 import EditProfile from "./components/Profile/EditProfile/EditProfile";
-import {SearchSettingsType} from "./bll/cardPacksReducer";
 
 export const PATH = {
     PROFILE: {
@@ -43,11 +42,10 @@ function App() {
 
     const dispatch = useAppDispatch()
     const isInitialized = useSelector((state: AppStateType)=>state.appReducer.initialized)
-    const searchSettings = useAppSelector<SearchSettingsType>(state => state.cardPacksReducer.searchSettings)
+    // const searchSettings = useAppSelector<SearchSettingsType>(state => state.cardPacksReducer.searchSettings)
     useEffect(()=>{
         dispatch(initializeAppTC())
     },[dispatch])
-    console.log(searchSettings)
     return (
         <HashRouter>
             <ErrorSnackbar/>

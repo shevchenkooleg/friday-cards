@@ -22,10 +22,10 @@ const OwnCardsSelector = () => {
 
     return (
         <div>
-            <h4>Show packs cards</h4>
+            <h4 style={{margin:'20px 0 0 0'}}>Show packs cards</h4>
             <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                <Button sx={{width:'120px'}} disabled={!!userIdForSearch} onClick={()=>onButtonClickHandler('my')}>My</Button>
-                <Button sx={{width:'120px'}} disabled={!userIdForSearch} onClick={()=>onButtonClickHandler('all')}>All</Button>
+                <Button sx={{width:'120px', marginTop:'20px'}} disabled={!!userIdForSearch} onClick={()=>onButtonClickHandler('my')}>My</Button>
+                <Button sx={{width:'120px', marginTop:'20px'}} disabled={!userIdForSearch} onClick={()=>onButtonClickHandler('all')}>All</Button>
             </ButtonGroup>
         </div>
     );

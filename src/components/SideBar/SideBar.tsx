@@ -3,7 +3,7 @@ import s from './SideBar.module.css'
 import OwnCardsSelector from "./OwnCardsSelector/OwnCardsSelector";
 import DoubleRange from "./DoubleRange/DoubleRange";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {resetCardPacksFilterAC} from "../../bll/cardPacksReducer";
+import {resetCardPacksFilterAC, setSearchAreaValueAC} from "../../bll/cardPacksReducer";
 import {Button} from "@mui/material";
 import ProfileBlock from "./ProfileBlock/ProfileBlock";
 
@@ -17,6 +17,7 @@ export const SideBar = (props: PropsType) => {
 
     const resetButtonHandler = () => {
         maxCardsCount && dispatch(resetCardPacksFilterAC(maxCardsCount))
+        dispatch(setSearchAreaValueAC(''))
     };
 
 
@@ -26,7 +27,7 @@ export const SideBar = (props: PropsType) => {
                 {props.id ? <ProfileBlock/> : <OwnCardsSelector/>}
                 <DoubleRange/>
             </div>
-            <Button sx={{width: '140px', marginLeft: '20px'}}
+            <Button sx={{width: '140px', margin:'30px 0 0 0'}}
                     variant={"contained"} color="secondary" onClick={resetButtonHandler}>Reset filter
             </Button>
         </>

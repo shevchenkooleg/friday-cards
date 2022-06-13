@@ -14,14 +14,18 @@ const CardPacks = () => {
 
     const dispatch = useAppDispatch();
     const searchSettings = useAppSelector<SearchSettingsType>((state)=>state.cardPacksReducer.searchSettings)
-    // const searchSettingsCurrentPage = useAppSelector<number>((state)=>state.cardPacksReducer.searchSettings.page)
+
 
     useEffect(()=>{
         dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
-    },[searchSettings.user_id, searchSettings.page])
-    // useEffect(()=>{
-    //     dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
-    // },[dispatch, searchSettingsCurrentPage])
+    },[searchSettings.user_id,
+        searchSettings.page,
+        searchSettings.user_id,
+        searchSettings.pageCount,
+        searchSettings.packName,
+        Array.isArray(searchSettings.minMax) && searchSettings.minMax[0],
+        Array.isArray(searchSettings.minMax) && searchSettings.minMax[1],
+        dispatch,])
 
 
 

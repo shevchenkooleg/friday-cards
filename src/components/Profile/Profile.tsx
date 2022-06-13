@@ -4,18 +4,26 @@ import {SideBar} from "../SideBar/SideBar";
 import SearchBlock from "../CardPack/SearchBlock";
 import {CardsPacksTable} from "../CardPack/CardsPacksTable";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {getCardReducerData} from "../../bll/cardPacksReducer";
+import {getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardPacksReducer";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import Pagination from "../Pagination/Pagination";
+import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
 
 const Profile = () => {
     const user_id = useAppSelector<string>((state)=> state.profileReducer.userData.id)
+    const searchSettings = useAppSelector<SearchSettingsType>((state)=>state.cardPacksReducer.searchSettings)
     const dispatch = useAppDispatch()
 
     useEffect(()=>{
-        dispatch(getCardReducerData({user_id}))
-    },[dispatch, user_id])
+        dispatch(getCardsPacksTableTC(prepareDataForSearchRequest(searchSettings)))
+    },[dispatch, user_id,
+        searchSettings.page,
+        searchSettings.user_id,
+        searchSettings.pageCount,
+        searchSettings.packName,
+        Array.isArray(searchSettings.minMax) && searchSettings.minMax[0],
+        Array.isArray(searchSettings.minMax) && searchSettings.minMax[1]])
 
     return (
         <div className={s.container}>

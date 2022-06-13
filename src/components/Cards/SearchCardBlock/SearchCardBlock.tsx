@@ -1,19 +1,29 @@
 import {TextField} from '@mui/material';
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useAppDispatch} from '../../../bll/store';
 import s from './SearchCardBlock.module.css'
 import {
     setCardAnswerForSearchRequestAC,
     setCardQuestionForSearchRequestAC,
 } from "../../../bll/packReducer";
+import { useDebounce } from 'use-debounce';
 
 const SearchCardBlock = () => {
 
     const [searchQuestion, setSearchQuestion] = useState<string>('')
     const [searchAnswer, setSearchAnswer] = useState<string>('')
     const dispatch = useAppDispatch()
+    const [debouncedSearchQuestionValue, func1] = useDebounce<string>(searchQuestion, 700)
+    const [debouncedSearchAnswerValue, func2] = useDebounce<string>(searchAnswer, 700)
 
     //Поиск по вопросу
+
+    useEffect(() => {
+        dispatch(setCardQuestionForSearchRequestAC(debouncedSearchQuestionValue))
+    }, [debouncedSearchQuestionValue, dispatch])
+    useEffect(() => {
+        dispatch(setCardAnswerForSearchRequestAC(debouncedSearchAnswerValue))
+    }, [debouncedSearchAnswerValue, dispatch])
 
     const setSearchQuestionHandle = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setSearchQuestion(e.currentTarget.value)

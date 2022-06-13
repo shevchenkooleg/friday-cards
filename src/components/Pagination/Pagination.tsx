@@ -71,11 +71,12 @@ const Pagination = () => {
 
 const SelectorNumberCards = () => {
 
+    const pageCount = useAppSelector<number | undefined>((state) => state.cardPacksReducer.pageCount)
+
     const dispatch = useAppDispatch()
     const [pageAmount, setPageAmount] = React.useState(10);
 
     useEffect(() => {
-        console.log('effect')
         dispatch(setCurrentPageAC(1))
         dispatch(setPagesAmountAC(pageAmount))
     }, [pageAmount, dispatch])
@@ -92,7 +93,7 @@ const SelectorNumberCards = () => {
                 <FormControl fullWidth>
                     <InputLabel id="label">Pages</InputLabel>
                     <Select
-                        value={String(pageAmount)}
+                        value={String(pageCount)}
                         onChange={handleChange}
                         size={"small"}
                     >
