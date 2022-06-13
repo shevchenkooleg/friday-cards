@@ -36,7 +36,7 @@ export const setAuthStatus = (isAuth: boolean) => {
 
 //THUNK
 
-//LogOut todo: 1. Сделать окошко уточнения!!
+//LogOut
 export const LogOutTC = (): AppThunk => {
     return async (dispatch) => {
         try {
@@ -50,7 +50,7 @@ export const LogOutTC = (): AppThunk => {
         }
     }
 }
-//LogIn todo: 1. Добавить после логинизации запрос на  /auth/me - загрузить данные пользователя; 2. нужен лоудер
+
 export const logInTC = (data: LogInDataType): AppThunk => {
     return async (dispatch) => {
         try {

@@ -16,6 +16,7 @@ import {useNavigate} from "react-router-dom";
 import {UpdateFormat} from "../common/UpdateData_Format/UpdateFormat";
 import {SortButton} from "./SortButton";
 import {RequestStatusType} from "../../bll/appReducers";
+import Modal from "../Modal_windows/Modal";
 
 
 const COLUMNS = [
@@ -53,6 +54,8 @@ type PropsType = {
 
 export const CardsPacksTable = (props: PropsType) => {
     const [sortDir, setSortDir] = useState({direction: ''})
+    //стейт для модалки удаления Пака
+    const [show, setShow] = useState<boolean>(false)
 
     const userId = useAppSelector<string>((state) => state.profileReducer.userData.id)
     const cardPacks = useAppSelector<CardPacksType[]>((state) => state.cardPacksReducer.cardPacks)
@@ -78,6 +81,9 @@ export const CardsPacksTable = (props: PropsType) => {
     return (
 
         <div className={s.container}>
+
+
+
             <TableContainer component={Paper}>
                 <Table
                     sx={{'&:last-child td, &:last-child th': {border: 0, textAlign: 'right'}}}>
@@ -102,15 +108,27 @@ export const CardsPacksTable = (props: PropsType) => {
                                 navigate(`/card-list/${pack._id}`)
                             }
                             const onDeleteButtonClickHandler = () => {
-                                dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, {user_id: props.id})))
+                                setShow(true)
                             }
+                            const yesButtonClickHandler = () => {
+                                dispatch(deleteCardsPackTC(pack._id, prepareDataForSearchRequest(searchSettings, {user_id: props.id})))
+                                setShow(false)
+                            }
+                            if (show) return <Modal show={show} setShow={setShow}>
+                                <p className={s.titleModal}>Do wont to <span className={s.textModal}>DELETE</span> pack list?</p>
+                                <div className={s.insideModal}>
+                                    <Button onClick={yesButtonClickHandler} variant="contained" color="success">Yes</Button>
+                                    <Button onClick={()=>setShow(false)} variant="outlined" color="error">No</Button>
+                                </div>
+                            </Modal>
+
                             return (
                                 <TableRow
                                     key={pack._id}
                                     sx={{'&:last-child td, &:last-child th': {border: 0, textAlign: 'right'}}}
                                 >
                                     <TableCell component="th" scope="row" onClick={onTitleClickHandler}>
-                                        {(appStatus !=='loading')
+                                        {(appStatus !== 'loading')
                                             ? <Link
                                                 component="button"
                                                 variant="body2"
@@ -135,6 +153,7 @@ export const CardsPacksTable = (props: PropsType) => {
                     </TableBody>
                 </Table>
             </TableContainer>
+
         </div>
     );
 }

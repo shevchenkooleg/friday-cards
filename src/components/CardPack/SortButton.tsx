@@ -11,7 +11,7 @@ type SortButtonPropsType = {
     onClick: (newDirection: string, header: string) => void;
 }
 
-//todo: занести стейт в компонент, колБэк сделать утилитой, это повысит универсальность
+
 export const SortButton = (props: SortButtonPropsType) => {
     const onClickHandler = () => {
       if(props.sortDir.direction === '0') props.onClick("", props.accessor)
