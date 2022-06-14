@@ -61,9 +61,12 @@ export type AddCardDataType = {
         type?: string
     }
 }
+export type DeleteCardDataType = {
+    id: string
+}
 export type SinglePackSearchSettingsType = {
-    cardAnswer?:string
-    cardQuestion?:string
+    cardAnswer?: string
+    cardQuestion?: string
     cardsPack_id: string
     min?: number
     max?: number
@@ -82,8 +85,8 @@ const initialState: InitialStateType = {
     page: 1,
     pageCount: 1,
     searchSettings: {
-        cardAnswer:'',
-        cardQuestion:'',
+        cardAnswer: '',
+        cardQuestion: '',
         cardsPack_id: '',
         // min: 1,
         max: 6,
@@ -92,6 +95,8 @@ const initialState: InitialStateType = {
         pageCount: 4,
     }
 }
+
+
 export type ActionsType =
     SetCardsDataACType |
     SetCardsPackTitleAC |
@@ -99,7 +104,8 @@ export type ActionsType =
     SetCurrentPageACType |
     SetPageCountACType |
     SetCardQuestionForSearchRequestACType |
-    SetCardAnswerForSearchRequestACType
+    SetCardAnswerForSearchRequestACType |
+    deleteCardACType
 
 
 // export const initialState: InitialStateType = {title: ''} as InitialStateType
@@ -121,6 +127,9 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
                     pageCount: action.data.pageCount
                 }
             }
+        }
+        case "SINGLE-PACK-REDUCER/DELETE-CARD": {
+            return { ...state, cards: state.cards?.filter(card=> card._id !== action.id)}
         }
         case "SINGLE-PACK-REDUCER/SET-NAME": {
             return {
@@ -206,7 +215,11 @@ export const setCardAnswerForSearchRequestAC = (answer: string) => {
         answer
     } as const
 }
-
+export type deleteCardACType = ReturnType<typeof deleteCardAC>
+export const deleteCardAC = (id: string) => ({
+    type: 'SINGLE-PACK-REDUCER/DELETE-CARD',
+    id,
+} as const)
 //THUNK
 export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThunk => {
     return async (dispatch) => {
@@ -232,6 +245,20 @@ export const addCardTC = (data: AddCardDataType): AppThunk => {
             console.log(response.data)
             dispatch(getSinglePackDataTC({cardsPack_id: data.card.cardsPack_id}))
 
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
+        }
+    }
+}
+
+export const deleteCardTC = (id: string): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setAppStatus('loading'))
+            await CardsAPI.deleteCard(id);
+            dispatch(deleteCardAC(id))
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {

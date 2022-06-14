@@ -34,6 +34,7 @@ export const PATH = {
     CARD: {
         PACKS: '/cards_packs',
         CARD_LIST: '/card-list',
+        CARD_LIST_EDIT: '/card-list-edit',
     },
     TESTING_PAGE: '/test'
 }
@@ -66,6 +67,7 @@ function App() {
                             <Route path={PATH.LOGIN.UPDATE_PASS} element={<UpdatePass/>}/>
                             <Route path={PATH.CARD.PACKS} element={<CardPacks/>}/>
                             <Route path={PATH.CARD.CARD_LIST + '/:pack_ID'} element={<Cards/>}/>
+                            <Route path={PATH.CARD.CARD_LIST_EDIT + '/:pack_ID'} element={<Cards edit={true}/>}/>
                             <Route path={PATH.PROFILE.EDIT} element={<EditProfile/>}/>
 
 
