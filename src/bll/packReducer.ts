@@ -61,9 +61,14 @@ export type AddCardDataType = {
         type?: string
     }
 }
-export type DeleteCardDataType = {
-    id: string
+export type EditCardDataType = {
+    card: {
+        _id: string
+        question?: string | undefined
+        answer?: string | undefined
+    }
 }
+
 export type SinglePackSearchSettingsType = {
     cardAnswer?: string
     cardQuestion?: string
@@ -105,13 +110,9 @@ export type ActionsType =
     SetPageCountACType |
     SetCardQuestionForSearchRequestACType |
     SetCardAnswerForSearchRequestACType |
-    deleteCardACType
+    deleteCardACType |
+    editCardACType
 
-
-// export const initialState: InitialStateType = {title: ''} as InitialStateType
-
-// searchByQuestionACType
-// export const initialState: InitialStateType = {title: ''} as InitialStateType
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
@@ -129,8 +130,16 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
             }
         }
         case "SINGLE-PACK-REDUCER/DELETE-CARD": {
-            return { ...state, cards: state.cards?.filter(card=> card._id !== action.id)}
+            return {...state, cards: state.cards?.filter(card => card._id !== action.id)}
         }
+        // case "SINGLE-PACK-REDUCER/EDIT-CARD": {
+        //     return {
+        //         ...state, cards:
+        //             state.cards?.map((card) =>
+        //                 card._id === action.id ? {...card, question: action.question, answer: action.answer} : {...card})
+        //         }
+        // }
+
         case "SINGLE-PACK-REDUCER/SET-NAME": {
             return {
                 ...state,
@@ -146,7 +155,6 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
             }
         }
         case "SINGLE-PACK-REDUCER/SET-CURRENT-PAGE": {
-            // debugger
             return {...state, searchSettings: {...state.searchSettings, page: action.page}}
         }
         case "SINGLE-PACK-REDUCER/SET-PAGE-COUNT": {
@@ -220,6 +228,13 @@ export const deleteCardAC = (id: string) => ({
     type: 'SINGLE-PACK-REDUCER/DELETE-CARD',
     id,
 } as const)
+export type editCardACType = ReturnType<typeof editCardAC>
+export const editCardAC = (question: string | undefined, answer: string | undefined, id: string) => ({
+    type: 'SINGLE-PACK-REDUCER/EDIT-CARD',
+    question,
+    answer,
+    id
+} as const)
 //THUNK
 export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThunk => {
     return async (dispatch) => {
@@ -259,6 +274,20 @@ export const deleteCardTC = (id: string): AppThunk => {
             dispatch(setAppStatus('loading'))
             await CardsAPI.deleteCard(id);
             dispatch(deleteCardAC(id))
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
+        }
+    }
+}
+
+export const editCardTC = (data: { card: { question?: string, answer?: string, _id: string } }): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setAppStatus('loading'))
+            await CardsAPI.putCard(data)
+            dispatch(editCardAC(data.card.question, data.card.answer, data.card._id))
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {
