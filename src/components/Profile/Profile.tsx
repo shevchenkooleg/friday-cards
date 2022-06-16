@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import s from "./Profile.module.css";
 import {SideBar} from "../SideBar/SideBar";
-import SearchBlock from "../CardPack/SearchBlock";
-import {CardsPacksTable} from "../CardPack/CardsPacksTable";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {getCardsPacksTableTC, SearchSettingsType} from "../../bll/cardPacksReducer";
 import {compose} from "redux";
@@ -11,6 +9,8 @@ import Pagination from "../Pagination/Pagination";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
 import {Loader} from "../common/Loader/Loader";
 import {RequestStatusType} from "../../bll/appReducers";
+import SearchBlock from '../CardPacks/SearchPackBlock/SearchBlock';
+import { CardsPacksTable } from '../CardPacks/PackTable/CardsPacksTable';
 
 const Profile = () => {
     const user_id = useAppSelector<string>((state)=> state.profileReducer.userData.id)
