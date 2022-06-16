@@ -300,3 +300,21 @@ export const editCardTC = (data: { card: { question?: string, answer?: string, _
         }
     }
 }
+
+export const learnPackModeTC = (data: SingleCardPackRequestDataType): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setAppStatus('loading'))
+            let response = await CardsAPI.getSingleCardPack(data)
+            console.log(response)
+            response = await CardsAPI.getSingleCardPack({...data, pageCount:response.data.cardsTotalCount})
+            console.log(response.data.cards)
+
+
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
+        }
+    }
+}

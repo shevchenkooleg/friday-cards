@@ -239,19 +239,6 @@ export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
         }
     }
 }
-//
-//
-// export const getCardReducerData = (data: CardsPacksDataType): AppThunk => {
-//     return async (dispatch) => {
-//         try {
-//             const response = await CardsAPI.getCardSPacks(data)
-//             dispatch(setCardsReducerDataAC(response.data))
-//             dispatch(setMinMaxSearchValueAC([response.data.minCardsCount, response.data.maxCardsCount]))
-//         } catch (error: any) {
-//             dispatch(setAppError(error.response.data.error))
-//         }
-//     }
-// }
 
 export const addCardPack = (addPackData: AddPackDataType, data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {

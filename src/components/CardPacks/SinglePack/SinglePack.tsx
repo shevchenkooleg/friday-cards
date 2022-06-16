@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {setCardsPackTitleAC} from "../../../bll/packReducer";
+import {learnPackModeTC, setCardsPackTitleAC, SinglePackSearchSettingsType} from "../../../bll/packReducer";
 import {CardPacksType, deleteCardsPackTC, SearchSettingsType} from "../../../bll/cardPacksReducer";
 import {prepareDataForSearchRequest} from "../../../utils/dataPrepare/searchDataPrepare";
 import Modal from "../../Modal_windows/Modal";
@@ -11,6 +11,7 @@ import {UpdateFormat} from "../../common/UpdateData_Format/UpdateFormat";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../bll/store";
 import {RequestStatusType} from "../../../bll/appReducers";
+import { prepareSinglePackDataForSearchRequest } from '../../../utils/dataPrepare/searchSinglePackDataPrepare';
 
 type SinglePackPropsType = {
     pack: CardPacksType
@@ -25,6 +26,7 @@ const SinglePack = (props:SinglePackPropsType) => {
     const searchSettings = useAppSelector<SearchSettingsType>((state) => state.cardPacksReducer.searchSettings)
     const appStatus = useAppSelector<RequestStatusType>((state) => state.appReducer.status)
     const userId = useAppSelector<string>((state) => state.profileReducer.userData.id)
+    const singlePackSearchSettings = useAppSelector<SinglePackSearchSettingsType>((state)=>state.singlePackReducer.searchSettings)
 
 
     const onTitleClickHandler = () => {
@@ -41,6 +43,9 @@ const SinglePack = (props:SinglePackPropsType) => {
     const yesButtonClickHandler = () => {
         dispatch(deleteCardsPackTC(props.pack._id, prepareDataForSearchRequest(searchSettings, {user_id: props.id})))
         setShow(false)
+    }
+    const onClickLearnButtonHandler = () => {
+        dispatch(learnPackModeTC(prepareSinglePackDataForSearchRequest(singlePackSearchSettings, {cardsPack_id: props.pack._id})))
     }
 
 
@@ -79,7 +84,7 @@ const SinglePack = (props:SinglePackPropsType) => {
                                                         disabled={appStatus === 'loading'}>Delete</Button>}
                     {userId === props.pack.user_id &&
                         <Button disabled={appStatus === 'loading'} onClick={onClickEditButton}>Edit</Button>}
-                    <Button disabled={appStatus === 'loading'}>Learn</Button>
+                    <Button disabled={appStatus === 'loading'} onClick={onClickLearnButtonHandler}>Learn</Button>
                 </TableCell>
             </TableRow>
         </>
