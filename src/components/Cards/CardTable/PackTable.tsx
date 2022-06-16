@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../bll/store";
-import {CardsType, deleteCardTC, editCardTC, getSinglePackDataTC} from "../../../bll/packReducer";
+import {CardsType, getSinglePackDataTC} from "../../../bll/packReducer";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -8,13 +8,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import {Rating} from "../../Raiting/Raiting";
-import {UpdateFormat} from "../../common/UpdateData_Format/UpdateFormat";
-import {SortButton} from "../../CardPack/SortButton";
+import {SortButton} from "../../CardPacks/SortButton/SortButton";
 import {prepareSingleDataForSearchRequest} from "../../../utils/dataPrepare/searchSinglePackDataPrepare";
-import {Button, TextField} from "@mui/material";
-import s from "../../CardPack/CardsPacksTable.module.css";
-import Modal from "../../Modal_windows/Modal";
+import SingleCard from "../SingleCard/SingleCard";
 
 
 interface IPackTable {
@@ -71,10 +67,6 @@ const PackTable: React.FC<IPackTable> = ({edit}) => {
             dispatch(getSinglePackDataTC(prepareSingleDataForSearchRequest({sortType: 'delete', cardsPack_id: packID})))
         }
     }
-    const [show, setShow] = useState<boolean>(false)
-    const [showEdit, setShowEdit] = useState<boolean>(false)
-    const [question, setQuestion] = useState<string>()
-    const [answer, setAnswer] = useState<string>()
 
     return (
         <div>
@@ -91,102 +83,8 @@ const PackTable: React.FC<IPackTable> = ({edit}) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {card?.map((c) => {
-
-                            const onDeleteButtonClickHandler = () => {
-                                setShow(true)
-                            }
-                            const yesButtonClickHandler = () => {
-                                dispatch(deleteCardTC(c._id))
-                                setShow(false)
-                            }
-                            const onChangeQuestion = (e: ChangeEvent<HTMLInputElement>) => {
-                                setQuestion(e.currentTarget.value)
-                            }
-                            const onChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
-                                setAnswer(e.currentTarget.value)
-                            }
-                            const onEditButtonClickHandler = () => {
-                                setShowEdit(true)
-                            }
-                            const saveButtonClickHandler = () => {
-
-                                dispatch(editCardTC({card: {question, answer, _id: c._id}}))
-                                setShowEdit(false)
-                            }
-
-
-                            return (
-
-                                <>
-                                    <Modal show={showEdit} setShow={setShowEdit}>
-                                        <div className={s.modalContainer}>
-                                            <p className={s.modalTitle}>Edit <span
-                                                className={s.modalMainWord}>question</span> or <span
-                                                className={s.modalMainWord}>answer</span></p>
-                                            <TextField
-                                                onChange={onChangeQuestion}
-                                                sx={{marginTop: '20px'}}
-                                                id="filled-multiline-static"
-                                                label="Question"
-                                                multiline
-                                                rows={4}
-                                                defaultValue={c.question}
-                                                value={question}
-                                                variant="filled"/>
-                                            <TextField
-                                                onChange={onChangeAnswer}
-                                                sx={{marginTop: '20px'}}
-                                                id="filled-multiline-static"
-                                                label="Answer"
-                                                multiline
-                                                rows={4}
-                                                defaultValue={c.answer}
-                                                value={answer}
-                                                variant="filled"/>
-                                            <div className={s.modalButtons}>
-                                                <Button onClick={() => setShowEdit(false)} variant="outlined"
-                                                        color="error">Cancel</Button>
-                                                <Button onClick={saveButtonClickHandler} variant="contained"
-                                                        color="success">Save</Button>
-                                            </div>
-                                        </div>
-                                    </Modal>
-                                    <Modal show={show} setShow={setShow}>
-                                        <p className={s.titleModal}>Do you wont to <span
-                                            className={s.textModal}>DELETE</span> this card?</p>
-                                        <div className={s.insideModal}>
-                                            <Button onClick={yesButtonClickHandler} variant="contained"
-                                                    color="success">Yes</Button>
-                                            <Button onClick={() => setShow(false)} variant="outlined"
-                                                    color="error">No</Button>
-                                        </div>
-                                    </Modal>
-                                    <TableRow
-                                        key={c._id}
-                                        sx={{'&:last-child td, &:last-child th': {border: 0, textAlign: 'right'}}}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {c.question}
-                                        </TableCell>
-                                        <TableCell align="right">{c.answer}</TableCell>
-                                        <TableCell align="right"><UpdateFormat time={c.updated}/></TableCell>
-                                        <TableCell>
-                                            <Rating rating={c.grade}/>
-                                        </TableCell>
-                                        {edit &&
-                                            <TableCell>
-                                                <Button variant="contained" color="error" sx={{marginRight: '5px'}}
-                                                        onClick={onDeleteButtonClickHandler}
-                                                >DELETE</Button>
-                                                <Button variant="contained" color="success"
-                                                        onClick={onEditButtonClickHandler}>EDIT</Button>
-                                            </TableCell>
-                                        }
-
-                                    </TableRow>
-                                </>
-                            )
+                        {card?.map((c, i) => {
+                            return <SingleCard key={`${c._id}+${i}`} card={c} edit={edit}/>
                         })}
                     </TableBody>
                 </Table>

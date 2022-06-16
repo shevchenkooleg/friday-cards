@@ -68,7 +68,7 @@ export const CardsAPI = {
         return instance.delete<string, AxiosResponse>('/cards/card', {params: {id}})
     },
     putCard(data: EditCardDataType){
-        return instance.put<EditCardDataType, AxiosResponse>(' /cards/card', data)
+        return instance.put<EditCardDataType, AxiosResponse>('/cards/card', data)
     }
 }
 

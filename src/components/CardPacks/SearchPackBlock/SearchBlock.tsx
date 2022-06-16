@@ -1,15 +1,15 @@
 import {Button, TextField} from '@mui/material';
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import s from './SearchBlock.module.css'
-import {useAppDispatch, useAppSelector} from "../../bll/store";
+import {useAppDispatch, useAppSelector} from "../../../bll/store";
 import {
     addCardPack, SearchSettingsType,
     setPackNameForSearchAC, setSearchAreaValueAC
-} from "../../bll/cardPacksReducer";
+} from "../../../bll/cardPacksReducer";
 import {useDebounce} from 'use-debounce';
-import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
-import {RequestStatusType} from "../../bll/appReducers";
-import Modal from "../Modal_windows/Modal";
+import {prepareDataForSearchRequest} from "../../../utils/dataPrepare/searchDataPrepare";
+import {RequestStatusType} from "../../../bll/appReducers";
+import Modal from "../../Modal_windows/Modal";
 
 
 type SearchBlockPropsType = {

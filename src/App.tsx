@@ -15,7 +15,7 @@ import {Loader} from './components/common/Loader/Loader';
 import Profile from './components/Profile/Profile';
 import {ErrorSnackbar} from './components/ErrorSnackbar/ErrorSnackbar';
 import SettingsMenu from "./components/Profile/Profile_Settings/SettingsMenu";
-import CardPacks from "./components/CardPack/CardPacks";
+import CardPacks from "./components/CardPacks/CardPacks";
 import Cards from "./components/Cards/Cards";
 import EditProfile from "./components/Profile/EditProfile/EditProfile";
 

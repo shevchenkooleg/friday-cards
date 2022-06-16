@@ -111,11 +111,12 @@ const Cards:React.FC<ICards> = ({edit}) => {
             </Modal>
             {appStatus === 'loading' && <Loader/>}
             <div className={s.container}>
-                <Button onClick={onClickBackHandler} variant='contained'>Back</Button>
+                <Button disabled={appStatus === 'loading'} onClick={onClickBackHandler} variant='contained'>Back</Button>
                 <h2>{title}</h2>
                 <div className={s.button}>
                     {packUserId === user_id && <Button variant={"contained"}
                                                        sx={{width: '200px'}}
+                                                       disabled={appStatus === 'loading'}
                                                        onClick={onAddCardClickHandler}>
                         Add Card
                     </Button>}

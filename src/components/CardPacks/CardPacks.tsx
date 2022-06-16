@@ -1,22 +1,19 @@
 import React, {useEffect} from 'react';
-import {CardsPacksTable} from "./CardsPacksTable";
+import {CardsPacksTable} from "./PackTable/CardsPacksTable";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {getCardsPacksTableTC, SearchSettingsType} from '../../bll/cardPacksReducer';
 import s from './CardPacks.module.css'
 import {SideBar} from "../SideBar/SideBar";
-import SearchBlock from "./SearchBlock";
+import SearchBlock from "./SearchPackBlock/SearchBlock";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import Pagination from "../Pagination/Pagination";
 import { prepareDataForSearchRequest } from '../../utils/dataPrepare/searchDataPrepare';
-import {Loader} from "../common/Loader/Loader";
-import {RequestStatusType} from "../../bll/appReducers";
 
 const CardPacks = () => {
 
     const dispatch = useAppDispatch();
     const searchSettings = useAppSelector<SearchSettingsType>((state)=>state.cardPacksReducer.searchSettings)
-    const appStatus = useAppSelector<RequestStatusType>((state)=>state.appReducer.status)
 
 
 
@@ -36,7 +33,6 @@ const CardPacks = () => {
 
     return (
         <>
-            {appStatus === 'loading' && <Loader/>}
             <div className={s.container}>
                 <div className={s.sideBar}>
                     <SideBar/>

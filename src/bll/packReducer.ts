@@ -35,7 +35,7 @@ export type CardsType = {
 export type InitialStateType = {
     cardPackId: string
     title: string
-    cards: CardsType[] | undefined
+    cards: CardsType[]
     cardsTotalCount: number
     maxGrade: number
     minGrade: number
@@ -166,6 +166,13 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
         case "SINGLE-PACK-REDUCER/SET-CARD-ANSWER-FOR-SEARCH-REQUEST": {
             return {...state, searchSettings: {...state.searchSettings, cardAnswer: action.answer}}
         }
+        case "SINGLE-PACK-REDUCER/EDIT-CARD": {
+            //@ts-ignore
+            return {...state, cards: state.cards.map((c)=>c._id === action.id
+                    ? {...c, _id:action.id, question:action.question, answer:action.answer}
+                    : {...c})}
+        }
+
         default:
             return {...state}
     }
@@ -242,8 +249,6 @@ export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThu
             dispatch(setAppStatus('loading'))
             let response = await CardsAPI.getSingleCardPack(data)
             dispatch(setCardsDataAC(response.data))
-
-            console.log(response)
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {
