@@ -7,15 +7,12 @@ import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import Pagination from "../Pagination/Pagination";
 import {prepareDataForSearchRequest} from "../../utils/dataPrepare/searchDataPrepare";
-import {Loader} from "../common/Loader/Loader";
-import {RequestStatusType} from "../../bll/appReducers";
 import SearchBlock from '../CardPacks/SearchPackBlock/SearchBlock';
 import { CardsPacksTable } from '../CardPacks/PackTable/CardsPacksTable';
 
 const Profile = () => {
     const user_id = useAppSelector<string>((state)=> state.profileReducer.userData.id)
     const searchSettings = useAppSelector<SearchSettingsType>((state)=>state.cardPacksReducer.searchSettings)
-    const appStatus = useAppSelector<RequestStatusType>((state)=>state.appReducer.status)
     const dispatch = useAppDispatch()
 
     useEffect(()=>{
@@ -30,7 +27,6 @@ const Profile = () => {
 
     return (
         <>
-            {appStatus === 'loading' && <Loader/>}
             <div className={s.container}>
                 <div className={s.sideBar}>
                     <SideBar id={user_id}/>

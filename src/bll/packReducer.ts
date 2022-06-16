@@ -1,6 +1,7 @@
 import {AppThunk} from "./store";
 import {CardsAPI} from "../api/cards-api";
 import {setAppError, setAppStatus} from "./appReducers";
+import {smartRandom} from "../utils/smartRandom/smartRandom";
 
 export type SingleCardPackRequestDataType = {
     cardAnswer?: string
@@ -14,16 +15,16 @@ export type SingleCardPackRequestDataType = {
 }
 export type CardsType = {
     answer: string
-    answerImg: string
-    answerVideo: string
+    answerImg?: string
+    answerVideo?: string
     cardsPack_id: string
     comments: string
     created: string
-    grade: 0
+    grade: number
     more_id: string
     question: string
-    questionImg: string
-    questionVideo: string
+    questionImg?: string
+    questionVideo?: string
     rating: number
     shots: number
     type: string
@@ -309,6 +310,9 @@ export const learnPackModeTC = (data: SingleCardPackRequestDataType): AppThunk =
             console.log(response)
             response = await CardsAPI.getSingleCardPack({...data, pageCount:response.data.cardsTotalCount})
             console.log(response.data.cards)
+            console.log(smartRandom(response.data.cards))
+
+
 
 
         } catch (error: any) {

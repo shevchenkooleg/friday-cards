@@ -46,6 +46,7 @@ const SinglePack = (props:SinglePackPropsType) => {
     }
     const onClickLearnButtonHandler = () => {
         dispatch(learnPackModeTC(prepareSinglePackDataForSearchRequest(singlePackSearchSettings, {cardsPack_id: props.pack._id})))
+        // smartRandom()
     }
 
 

@@ -10,10 +10,10 @@ import s from './CardsPacksTable.module.css'
 import {useAppDispatch, useAppSelector} from "../../../bll/store";
 import {CardPacksType, getCardsPacksTableTC, SearchSettingsType} from "../../../bll/cardPacksReducer";
 import {prepareDataForSearchRequest} from "../../../utils/dataPrepare/searchDataPrepare";
-import {SortButton} from "../SortButton/SortButton";
 import SinglePack from "../SinglePack/SinglePack";
 import {Loader} from "../../common/Loader/Loader";
 import {RequestStatusType} from "../../../bll/appReducers";
+import { SortButton } from '../SortButton/SortButton';
 
 
 const COLUMNS = [
