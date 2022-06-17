@@ -411,7 +411,7 @@ type cardsPoolType = {
 
 //////////////////////////////////      Настройки работы функции smartRandom      /////////////////////////////////////
 
-const numberOfCard = 10  // количество карточек в одной обучающей сессии
+export const numberOfCard = 5  // количество карточек в одной обучающей сессии
 const fourStarCardsPercent = 10 // % карточек с оценкой 3+ от общего числа карточек (numberOfCard)
 const threeStarCardsPercent = 20 // % карточек с оценкой 2+ от общего числа карточек (numberOfCard)
 const twoStarCardsPercent = 30 // % карточек с оценкой 1+ от общего числа карточек (numberOfCard)

@@ -48,7 +48,6 @@ const SingleCard = (props: SingleCardPropsType) => {
         setShowEdit(true)
     }
     const saveButtonClickHandler = () => {
-
         dispatch(editCardTC({card: {question, answer, _id: props.card._id}}))
         setShowEdit(false)
     }

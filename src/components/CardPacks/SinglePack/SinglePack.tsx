@@ -28,6 +28,9 @@ const SinglePack = (props:SinglePackPropsType) => {
     const userId = useAppSelector<string>((state) => state.profileReducer.userData.id)
     const singlePackSearchSettings = useAppSelector<SinglePackSearchSettingsType>((state)=>state.singlePackReducer.searchSettings)
 
+    // useEffect(()=>{
+    //     navigate('/learn/')
+    // },[randomCards])
 
     const onTitleClickHandler = () => {
         dispatch(setCardsPackTitleAC(props.pack.name, props.pack._id))
@@ -46,7 +49,7 @@ const SinglePack = (props:SinglePackPropsType) => {
     }
     const onClickLearnButtonHandler = () => {
         dispatch(learnPackModeTC(prepareSinglePackDataForSearchRequest(singlePackSearchSettings, {cardsPack_id: props.pack._id})))
-        // smartRandom()
+        navigate('/learn/')// smartRandom()
     }
 
 

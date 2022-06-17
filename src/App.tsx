@@ -18,6 +18,7 @@ import SettingsMenu from "./components/Profile/Profile_Settings/SettingsMenu";
 import CardPacks from "./components/CardPacks/CardPacks";
 import Cards from "./components/Cards/Cards";
 import EditProfile from "./components/Profile/EditProfile/EditProfile";
+import LearnPage from "./components/LearnPage/LearnPage";
 
 export const PATH = {
     PROFILE: {
@@ -36,7 +37,8 @@ export const PATH = {
         CARD_LIST: '/card-list',
         CARD_LIST_EDIT: '/card-list-edit',
     },
-    TESTING_PAGE: '/test'
+    TESTING_PAGE: '/test',
+    LEARNING_PAGE: '/learn',
 }
 
 function App() {
@@ -69,7 +71,7 @@ function App() {
                             <Route path={PATH.CARD.CARD_LIST + '/:pack_ID'} element={<Cards/>}/>
                             <Route path={PATH.CARD.CARD_LIST_EDIT + '/:pack_ID'} element={<Cards edit={true}/>}/>
                             <Route path={PATH.PROFILE.EDIT} element={<EditProfile/>}/>
-
+                            <Route path={PATH.LEARNING_PAGE} element={<LearnPage/>}/>
 
                             <Route path='/*' element={<Error404/>}/>
                         </Routes>
