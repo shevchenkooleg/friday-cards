@@ -3,7 +3,7 @@ import s from './LearnPage.module.css'
 import {Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {CardsType, gradeCardTC} from "../../bll/packReducer";
+import {CardsType, gradeCardTC, RandomSettingsType} from "../../bll/packReducer";
 import {PATH} from '../../App';
 import {AxiosResponse} from "axios";
 
@@ -30,7 +30,9 @@ const LearnPage = () => {
     const [show, setShow] = useState(false)
     const [grade, setGrade] = useState(1)
     const [first, setFirst] = useState<boolean>(true);
+    const [pageCount, setPageCount] = useState(1)
     const navigate = useNavigate()
+    const randomSettings = useAppSelector<RandomSettingsType>((state) => state.singlePackReducer.randomSettings)
 
     const getCard = () => {
         return (cardsArr.splice(Math.floor(Math.random() * cardsArr.length), 1))
@@ -67,6 +69,7 @@ const LearnPage = () => {
                     setCard(card)
                     setShow(false)
                     setGrade(0)
+                    setPageCount(pageCount + 1)
                 } else {
                     navigate(PATH.CARD.PACKS)
                 }
@@ -123,6 +126,9 @@ const LearnPage = () => {
                             size={'small'} disabled={grade===0}>Next</Button>
                 </>
             }
+            <div className={s.counter}>
+                question: {pageCount} of {randomSettings.totalAmount}
+            </div>
         </div>
     )
 }

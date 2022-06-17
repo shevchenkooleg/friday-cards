@@ -19,6 +19,7 @@ import CardPacks from "./components/CardPacks/CardPacks";
 import Cards from "./components/Cards/Cards";
 import EditProfile from "./components/Profile/EditProfile/EditProfile";
 import LearnPage from "./components/LearnPage/LearnPage";
+import RandomSettings from './components/LearnPage/RandomSettings/RandomSettings';
 
 export const PATH = {
     PROFILE: {
@@ -38,7 +39,10 @@ export const PATH = {
         CARD_LIST_EDIT: '/card-list-edit',
     },
     TESTING_PAGE: '/test',
-    LEARNING_PAGE: '/learn',
+    LEARNING_PAGE: {
+        MAIN: '/learn',
+        RANDOM_SETTINGS: '/learn/settings',
+    },
 }
 
 function App() {
@@ -71,7 +75,9 @@ function App() {
                             <Route path={PATH.CARD.CARD_LIST + '/:pack_ID'} element={<Cards/>}/>
                             <Route path={PATH.CARD.CARD_LIST_EDIT + '/:pack_ID'} element={<Cards edit={true}/>}/>
                             <Route path={PATH.PROFILE.EDIT} element={<EditProfile/>}/>
-                            <Route path={PATH.LEARNING_PAGE} element={<LearnPage/>}/>
+                            <Route path={PATH.LEARNING_PAGE.MAIN} element={<LearnPage/>}/>
+                            <Route path={PATH.LEARNING_PAGE.RANDOM_SETTINGS} element={<RandomSettings/>}/>
+
 
                             <Route path='/*' element={<Error404/>}/>
                         </Routes>

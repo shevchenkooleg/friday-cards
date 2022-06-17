@@ -23,6 +23,10 @@ export const SettingsMenu = () => {
     const onClickUpdatePassword = () => {
         navigate(PATH.LOGIN.RESTORE_PASS)
     }
+    const onClickChangeRandomSettings = () => {
+        navigate(PATH.LEARNING_PAGE.RANDOM_SETTINGS)
+    }
+
 
     return (
 
@@ -52,12 +56,29 @@ export const SettingsMenu = () => {
                         id="panel2bh-header"
                     >
                         <Typography sx={{color: 'text.secondary'}}>
+                            Smart Random
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails sx={{width: '90%', flexShrink: 0}}>
+                        <div onClick={onClickChangeRandomSettings}
+                             className={s.settingsElement}>
+                            change random settings
+                        </div>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel3bh-content"
+                        id="panel3bh-header"
+                    >
+                        <Typography sx={{color: 'text.secondary'}}>
                             Other settings
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
-                            New fitures will be here soon
+                            New features will be here soon
                         </Typography>
                     </AccordionDetails>
                 </Accordion>

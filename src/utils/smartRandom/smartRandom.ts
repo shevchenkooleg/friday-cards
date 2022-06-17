@@ -1,4 +1,6 @@
-import {CardsType} from "../../bll/packReducer";
+import {CardsType, RandomSettingsType} from "../../bll/packReducer";
+
+
 
 const testCardsArr = [
     {
@@ -411,10 +413,18 @@ type cardsPoolType = {
 
 //////////////////////////////////      Настройки работы функции smartRandom      /////////////////////////////////////
 
-export const numberOfCard = 5  // количество карточек в одной обучающей сессии
-const fourStarCardsPercent = 10 // % карточек с оценкой 3+ от общего числа карточек (numberOfCard)
-const threeStarCardsPercent = 20 // % карточек с оценкой 2+ от общего числа карточек (numberOfCard)
-const twoStarCardsPercent = 30 // % карточек с оценкой 1+ от общего числа карточек (numberOfCard)
+const defaultRandomSettings = {
+    totalAmount: 5,                         // количество карточек в одной обучающей сессии
+    fourStarCardsPercent: 10,               // % карточек с оценкой 4+ от общего числа карточек (numberOfCard)
+    threeStarCardsPercent: 20,              // % карточек с оценкой 3+ от общего числа карточек (numberOfCard)
+    twoStarCardsPercent: 30,                // % карточек с оценкой 2+ от общего числа карточек (numberOfCard)
+}
+
+
+// export const numberOfCard = 5
+// const fourStarCardsPercent = 10
+// const threeStarCardsPercent = 20
+// const twoStarCardsPercent = 30
 
 /////////////////   оставшееся число карточек будет заполнено карточками с оценкой 1    ///////////////////////////////
 
@@ -422,9 +432,9 @@ const twoStarCardsPercent = 30 // % карточек с оценкой 1+ от �
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-export const smartRandom = (arr:CardsType[]=testCardsArr) => {
+export const smartRandom = (arr:CardsType[]=testCardsArr, data: RandomSettingsType=defaultRandomSettings) => {
 
-    if (arr.length < numberOfCard) {    // если входной массив карточек меньше заданного количества -> возвращаем
+    if (arr.length < data.totalAmount) {    // если входной массив карточек меньше заданного количества -> возвращаем
         // console.log(arr)                // входной массив целиком
         return arr
     } else {
@@ -457,7 +467,7 @@ export const smartRandom = (arr:CardsType[]=testCardsArr) => {
         let resArr: CardsType[] = []            // создание результирующего массива
 
 
-        // добавление карточек со значением оценки 4 и 5
+        // добавление карточек со значением оценки 4+
 
         // в случае, если количество карточек с нужной оценкой больше требуемого значения
         // производится рандомный выбор карточки из ассоциативного массива cardsPool,
@@ -465,8 +475,8 @@ export const smartRandom = (arr:CardsType[]=testCardsArr) => {
         // и удаление выбранной карточки из ассоциативного массива cardsPool
         // данная логика одинакова для каждой группы карточек
 
-        if (cardsPool.fourStarArr.length > (Math.floor(numberOfCard*(fourStarCardsPercent/100)))){
-            for (let i=0; i<Math.floor(numberOfCard*(fourStarCardsPercent/100));i++){
+        if (cardsPool.fourStarArr.length > (Math.floor(data.totalAmount*(data.fourStarCardsPercent/100)))){
+            for (let i=0; i<Math.floor(data.totalAmount*(data.fourStarCardsPercent/100));i++){
                 const ind = Math.floor(Math.random()*cardsPool.fourStarArr.length)
                 resArr.push(cardsPool.fourStarArr[ind])
                 cardsPool.fourStarArr.splice(ind, 1)
@@ -478,10 +488,10 @@ export const smartRandom = (arr:CardsType[]=testCardsArr) => {
             cardsPool.fourStarArr = []
         }
 
-        // добавление карточек со значением оценки 3
+        // добавление карточек со значением оценки 3+
 
-        if (cardsPool.threeStarArr.length > (Math.floor(numberOfCard*(threeStarCardsPercent/100)))){
-            for (let i=0; i<Math.floor(numberOfCard*(threeStarCardsPercent/100));i++){
+        if (cardsPool.threeStarArr.length > (Math.floor(data.totalAmount*(data.threeStarCardsPercent/100)))){
+            for (let i=0; i<Math.floor(data.totalAmount*(data.threeStarCardsPercent/100));i++){
                 const ind = Math.floor(Math.random()*cardsPool.threeStarArr.length)
                 resArr.push(cardsPool.threeStarArr[ind])
                 cardsPool.threeStarArr.splice(ind, 1)
@@ -493,10 +503,10 @@ export const smartRandom = (arr:CardsType[]=testCardsArr) => {
             cardsPool.threeStarArr = []
         }
 
-        // добавление карточек со значением оценки 2
+        // добавление карточек со значением оценки 2+
 
-        if (cardsPool.twoStarArr.length > (Math.floor(numberOfCard*(twoStarCardsPercent/100)))){
-            for (let i=0; i<Math.floor(numberOfCard*(twoStarCardsPercent/100));i++){
+        if (cardsPool.twoStarArr.length > (Math.floor(data.totalAmount*(data.twoStarCardsPercent/100)))){
+            for (let i=0; i<Math.floor(data.totalAmount*(data.twoStarCardsPercent/100));i++){
                 const ind = Math.floor(Math.random()*cardsPool.twoStarArr.length)
                 resArr.push(cardsPool.twoStarArr[ind])
                 cardsPool.twoStarArr.splice(ind, 1)
@@ -508,9 +518,9 @@ export const smartRandom = (arr:CardsType[]=testCardsArr) => {
             cardsPool.twoStarArr = []
         }
 
-        // добавление карточек со значением оценки 1
+        // добавление карточек со значением оценки 1+
 
-        while (resArr.length < numberOfCard && cardsPool.oneStarArr.length>0){
+        while (resArr.length < data.totalAmount && cardsPool.oneStarArr.length>0){
             const ind = Math.floor(Math.random()*cardsPool.oneStarArr.length)
             resArr.push(cardsPool.oneStarArr[ind])
             cardsPool.oneStarArr.splice(ind, 1)
@@ -518,10 +528,10 @@ export const smartRandom = (arr:CardsType[]=testCardsArr) => {
 
         // проверка результирующего массива на заданную длину -> возврат результирующего массива или добавление недостающих карточек
 
-        if (resArr.length < numberOfCard){
-            while (resArr.length < numberOfCard){
+        if (resArr.length < data.totalAmount){
+            while (resArr.length < data.totalAmount){
                 if (cardsPool.twoStarArr.length > 0){
-                    const ind = Math.floor(Math.random()*cardsPool.twoStarArr.length)          // карточки добавляются по принципу
+                    const ind = Math.floor(Math.random()*cardsPool.twoStarArr.length)          // карточки добавляются по принципу:
                     resArr.push(cardsPool.twoStarArr[ind])                                        // сначала карточки
                     cardsPool.twoStarArr.splice(ind, 1)                                // с минимальной оценкой
                 } else if (cardsPool.threeStarArr.length > 0){

@@ -1,5 +1,10 @@
 import React, {useState} from 'react';
-import {learnPackModeTC, setCardsPackTitleAC, SinglePackSearchSettingsType} from "../../../bll/packReducer";
+import {
+    learnPackModeTC,
+    RandomSettingsType,
+    setCardsPackTitleAC,
+    SinglePackSearchSettingsType
+} from "../../../bll/packReducer";
 import {CardPacksType, deleteCardsPackTC, SearchSettingsType} from "../../../bll/cardPacksReducer";
 import {prepareDataForSearchRequest} from "../../../utils/dataPrepare/searchDataPrepare";
 import Modal from "../../Modal_windows/Modal";
@@ -27,10 +32,7 @@ const SinglePack = (props:SinglePackPropsType) => {
     const appStatus = useAppSelector<RequestStatusType>((state) => state.appReducer.status)
     const userId = useAppSelector<string>((state) => state.profileReducer.userData.id)
     const singlePackSearchSettings = useAppSelector<SinglePackSearchSettingsType>((state)=>state.singlePackReducer.searchSettings)
-
-    // useEffect(()=>{
-    //     navigate('/learn/')
-    // },[randomCards])
+    const randomSettings = useAppSelector<RandomSettingsType>((state)=>state.singlePackReducer.randomSettings)
 
     const onTitleClickHandler = () => {
         dispatch(setCardsPackTitleAC(props.pack.name, props.pack._id))
@@ -48,7 +50,7 @@ const SinglePack = (props:SinglePackPropsType) => {
         setShow(false)
     }
     const onClickLearnButtonHandler = () => {
-        dispatch(learnPackModeTC(prepareSinglePackDataForSearchRequest(singlePackSearchSettings, {cardsPack_id: props.pack._id})))
+        dispatch(learnPackModeTC(prepareSinglePackDataForSearchRequest(singlePackSearchSettings, {cardsPack_id: props.pack._id}), randomSettings))
         navigate('/learn/')// smartRandom()
     }
 

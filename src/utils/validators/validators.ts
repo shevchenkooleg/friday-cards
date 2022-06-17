@@ -43,3 +43,18 @@ export const UpdatePasswordValidationSchema = Yup.object().shape({
         .required('Must be filled')
         .oneOf([Yup.ref("password"), null], "Pass must match"),
 })
+
+export const SetRandomSettingsValidationSchema = Yup.object().shape({
+    totalAmount: Yup.string()
+        .required('Must be filled'),
+    fourStar: Yup.string()
+        .required('Must be filled'),
+    threeStar: Yup.string()
+        .required('Must be filled'),
+    twoStar: Yup.string()
+        .required('Must be filled'),
+    confirmPassword: Yup.string()
+        .min(8, 'At least 8 char')
+        .required('Must be filled')
+        .oneOf([Yup.ref("password"), null], "Pass must match"),
+})
