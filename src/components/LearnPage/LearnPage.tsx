@@ -94,7 +94,7 @@ const LearnPage = () => {
             {show &&
                 <>
                     <div className={s.question}>
-                        Answer: {card.question}
+                        Answer: {card.answer}
                     </div>
 
                     <FormControl sx={{margin: '0 auto'}}>
