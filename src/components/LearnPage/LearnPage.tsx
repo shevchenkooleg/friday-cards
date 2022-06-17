@@ -61,7 +61,7 @@ const LearnPage = () => {
     const onNextClickHandler = () => {
         let promise = dispatch(gradeCardTC({card_id: card._id, grade: grade}))
         promise.then((response:AxiosResponse)=>{
-            if (response.status===200){
+            if (response.status){
                 if (cardsArr.length > 0) {
                     let [card] = getCard()
                     setCard(card)
