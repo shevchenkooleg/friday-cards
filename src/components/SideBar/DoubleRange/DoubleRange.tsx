@@ -22,6 +22,7 @@ const DoubleRange = () => {
     }, [minAmount, maxAmount, dispatch])
 
     useEffect(() => {
+        console.log('setValue effect')
         setValue(ninMaxValue)
     }, [ninMaxValue])
 

@@ -3,9 +3,10 @@ import s from './LearnPage.module.css'
 import {Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {CardsType, gradeCardTC, RandomSettingsType} from "../../bll/packReducer";
+import {CardsType, gradeCardTC} from "../../bll/packReducer";
 import {PATH} from '../../App';
 import {AxiosResponse} from "axios";
+import {setAppError} from "../../bll/appReducers";
 
 const LearnPage = () => {
 
@@ -31,28 +32,40 @@ const LearnPage = () => {
     const [grade, setGrade] = useState(1)
     const [first, setFirst] = useState<boolean>(true);
     const [pageCount, setPageCount] = useState(1)
+    const [totalPageCount, setTotalPageCount] = useState(0)
     const navigate = useNavigate()
-    const randomSettings = useAppSelector<RandomSettingsType>((state) => state.singlePackReducer.randomSettings)
+
 
     const getCard = () => {
         return (cardsArr.splice(Math.floor(Math.random() * cardsArr.length), 1))
     }
+
+    useEffect(()=>{
+        if (cardsArr.length > 0 && first) {
+            setTotalPageCount(cardsArr.length)
+            setFirst(false)
+        }
+    }, [cardsArr, first])
 
 
     useEffect(() => {
         // console.log('LearnContainer useEffect');
         setGrade(0)
 
-        if (first) {
-            setFirst(false);
+        if (cardsArr.length > 0) {
+            let [card] = getCard()
+            setCard(card);
+        } else {
+            dispatch(setAppError('Not enough cards to learning session'))
+            navigate(PATH.CARD.PACKS)
         }
-        let [card] = getCard()
-        if (cardsArr.length > 0) setCard(card);
+
+
 
         return () => {
             // console.log('LearnContainer useEffect off');
         }
-    }, [first, cardsArr]);
+    }, [cardsArr]);
 
 
 
@@ -63,6 +76,7 @@ const LearnPage = () => {
     const onNextClickHandler = () => {
         let promise = dispatch(gradeCardTC({card_id: card._id, grade: grade}))
         promise.then((response:AxiosResponse)=>{
+            console.log(response)
             if (response.status){
                 if (cardsArr.length > 0) {
                     let [card] = getCard()
@@ -127,7 +141,7 @@ const LearnPage = () => {
                 </>
             }
             <div className={s.counter}>
-                question: {pageCount} of {randomSettings.totalAmount}
+                question: {pageCount} of {totalPageCount}
             </div>
         </div>
     )

@@ -546,7 +546,7 @@ export const smartRandom = (arr:CardsType[]=testCardsArr, data: RandomSettingsTy
             }
         }
 
-        // console.log(resArr)
+        console.log([...resArr])
         return resArr
     }
 }

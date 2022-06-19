@@ -107,7 +107,8 @@ export const cardPacksReducer = (state: InitialStateType = initialState, action:
             return {...state, ...action.cardReducerData}
         }
         case "CARDS-REDUCER/SET-MAX-CARDS-VALUE": {
-            return {...state, minCardsCount:0, maxCardsCount:action.maxCardValue}
+            // return {...state, minCardsCount:0, maxCardsCount:action.maxCardValue}
+            return {...state, maxCardsCount:action.maxCardValue}
         }
         case "CARDS-REDUCER/SET-MIN-MAX-SEARCH-VALUE": {
             return {...state, searchSettings: {...state.searchSettings, minMax: action.value}}
@@ -222,6 +223,24 @@ export const setSearchAreaValueAC = (value: string) => {
 
 //THUNK
 
+export const getFirstCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setAppStatus('loading'))
+            let response = await CardsAPI.getCardSPacks(data)
+            dispatch(setCarsPacksTableAC(response.data.cardPacks))
+            dispatch(setPageInPaginationAC(response.data.page))
+            dispatch(setCardPacksTotalCountAC(response.data.cardPacksTotalCount))
+            dispatch(setMaxCardsValueAC(response.data.maxCardsCount))
+            dispatch(setMinMaxSearchValueAC([0,response.data.maxCardsCount]))
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
+        }
+    }
+}
+
 export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
     return async (dispatch) => {
         try {
@@ -231,7 +250,6 @@ export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
             dispatch(setPageInPaginationAC(response.data.page))
             dispatch(setCardPacksTotalCountAC(response.data.cardPacksTotalCount))
             dispatch(setMaxCardsValueAC(response.data.maxCardsCount))
-
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {

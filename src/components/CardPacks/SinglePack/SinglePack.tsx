@@ -49,9 +49,10 @@ const SinglePack = (props:SinglePackPropsType) => {
         dispatch(deleteCardsPackTC(props.pack._id, prepareDataForSearchRequest(searchSettings, {user_id: props.id})))
         setShow(false)
     }
-    const onClickLearnButtonHandler = () => {
-        dispatch(learnPackModeTC(prepareSinglePackDataForSearchRequest(singlePackSearchSettings, {cardsPack_id: props.pack._id}), randomSettings))
-        navigate('/learn/')// smartRandom()
+    const onClickLearnButtonHandler = async () => {
+        await dispatch(learnPackModeTC(prepareSinglePackDataForSearchRequest(singlePackSearchSettings, {cardsPack_id: props.pack._id}), randomSettings))
+        navigate('/learn/')
+        // smartRandom()
     }
 
 

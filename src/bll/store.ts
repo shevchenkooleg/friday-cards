@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers} from "redux";
+import {applyMiddleware, combineReducers, compose} from "redux";
 import { legacy_createStore as createStore} from "redux";
 import {profileReducer} from "./profileReducer";
 import thunk, {ThunkAction, ThunkDispatch } from 'redux-thunk'
@@ -25,7 +25,11 @@ export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector
 export const useAppDispatch = () => useDispatch<ThunkDispatch<AppStateType, unknown, RootReducerType>>()
 export type AppThunk<T = void> = ThunkAction<T, AppStateType, unknown, RootReducerType>
 
-export let store = createStore(rootReducer, applyMiddleware(thunk))
+//@ts-ignore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export let store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+
+// export let store = createStore(rootReducer, applyMiddleware(thunk))
 
 
 //@ts-ignore
