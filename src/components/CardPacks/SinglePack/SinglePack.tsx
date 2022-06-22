@@ -63,10 +63,10 @@ const SinglePack = (props:SinglePackPropsType) => {
                 <p className={s.titleModal}>Do wont to <span
                     className={s.textModal}>DELETE</span> pack list?</p>
                 <div className={s.insideModal}>
-                    <Button onClick={yesButtonClickHandler} variant="contained"
-                            color="success">Yes</Button>
                     <Button onClick={() => setShow(false)} variant="outlined"
                             color="error">No</Button>
+                    <Button onClick={yesButtonClickHandler} variant="contained"
+                            color="success">Yes</Button>
                 </div>
             </Modal>
             <TableRow
@@ -79,20 +79,20 @@ const SinglePack = (props:SinglePackPropsType) => {
                             component="button"
                             variant="body2"
                         >
-                            {props.pack.private && <LockIcon />}{props.pack.name}
+                            {props.pack.private && <LockIcon color={'error'}/>}{props.pack.name}
                         </Link>
-                        : <span>{props.pack.private && <LockIcon />}{props.pack.name}</span>}
+                        : <span>{props.pack.private && <LockIcon color={'error'}/>}{props.pack.name}</span>}
                 </TableCell>
 
                 <TableCell align="right">{props.pack.cardsCount}</TableCell>
                 <TableCell align="right"><UpdateFormat time={props.pack.updated}/></TableCell>
                 <TableCell align="right">{props.pack.user_name}</TableCell>
                 <TableCell>
-                    {userId === props.pack.user_id && <Button onClick={onDeleteButtonClickHandler}
+                    {userId === props.pack.user_id && <Button color={'error'} onClick={onDeleteButtonClickHandler}
                                                         disabled={appStatus === 'loading'}>Delete</Button>}
                     {userId === props.pack.user_id &&
                         <Button disabled={appStatus === 'loading'} onClick={onClickEditButton}>Edit</Button>}
-                    <Button disabled={appStatus === 'loading'} onClick={onClickLearnButtonHandler}>Learn</Button>
+                    <Button color={'success'} disabled={appStatus === 'loading'} onClick={onClickLearnButtonHandler}>Learn</Button>
                 </TableCell>
             </TableRow>
         </>

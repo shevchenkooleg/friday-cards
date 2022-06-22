@@ -16,6 +16,7 @@ import {RequestStatusType} from "../../bll/appReducers";
 import Modal from "../Modal_windows/Modal";
 import { editCardsPackTC } from '../../bll/cardPacksReducer';
 import LockIcon from '@mui/icons-material/Lock';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 
 interface ICards {
@@ -167,10 +168,11 @@ const Cards: React.FC<ICards> = ({edit}) => {
                         variant='contained'>Back</Button>
                 {edit
                     ? <div>
-                        <h2 onClick={onTitleClickHandler}>{isPrivate && <LockIcon />}{title}</h2>
+                        <h2 onClick={onTitleClickHandler}>{isPrivate && <LockIcon color={'error'}/>}{<ModeEditIcon />}{title}</h2>
+                        <div style={{fontSize:'10px'}}>click on title to change...</div>
 
                     </div>
-                    : <h2>{isPrivate && <LockIcon />}{title}</h2>
+                    : <h2>{isPrivate && <LockIcon color={'error'}/>}{title}</h2>
                 }
                 <div className={s.button}>
                     {packUserId === user_id && <Button variant={"contained"}
