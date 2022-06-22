@@ -8,7 +8,13 @@ import {
 } from "../bll/authReducer";
 import {UserdataForChangeType} from "../bll/profileReducer";
 import {AddPackDataType, CardsPacksDataType} from "../bll/cardPacksReducer";
-import {AddCardDataType, EditCardDataType, GradeCardDataType, SingleCardPackRequestDataType} from "../bll/packReducer";
+import {
+    AddCardDataType,
+    EditCardDataType,
+    GradeCardDataType,
+    SingleCardPackRequestDataType,
+    UpdateCardsPackType
+} from "../bll/packReducer";
 
 
 const instance = axios.create({
@@ -60,6 +66,9 @@ export const CardsAPI = {
     },
     deleteCardsPack(id: string) {
         return instance.delete<LogOutType, AxiosResponse>('/cards/pack', {params: {id}})
+    },
+    updateCardsPack(data: UpdateCardsPackType) {
+        return instance.put<UpdateCardsPackType, AxiosResponse>('/cards/pack', data)
     },
     addCard(data: AddCardDataType) {
         return instance.post<AddCardDataType, AxiosResponse>('/cards/card', data)

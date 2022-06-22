@@ -2,7 +2,7 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import s from "./Cards.module.css";
 import SearchCardBlock from './SearchCardBlock/SearchCardBlock';
 import PackTable from "./CardTable/PackTable";
-import {Button, TextField} from "@mui/material";
+import {Button, Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {getSinglePackDataTC, setPackIdAC, SinglePackSearchSettingsType} from "../../bll/packReducer";
@@ -14,12 +14,15 @@ import CardPagination from './CardPagination/CardPagination';
 import {Loader} from "../common/Loader/Loader";
 import {RequestStatusType} from "../../bll/appReducers";
 import Modal from "../Modal_windows/Modal";
+import { editCardsPackTC } from '../../bll/cardPacksReducer';
+import LockIcon from '@mui/icons-material/Lock';
 
 
 interface ICards {
     edit?: boolean
 }
-const Cards:React.FC<ICards> = ({edit}) => {
+
+const Cards: React.FC<ICards> = ({edit}) => {
 
     const dispatch = useAppDispatch()
     const cardsPack_id = useAppSelector<string>((state) => state.singlePackReducer.cardPackId)
@@ -29,11 +32,15 @@ const Cards:React.FC<ICards> = ({edit}) => {
     const appStatus = useAppSelector<RequestStatusType>((state) => state.appReducer.status)
     const data = {card: {cardsPack_id}}
     const navigate = useNavigate();
+    const isPrivate = useAppSelector<boolean>((state)=>state.singlePackReducer.isPrivate)
 
 
     const [show, setShow] = useState<boolean>(false)
     const [question, setQuestion] = useState<string>('')
     const [answer, setAnswer] = useState<string>('')
+    const [changedTitle, setChangedTitle] = useState<string>('')
+    const [privatePack, setPrivatePack] = useState(isPrivate)
+    const [titleEditMode, setTitleEditMode] = useState(false)
 
 
     const onAddCardClickHandler = () => {
@@ -57,13 +64,33 @@ const Cards:React.FC<ICards> = ({edit}) => {
         setAnswer('')
         setQuestion('')
     }
+    const saveTitleButtonHandler = () => {
+        setTitleEditMode(false)
+        dispatch(editCardsPackTC({cardsPack:{_id:cardsPack_id, name:changedTitle, private:privatePack}}, user_id))
+    }
+    const cancelTitleButtonHandler = () => {
+        setTitleEditMode(false)
+    }
+    const onTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setChangedTitle(e.currentTarget.value)
+    }
+
     const onClickBackHandler = () => {
+
         navigate('/cards_packs')
     }
     const title = useAppSelector<string>(state => state.singlePackReducer.title)
 
+    const onTitleClickHandler = () => {
+        setTitleEditMode(true)
+    }
+
 
     let pack_ID = useParams().pack_ID;
+
+    useEffect(() => {
+        setChangedTitle(title)
+    }, [title])
 
     useEffect(() => {
         pack_ID && dispatch(setPackIdAC(pack_ID))
@@ -109,10 +136,42 @@ const Cards:React.FC<ICards> = ({edit}) => {
                     </div>
                 </div>
             </Modal>
+            <Modal show={titleEditMode} setShow={setTitleEditMode}>
+                <div className={s.modalContainer}>
+                    <p className={s.modalTitle}>Change <span className={s.modalMainWord}>pack title</span></p>
+                    <div>
+                        <TextField sx={{marginTop: '20px'}} color={"primary"} size={"medium"} value={changedTitle}
+                                   onChange={onTitleChangeHandler} autoFocus={true} variant="standard"/>
+                    </div>
+
+                    <div>
+                        <FormControlLabel
+                            control={<Checkbox/>}
+                            checked={privatePack}
+                            label={'Private'}
+                            onChange={() => {
+                                setPrivatePack(!privatePack)
+                            }}
+                        />
+                    </div>
+                    <div className={s.modalButtons}>
+                        <Button onClick={cancelTitleButtonHandler} variant="outlined" color="error">Cancel</Button>
+                        <Button onClick={saveTitleButtonHandler} variant="contained" color="success">Save</Button>
+                    </div>
+
+                </div>
+            </Modal>
             {appStatus === 'loading' && <Loader/>}
             <div className={s.container}>
-                <Button disabled={appStatus === 'loading'} onClick={onClickBackHandler} variant='contained'>Back</Button>
-                <h2>{title}</h2>
+                <Button disabled={appStatus === 'loading'} onClick={onClickBackHandler}
+                        variant='contained'>Back</Button>
+                {edit
+                    ? <div>
+                        <h2 onClick={onTitleClickHandler}>{isPrivate && <LockIcon />}{title}</h2>
+
+                    </div>
+                    : <h2>{isPrivate && <LockIcon />}{title}</h2>
+                }
                 <div className={s.button}>
                     {packUserId === user_id && <Button variant={"contained"}
                                                        sx={{width: '200px'}}

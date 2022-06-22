@@ -2,6 +2,7 @@ import {AppThunk} from "./store";
 import {CardsAPI} from "../api/cards-api";
 import {setAppError, setAppStatus} from "./appReducers";
 import {smartRandom} from "../utils/smartRandom/smartRandom";
+import {CardPacksType} from "./cardPacksReducer";
 
 export type SingleCardPackRequestDataType = {
     cardAnswer?: string
@@ -42,6 +43,7 @@ export type RandomSettingsType = {
 export type InitialStateType = {
     cardPackId: string
     title: string
+    isPrivate: boolean
     cards: CardsType[]
     randomCards: CardsType[]
     randomSettings: RandomSettingsType
@@ -77,6 +79,13 @@ export type EditCardDataType = {
         answer?: string | undefined
     }
 }
+export type UpdateCardsPackType = {
+    cardsPack: {
+        _id: string
+        name: string
+        private: boolean
+    }
+}
 export type GradeCardDataType = {
     grade: number
     card_id: string
@@ -94,6 +103,7 @@ export type SinglePackSearchSettingsType = {
 const initialState: InitialStateType = {
     title: '',
     cardPackId: '',
+    isPrivate: false,
     cards: [],
     cardsTotalCount: 0,
     maxGrade: 0,
@@ -132,7 +142,8 @@ export type ActionsType =
     deleteCardACType |
     editCardACType |
     SetRandomCardsArrayACType |
-    SetRandomSettingsACType
+    SetRandomSettingsACType |
+    UpdateCardTitleACType
 
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -158,6 +169,7 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
                 ...state,
                 title: action.title,
                 cardPackId: action.packID,
+                isPrivate: action.isPrivate,
                 searchSettings: {...state.searchSettings, cardsPack_id: action.packID}
             }
         }
@@ -180,16 +192,22 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
             return {...state, searchSettings: {...state.searchSettings, cardAnswer: action.answer}}
         }
         case "SINGLE-PACK-REDUCER/EDIT-CARD": {
-            //@ts-ignore
-            return {...state, cards: state.cards.map((c)=>c._id === action.id
-                    ? {...c, _id:action.id, question:action.question, answer:action.answer}
-                    : {...c})}
+
+            return {
+                //@ts-ignore
+                ...state, cards: state.cards.map((c) => c._id === action.id
+                    ? {...c, _id: action.id, question: action.question, answer: action.answer}
+                    : {...c})
+            }
         }
         case "SINGLE-PACK-REDUCER/SET-RANDOM-CARDS-ARRAY": {
             return {...state, randomCards: action.cardArray}
         }
         case "SINGLE-PACK-REDUCER/SET-RANDOM-SETTINGS": {
-            return {...state, randomSettings:action.settings}
+            return {...state, randomSettings: action.settings}
+        }
+        case "SINGLE-PACK-REDUCER/UPDATE-CARD-TITLE": {
+            return {...state, title: action.card.name, isPrivate:action.card.private}
         }
         default:
             return {...state}
@@ -206,11 +224,12 @@ export const setCardsDataAC = (data: InitialStateType) => ({
     data,
 } as const)
 export type SetCardsPackTitleAC = ReturnType<typeof setCardsPackTitleAC>
-export const setCardsPackTitleAC = (title: string, packID: string) => {
+export const setCardsPackTitleAC = (title: string, packID: string, isPrivate: boolean) => {
     return {
         type: 'SINGLE-PACK-REDUCER/SET-NAME',
         title,
-        packID
+        packID,
+        isPrivate,
     } as const
 }
 export type SetPackIdACType = ReturnType<typeof setPackIdAC>
@@ -274,6 +293,13 @@ export const setRandomSettings = (settings: RandomSettingsType) => {
         settings
     } as const
 }
+export type UpdateCardTitleACType = ReturnType<typeof updateCardTitle>
+export const updateCardTitle = (card: CardPacksType) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/UPDATE-CARD-TITLE',
+        card
+    } as const
+}
 
 //THUNK
 export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThunk => {
@@ -281,6 +307,7 @@ export const getSinglePackDataTC = (data: SingleCardPackRequestDataType): AppThu
         try {
             dispatch(setAppStatus('loading'))
             let response = await CardsAPI.getSingleCardPack(data)
+            console.log(response)
             dispatch(setCardsDataAC(response.data))
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
@@ -338,7 +365,7 @@ export const learnPackModeTC = (data: SingleCardPackRequestDataType, randomSetti
         try {
             dispatch(setAppStatus('loading'))
             let response = await CardsAPI.getSingleCardPack(data)
-            response = await CardsAPI.getSingleCardPack({...data, pageCount:response.data.cardsTotalCount})
+            response = await CardsAPI.getSingleCardPack({...data, pageCount: response.data.cardsTotalCount})
             const randomCardArray = smartRandom(response.data.cards, randomSettings)
             dispatch(setRandomCardsArray(randomCardArray))
         } catch (error: any) {

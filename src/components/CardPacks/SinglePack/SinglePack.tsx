@@ -17,6 +17,7 @@ import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../bll/store";
 import {RequestStatusType} from "../../../bll/appReducers";
 import { prepareSinglePackDataForSearchRequest } from '../../../utils/dataPrepare/searchSinglePackDataPrepare';
+import LockIcon from "@mui/icons-material/Lock";
 
 type SinglePackPropsType = {
     pack: CardPacksType
@@ -35,11 +36,11 @@ const SinglePack = (props:SinglePackPropsType) => {
     const randomSettings = useAppSelector<RandomSettingsType>((state)=>state.singlePackReducer.randomSettings)
 
     const onTitleClickHandler = () => {
-        dispatch(setCardsPackTitleAC(props.pack.name, props.pack._id))
+        dispatch(setCardsPackTitleAC(props.pack.name, props.pack._id, props.pack.private))
         navigate(`/card-list/${props.pack._id}`)
     }
     const onClickEditButton = () => {
-        dispatch(setCardsPackTitleAC(props.pack.name, props.pack._id))
+        dispatch(setCardsPackTitleAC(props.pack.name, props.pack._id, props.pack.private))
         navigate(`/card-list-edit/${props.pack._id}`)
     }
     const onDeleteButtonClickHandler = () => {
@@ -78,9 +79,9 @@ const SinglePack = (props:SinglePackPropsType) => {
                             component="button"
                             variant="body2"
                         >
-                            {props.pack.name}
+                            {props.pack.private && <LockIcon />}{props.pack.name}
                         </Link>
-                        : <span>{props.pack.name}</span>}
+                        : <span>{props.pack.private && <LockIcon />}{props.pack.name}</span>}
                 </TableCell>
 
                 <TableCell align="right">{props.pack.cardsCount}</TableCell>

@@ -1,6 +1,7 @@
 import {AppThunk} from "./store";
 import {CardsAPI} from "../api/cards-api";
 import {setAppError, setAppStatus} from "./appReducers";
+import {UpdateCardsPackType, updateCardTitle} from "./packReducer";
 
 
 export type InitialStateType = {
@@ -246,6 +247,7 @@ export const getCardsPacksTableTC = (data: CardsPacksDataType): AppThunk => {
         try {
             dispatch(setAppStatus('loading'))
             let response = await CardsAPI.getCardSPacks(data)
+            console.log(response)
             dispatch(setCarsPacksTableAC(response.data.cardPacks))
             dispatch(setPageInPaginationAC(response.data.page))
             dispatch(setCardPacksTotalCountAC(response.data.cardPacksTotalCount))
@@ -278,6 +280,23 @@ export const deleteCardsPackTC = (card_id: string, data: CardsPacksDataType): Ap
             await CardsAPI.deleteCardsPack(card_id)
             dispatch(getCardsPacksTableTC(data))
 
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
+        }
+    }
+}
+
+export const editCardsPackTC = (data: UpdateCardsPackType, userId:string): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setAppStatus('loading'))
+            await CardsAPI.updateCardsPack(data)
+            let response = await CardsAPI.getCardSPacks({user_id: userId})
+            console.log(response)
+            const updatedCard = response.data.cardPacks.find((card: CardPacksType)=>card._id===data.cardsPack._id)
+            dispatch(updateCardTitle(updatedCard))
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {
