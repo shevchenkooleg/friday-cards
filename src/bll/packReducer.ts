@@ -90,6 +90,7 @@ export type GradeCardDataType = {
     grade: number
     card_id: string
 }
+export type DataForPlotType = Array<number>
 export type SinglePackSearchSettingsType = {
     cardAnswer?: string
     cardQuestion?: string
@@ -143,7 +144,8 @@ export type ActionsType =
     editCardACType |
     SetRandomCardsArrayACType |
     SetRandomSettingsACType |
-    UpdateCardTitleACType
+    UpdateCardTitleACType |
+    SetQuestionResultACType
 
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -209,6 +211,9 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
         case "SINGLE-PACK-REDUCER/UPDATE-CARD-TITLE": {
             return {...state, title: action.card.name, isPrivate:action.card.private}
         }
+        // case "SINGLE-PACK-REDUCER/SET-QUESTION-RESULT": {
+        //     return {...state, learningSessionResults:{...state.learningSessionResults, "1":action.grade}}
+        // }
         default:
             return {...state}
     }
@@ -298,6 +303,13 @@ export const updateCardTitle = (card: CardPacksType) => {
     return {
         type: 'SINGLE-PACK-REDUCER/UPDATE-CARD-TITLE',
         card
+    } as const
+}
+export type SetQuestionResultACType = ReturnType<typeof setQuestionResult>
+export const setQuestionResult = (grade: number) => {
+    return {
+        type: 'SINGLE-PACK-REDUCER/SET-QUESTION-RESULT',
+        grade
     } as const
 }
 
