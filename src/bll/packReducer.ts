@@ -3,6 +3,7 @@ import {CardsAPI} from "../api/cards-api";
 import {setAppError, setAppStatus} from "./appReducers";
 import {smartRandom} from "../utils/smartRandom/smartRandom";
 import {CardPacksType} from "./cardPacksReducer";
+import {preparePackDataForPlot} from "../utils/plotResults/plotResults";
 
 export type SingleCardPackRequestDataType = {
     cardAnswer?: string
@@ -47,6 +48,7 @@ export type InitialStateType = {
     cards: CardsType[]
     randomCards: CardsType[]
     randomSettings: RandomSettingsType
+    packStatistic: number[]
     cardsTotalCount: number
     maxGrade: number
     minGrade: number
@@ -113,6 +115,7 @@ const initialState: InitialStateType = {
     page: 1,
     pageCount: 1,
     randomCards: [],
+    packStatistic: [],
     randomSettings: {
         totalAmount: 5,
         fourStarCardsPercent: 10,
@@ -145,7 +148,7 @@ export type ActionsType =
     SetRandomCardsArrayACType |
     SetRandomSettingsACType |
     UpdateCardTitleACType |
-    SetQuestionResultACType
+    SetPackStatisticACType
 
 
 export const packReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -211,9 +214,9 @@ export const packReducer = (state: InitialStateType = initialState, action: Acti
         case "SINGLE-PACK-REDUCER/UPDATE-CARD-TITLE": {
             return {...state, title: action.card.name, isPrivate:action.card.private}
         }
-        // case "SINGLE-PACK-REDUCER/SET-QUESTION-RESULT": {
-        //     return {...state, learningSessionResults:{...state.learningSessionResults, "1":action.grade}}
-        // }
+        case "SINGLE-PACK-REDUCER/SET-PACK-STATISTIC": {
+            return {...state, packStatistic:action.packStatistic}
+        }
         default:
             return {...state}
     }
@@ -305,11 +308,11 @@ export const updateCardTitle = (card: CardPacksType) => {
         card
     } as const
 }
-export type SetQuestionResultACType = ReturnType<typeof setQuestionResult>
-export const setQuestionResult = (grade: number) => {
+export type SetPackStatisticACType = ReturnType<typeof setPackStatistic>
+export const setPackStatistic = (packStatistic: number[]) => {
     return {
-        type: 'SINGLE-PACK-REDUCER/SET-QUESTION-RESULT',
-        grade
+        type: 'SINGLE-PACK-REDUCER/SET-PACK-STATISTIC',
+        packStatistic
     } as const
 }
 
@@ -380,6 +383,7 @@ export const learnPackModeTC = (data: SingleCardPackRequestDataType, randomSetti
             response = await CardsAPI.getSingleCardPack({...data, pageCount: response.data.cardsTotalCount})
             const randomCardArray = smartRandom(response.data.cards, randomSettings)
             dispatch(setRandomCardsArray(randomCardArray))
+            dispatch(setPackIdAC(response.data.cards[0].cardsPack_id))
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {
@@ -393,6 +397,23 @@ export const gradeCardTC = (data: GradeCardDataType): AppThunk<any> => {
         try {
             dispatch(setAppStatus('loading'))
             return await CardsAPI.gradeCard(data)
+        } catch (error: any) {
+            dispatch(setAppError(error.response.data.error))
+        } finally {
+            dispatch(setAppStatus('idle'))
+        }
+    }
+}
+
+export const getPackInformation = (data: SingleCardPackRequestDataType):AppThunk<any> => {
+    return async (dispatch) => {
+        try {
+            dispatch(setAppStatus('loading'))
+            let response = await CardsAPI.getSingleCardPack(data)
+            response = await CardsAPI.getSingleCardPack({...data, pageCount: response.data.cardsTotalCount})
+            console.log(response)
+            return dispatch(setPackStatistic(preparePackDataForPlot(response.data.cards)))
+
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {

@@ -3,7 +3,7 @@ import s from './LearnPage.module.css'
 import {Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {CardsType, DataForPlotType, gradeCardTC} from "../../bll/packReducer";
+import {CardsType, DataForPlotType, getPackInformation, gradeCardTC} from "../../bll/packReducer";
 import {PATH} from '../../App';
 import {AxiosResponse} from "axios";
 import {setAppError} from "../../bll/appReducers";
@@ -16,6 +16,8 @@ let dataForPlot: DataForPlotType = []
 
 const LearnPage = () => {
 
+    const packId = useAppSelector<string>((state)=>state.singlePackReducer.cardPackId)
+    const packStatistic = useAppSelector<number[]>((state)=>state.singlePackReducer.packStatistic)
     const cardsArr = useAppSelector<CardsType[]>((state) => state.singlePackReducer.randomCards)
     const dispatch = useAppDispatch()
     const [card, setCard] = useState<CardsType>({
@@ -37,9 +39,10 @@ const LearnPage = () => {
 
     const [show, setShow] = useState(false)
     const [grade, setGrade] = useState(1)
-    const [first, setFirst] = useState<boolean>(true);
-    const [styleHover, setStyleHover] = useState<boolean>(false)
+    const [first, setFirst] = useState(true);
+    const [styleHover, setStyleHover] = useState(false)
     const [showResults, setShowResults] = useState(false)
+    const [showPackStatistic, setShowPackStatistic] = useState(false)
     const [pageCount, setPageCount] = useState(1)
     const [totalPageCount, setTotalPageCount] = useState(0)
     const navigate = useNavigate()
@@ -110,6 +113,7 @@ const LearnPage = () => {
 
     const okButtonClickHandler = () => {
         setShowResults(false)
+        setShowPackStatistic(false)
         navigate(PATH.CARD.PACKS)
         sessionResult=[]
     }
@@ -119,6 +123,11 @@ const LearnPage = () => {
     }
     const onMoreInformationClickHandler = () => {
         console.log('onMoreInformationClickHandler')
+        setShowResults(false)
+        let promise = dispatch(getPackInformation({cardsPack_id:packId}))
+        promise.then(()=>{
+            setShowPackStatistic(true)
+        })
     }
 
     return (
@@ -136,6 +145,16 @@ const LearnPage = () => {
                             onMouseOver={()=>spanStyleResult(true)}
                             onMouseLeave={()=>spanStyleResult(false)}
                         >more information</span> about this pack</p>
+                    </div>
+                    <Button onClick={okButtonClickHandler} variant="contained"
+                            color="success">Got it</Button>
+                </div>
+            </Modal>
+            <Modal show={showPackStatistic} setShow={setShowPackStatistic}>
+                <p className={s.titleModal}>Results for whole pack:</p>
+                <div className={s.insideModal}>
+                    <div className={s.chart}>
+                        <Chart dataForPlot={packStatistic}/>
                     </div>
                     <Button onClick={okButtonClickHandler} variant="contained"
                             color="success">Got it</Button>

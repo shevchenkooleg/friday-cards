@@ -108,7 +108,7 @@ const SingleCard = (props: SingleCardPropsType) => {
                 <TableCell align="right">{props.card.answer}</TableCell>
                 <TableCell align="right"><UpdateFormat time={props.card.updated}/></TableCell>
                 <TableCell>
-                    <Rating rating={props.card.rating}/>
+                    <Rating rating={props.card.grade}/>
                 </TableCell>
                 {props.edit &&
                     <TableCell>
