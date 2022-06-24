@@ -446,6 +446,10 @@ export const smartRandom = (arr:CardsType[]=testCardsArr, data: RandomSettingsTy
         }     // если входной массив карточек больше или равен заданному количеству
         arr.forEach((el)=>{
             switch(Math.ceil(el.grade)) {
+                case 0: {
+                    cardsPool.oneStarArr.push(el)
+                    break
+                }
                 case 1: {
                     cardsPool.oneStarArr.push(el)
                     break
