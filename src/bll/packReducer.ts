@@ -383,7 +383,9 @@ export const learnPackModeTC = (data: SingleCardPackRequestDataType, randomSetti
             response = await CardsAPI.getSingleCardPack({...data, pageCount: response.data.cardsTotalCount})
             const randomCardArray = smartRandom(response.data.cards, randomSettings)
             dispatch(setRandomCardsArray(randomCardArray))
-            dispatch(setPackIdAC(response.data.cards[0].cardsPack_id))
+            if (response.data.cards.length > 0) {
+                dispatch(setPackIdAC(response.data.cards[0].cardsPack_id))
+            }
         } catch (error: any) {
             dispatch(setAppError(error.response.data.error))
         } finally {

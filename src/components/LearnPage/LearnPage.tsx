@@ -88,11 +88,9 @@ const LearnPage = () => {
     const onNextClickHandler = () => {
         let promise = dispatch(gradeCardTC({card_id: card._id, grade: grade}))
         promise.then((response:AxiosResponse)=>{
-            console.log(response)
             if (response.status){
                 sessionResult.push(+grade)
                 if (cardsArr.length > 0) {
-                    console.log(sessionResult)
                     let [card] = getCard()
                     setCard(card)
                     setShow(false)
@@ -100,7 +98,6 @@ const LearnPage = () => {
                     setPageCount(pageCount + 1)
                 } else {
                     setShowResults(true)
-                    console.log(sessionResult)
                     dataForPlot = prepareDataForPlot(sessionResult)
                 }
             }
@@ -122,7 +119,6 @@ const LearnPage = () => {
         setStyleHover(hover)
     }
     const onMoreInformationClickHandler = () => {
-        console.log('onMoreInformationClickHandler')
         setShowResults(false)
         let promise = dispatch(getPackInformation({cardsPack_id:packId}))
         promise.then(()=>{
