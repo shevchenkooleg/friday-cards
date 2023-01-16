@@ -91,3 +91,6 @@ function App() {
 }
 
 export default App;
+
+
+// "homepage": "https://shevchenkooleg.github.io/friday-cards",
